@@ -1,0 +1,32 @@
+{
+  "name": "<%= nameKebab %>",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p <%= port %>",
+    "build": "next build",
+    "start": "next start -p <%= port %>",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "next": "^15.1.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"<% if (needsDatabase) { %>,
+    "@prisma/client": "^6.1.0"<% } %><% if (needsAuth) { %>,
+    "bcryptjs": "^2.4.3",
+    "jose": "^5.9.6"<% } %>
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.0.1",
+    "@types/react-dom": "^19.0.1",
+    "eslint": "^9.17.0",
+    "eslint-config-next": "^15.1.0",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.2"<% if (needsDatabase) { %>,
+    "prisma": "^6.1.0"<% } %><% if (needsAuth) { %>,
+    "@types/bcryptjs": "^2.4.6"<% } %>
+  }
+}

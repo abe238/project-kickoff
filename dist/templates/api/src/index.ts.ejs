@@ -1,0 +1,25 @@
+import express from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
+import healthRouter from './routes/health.js';
+
+const app = express();
+const PORT = process.env.PORT || <%= port %>;
+
+app.use(helmet());
+app.use(cors());
+app.use(express.json());
+
+app.use('/api/health', healthRouter);
+
+app.get('/', (req, res) => {
+  res.json({
+    name: '<%= namePascal %>',
+    version: '0.1.0',
+    endpoints: ['/api/health'],
+  });
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});

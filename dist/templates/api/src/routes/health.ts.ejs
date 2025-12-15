@@ -1,0 +1,45 @@
+import { Router } from 'express';
+<% if (needsDatabase) { %>import { prisma } from '../lib/prisma.js';<% } %>
+
+const router = Router();
+
+router.get('/', async (req, res) => {
+  const startTime = Date.now();
+
+<% if (needsDatabase) { %>
+  let dbStatus = 'pass';
+  let dbLatency = 0;
+  try {
+    const dbStart = Date.now();
+    await prisma.$queryRaw`SELECT 1`;
+    dbLatency = Date.now() - dbStart;
+  } catch {
+    dbStatus = 'fail';
+  }
+  const allHealthy = dbStatus === 'pass';
+<% } else { %>
+  const allHealthy = true;
+<% } %>
+
+  const memUsage = process.memoryUsage();
+  const responseTime = Date.now() - startTime;
+
+  res.json({
+    status: allHealthy ? 'healthy' : 'degraded',
+    timestamp: new Date().toISOString(),
+    uptime: Math.floor(process.uptime()),
+    version: '0.1.0',
+    responseTimeMs: responseTime,
+    checks: {
+<% if (needsDatabase) { %>
+      database: { status: dbStatus, latencyMs: dbLatency },
+<% } %>
+      memory: {
+        usedMB: Math.round(memUsage.heapUsed / 1024 / 1024),
+        totalMB: Math.round(memUsage.heapTotal / 1024 / 1024),
+      },
+    },
+  });
+});
+
+export default router;

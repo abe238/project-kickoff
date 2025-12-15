@@ -1,0 +1,65 @@
+services:
+  <%= nameKebab %>:
+    image: ghcr.io/<%= githubUsername %>/<%= nameKebab %>:latest
+    restart: always
+    user: "1001:1001"
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    tmpfs:
+      - /tmp
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+    env_file:
+      - .env
+<% if (domain) { %>
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.<%= nameKebab %>.rule=Host(`<%= domain %>`)
+      - traefik.http.routers.<%= nameKebab %>.tls=true
+      - traefik.http.routers.<%= nameKebab %>.entrypoints=http,https
+      - traefik.http.routers.<%= nameKebab %>.tls.certresolver=letsencrypt
+      - traefik.http.services.<%= nameKebab %>.loadbalancer.server.port=<%= port %>
+      - traefik.docker.network=coolify
+      # Security Headers
+      - traefik.http.middlewares.<%= nameKebab %>-headers.headers.frameDeny=true
+      - traefik.http.middlewares.<%= nameKebab %>-headers.headers.contentTypeNosniff=true
+      - traefik.http.middlewares.<%= nameKebab %>-headers.headers.browserXssFilter=true
+      - traefik.http.middlewares.<%= nameKebab %>-headers.headers.stsSeconds=31536000
+      - traefik.http.middlewares.<%= nameKebab %>-headers.headers.stsIncludeSubdomains=true
+      - traefik.http.middlewares.<%= nameKebab %>-headers.headers.referrerPolicy=strict-origin-when-cross-origin
+      - traefik.http.routers.<%= nameKebab %>.middlewares=<%= nameKebab %>-headers
+    networks:
+      - coolify
+<% if (needsDatabase && databaseType === 'postgres') { %>      - supabase_perf_mgmt_network<% } %>
+<% } else { %>
+    ports:
+      - "<%= port %>:<%= port %>"
+<% } %>
+    expose:
+      - "<%= port %>"
+    healthcheck:
+<% if (type === 'static') { %>
+      test: ["CMD", "wget", "-q", "-O", "-", "http://localhost:<%= port %>/"]
+<% } else { %>
+      test: ["CMD", "wget", "-q", "-O", "-", "http://localhost:<%= port %>/api/health"]
+<% } %>
+      interval: 15s
+      timeout: 5s
+      retries: 2
+      start_period: 30s
+
+<% if (domain) { %>
+networks:
+  coolify:
+    external: true
+<% if (needsDatabase && databaseType === 'postgres') { %>
+  supabase_perf_mgmt_network:
+    external: true
+<% } %>
+<% } %>

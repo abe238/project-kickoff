@@ -1,0 +1,103 @@
+# <%= namePascal %>
+
+<%= description %>
+
+## Quick Start
+
+```bash
+# Install dependencies
+npm install
+
+# Run development server
+npm run dev
+<% if (type === 'nextjs' || type === 'vite-react') { %>
+# Open http://localhost:<%= port %>
+<% } else if (type === 'api') { %>
+# API available at http://localhost:<%= port %>
+<% } %>
+```
+
+## Scripts
+
+| Script | Description |
+|--------|-------------|
+| `npm run dev` | Start development server |
+| `npm run build` | Build for production |
+| `npm run lint` | Run ESLint |
+<% if (type === 'nextjs' || type === 'api') { %>| `npm run typecheck` | Run TypeScript type checking |<% } %>
+
+<% if (needsDatabase) { %>
+## Database
+
+This project uses <%= databaseType === 'postgres' ? 'PostgreSQL' : 'SQLite' %> with Prisma ORM.
+
+```bash
+# Generate Prisma client
+npx prisma generate
+
+# Run migrations
+npx prisma migrate dev
+
+# Open Prisma Studio
+npx prisma studio
+```
+<% } %>
+
+## Deployment
+
+<% if (domain) { %>
+### Production
+
+This project is configured for deployment to a VPS with Docker and Traefik.
+
+```bash
+# 1. Push to GitHub (triggers CI/CD)
+git push origin main
+
+# 2. On VPS - pull and restart
+ssh your-vps "cd /var/www/<%= name %> && docker compose pull && docker compose up -d"
+```
+
+**Production URL:** https://<%= domain %>
+<% } else { %>
+### Docker
+
+```bash
+# Build and run locally
+docker compose up -d
+
+# View logs
+docker compose logs -f
+```
+<% } %>
+
+## Tech Stack
+
+<% if (type === 'nextjs') { %>
+- [Next.js](https://nextjs.org) - React framework with App Router
+- [TypeScript](https://typescriptlang.org) - Type safety
+- [Tailwind CSS](https://tailwindcss.com) - Styling
+<% } else if (type === 'vite-react') { %>
+- [Vite](https://vitejs.dev) - Build tool
+- [React](https://react.dev) - UI library
+- [TypeScript](https://typescriptlang.org) - Type safety
+- [Tailwind CSS](https://tailwindcss.com) - Styling
+<% } else if (type === 'api') { %>
+- [Express](https://expressjs.com) - Web framework
+- [TypeScript](https://typescriptlang.org) - Type safety
+<% } else { %>
+- HTML5 / CSS3 / JavaScript
+- Nginx - Web server
+<% } %>
+<% if (needsDatabase) { %>
+- [Prisma](https://prisma.io) - ORM
+- <%= databaseType === 'postgres' ? 'PostgreSQL' : 'SQLite' %> - Database
+<% } %>
+
+## License
+
+MIT
+
+---
+
+*Scaffolded with [project-kickoff](https://github.com/abe238/project-kickoff)*
