@@ -1,0 +1,18 @@
+export interface EmailJobData {
+  to: string;
+  subject: string;
+  body: string;
+}
+
+export async function processEmail(data: EmailJobData): Promise<{ sent: boolean }> {
+  const { to, subject, body } = data;
+
+  // TODO: Implement actual email sending
+  // Example with nodemailer, sendgrid, resend, etc.
+  console.log(`Sending email to ${to}: ${subject}`);
+
+  // Simulate processing time
+  await new Promise((resolve) => setTimeout(resolve, 100));
+
+  return { sent: true };
+}

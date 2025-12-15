@@ -1,0 +1,115 @@
+# Project Kickoff Enhancement PRD
+
+## Overview
+Enhance project-kickoff CLI with new templates, robust questionnaire system, and advanced features.
+
+## Phase 1: New Project Templates
+
+### Task 1: MCP Server Template
+Create a Model Context Protocol server template for building AI tool integrations.
+- Package.json with @modelcontextprotocol/sdk
+- TypeScript configuration
+- Server entry point with stdio transport
+- Example tool definitions (greet, calculate)
+- Dockerfile for containerized deployment
+- README with usage instructions
+Dependencies: None
+
+### Task 2: Worker/Job Template
+Create a background job processor template using BullMQ and Redis.
+- Package.json with bullmq, ioredis
+- Worker entry point with job handlers
+- Queue configuration
+- Health check endpoint
+- Docker-compose with Redis service
+- Example job (email, webhook)
+Dependencies: None
+
+### Task 3: Library/Package Template
+Create an npm library template with proper exports and build.
+- Package.json with exports field, types
+- tsup for building ESM/CJS
+- Vitest for testing
+- TypeDoc for documentation
+- changesets for versioning
+- README with API docs
+Dependencies: None
+
+### Task 4: Discord Bot Template
+Create a Discord bot template with discord.js.
+- Package.json with discord.js
+- Bot entry point with client setup
+- Slash command registration
+- Example commands (ping, help)
+- Environment variables for token
+- Dockerfile for deployment
+Dependencies: None
+
+## Phase 2: Questionnaire Robustness
+
+### Task 5: Presets System
+Add preset project archetypes that pre-fill questionnaire answers.
+- SaaS Starter preset (nextjs + postgres + auth)
+- API Microservice preset (api + postgres)
+- Quick CLI preset (cli + quick track)
+- Landing Page preset (static + quick)
+- Custom preset from config file
+Dependencies: Task 1-4
+
+### Task 6: Config File Support
+Add ~/.kickoffrc config file for user preferences.
+- Default GitHub username
+- Preferred package manager (npm/yarn/pnpm)
+- Default complexity track
+- Custom presets storage
+- Use cosmiconfig for loading
+Dependencies: None
+
+### Task 7: Brownfield Detection
+Detect existing projects and offer to add missing pieces.
+- Scan for package.json, tsconfig.json
+- Detect project type from dependencies
+- Offer to add Dockerfile, CI/CD, CLAUDE.md
+- Skip existing files, merge configs
+Dependencies: None
+
+## Phase 3: Template Questions
+
+### Task 8: MCP Server Questions
+Add MCP-specific questions to questionnaire.
+- Transport type (stdio/SSE)
+- Include example tools?
+- Resource definitions?
+Dependencies: Task 1
+
+### Task 9: Worker Questions
+Add worker-specific questions to questionnaire.
+- Queue backend (Redis/PostgreSQL)
+- Job retry configuration
+- Concurrency settings
+Dependencies: Task 2
+
+### Task 10: Update Type System
+Update types.ts with all new project types and options.
+- Add mcp, worker, library, discord-bot to ProjectType
+- Add transport, queueBackend options
+- Update TemplateContext interface
+Dependencies: Task 1-4
+
+## Phase 4: Testing & Polish
+
+### Task 11: Integration Tests
+Create integration tests for all templates.
+- Test each template scaffolds correctly
+- Test questionnaire flow
+- Test preset system
+- Test config file loading
+Dependencies: Task 1-10
+
+### Task 12: Documentation Update
+Update README and QUESTIONNAIRE.md with new features.
+- Document new templates
+- Document presets system
+- Document config file
+- Add examples for each template
+Dependencies: Task 1-11

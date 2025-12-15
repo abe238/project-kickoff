@@ -1,0 +1,72 @@
+import { Worker, Queue } from "bullmq";
+import { Redis } from "ioredis";
+import { processEmail } from "./jobs/email.js";
+import { processWebhook } from "./jobs/webhook.js";
+
+const REDIS_URL = process.env.REDIS_URL || "redis://localhost:6379";
+
+const connection = new Redis(REDIS_URL, {
+  maxRetriesPerRequest: null,
+});
+
+// Create queues
+export const emailQueue = new Queue("<%= nameKebab %>-email", { connection });
+export const webhookQueue = new Queue("<%= nameKebab %>-webhook", { connection });
+
+// Email worker
+const emailWorker = new Worker(
+  "<%= nameKebab %>-email",
+  async (job) => {
+    console.log(`Processing email job ${job.id}`);
+    return processEmail(job.data);
+  },
+  {
+    connection,
+    concurrency: 5,
+  }
+);
+
+// Webhook worker
+const webhookWorker = new Worker(
+  "<%= nameKebab %>-webhook",
+  async (job) => {
+    console.log(`Processing webhook job ${job.id}`);
+    return processWebhook(job.data);
+  },
+  {
+    connection,
+    concurrency: 10,
+  }
+);
+
+// Event handlers
+emailWorker.on("completed", (job) => {
+  console.log(`Email job ${job.id} completed`);
+});
+
+emailWorker.on("failed", (job, err) => {
+  console.error(`Email job ${job?.id} failed:`, err.message);
+});
+
+webhookWorker.on("completed", (job) => {
+  console.log(`Webhook job ${job.id} completed`);
+});
+
+webhookWorker.on("failed", (job, err) => {
+  console.error(`Webhook job ${job?.id} failed:`, err.message);
+});
+
+// Graceful shutdown
+async function shutdown() {
+  console.log("Shutting down workers...");
+  await emailWorker.close();
+  await webhookWorker.close();
+  await connection.quit();
+  process.exit(0);
+}
+
+process.on("SIGTERM", shutdown);
+process.on("SIGINT", shutdown);
+
+console.log("<%= namePascal %> worker started");
+console.log("Listening for jobs on queues: <%= nameKebab %>-email, <%= nameKebab %>-webhook");

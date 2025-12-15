@@ -1,0 +1,28 @@
+import { describe, it, expect } from "vitest";
+import { greet, add, createGreeter } from "../src/index.js";
+
+describe("<%= nameKebab %>", () => {
+  describe("greet", () => {
+    it("should greet a person", () => {
+      expect(greet("World")).toBe("Hello, World! from <%= nameKebab %>");
+    });
+  });
+
+  describe("add", () => {
+    it("should add two numbers", () => {
+      expect(add(2, 3)).toBe(5);
+    });
+  });
+
+  describe("createGreeter", () => {
+    it("should create a greeter with default options", () => {
+      const greeter = createGreeter();
+      expect(greeter("World")).toBe("Hello, World!");
+    });
+
+    it("should create a greeter with custom options", () => {
+      const greeter = createGreeter({ prefix: "Hi", suffix: "?", uppercase: true });
+      expect(greeter("World")).toBe("HI, WORLD?");
+    });
+  });
+});

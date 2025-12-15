@@ -96,12 +96,16 @@ export async function scaffoldProject(
   }
 
   // Create additional directories based on config
-  // CLI projects don't need database or auth directories
-  if (config.needsDatabase && config.type !== 'static' && config.type !== 'cli') {
+  // Only web/api projects need database or auth directories
+  const toolTypes = ['cli', 'mcp-server', 'library', 'static'];
+  const needsPrisma = config.needsDatabase && !toolTypes.includes(config.type);
+  const needsAuthDir = config.needsAuth && !toolTypes.includes(config.type);
+
+  if (needsPrisma) {
     await fs.ensureDir(path.join(projectDir, 'prisma'));
   }
 
-  if (config.needsAuth && config.type !== 'static' && config.type !== 'cli') {
+  if (needsAuthDir) {
     await fs.ensureDir(path.join(projectDir, 'src', 'lib', 'auth'));
   }
 }

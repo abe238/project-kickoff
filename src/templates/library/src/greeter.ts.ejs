@@ -1,0 +1,13 @@
+import type { GreetOptions } from "./types.js";
+
+export function createGreeter(options: GreetOptions = {}) {
+  const { prefix = "Hello", suffix = "!", uppercase = false } = options;
+
+  return function greet(name: string): string {
+    let message = `${prefix}, ${name}${suffix}`;
+    if (uppercase) {
+      message = message.toUpperCase();
+    }
+    return message;
+  };
+}

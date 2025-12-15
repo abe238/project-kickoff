@@ -1,0 +1,22 @@
+export interface WebhookJobData {
+  url: string;
+  payload: Record<string, unknown>;
+  headers?: Record<string, string>;
+}
+
+export async function processWebhook(data: WebhookJobData): Promise<{ status: number }> {
+  const { url, payload, headers = {} } = data;
+
+  console.log(`Sending webhook to ${url}`);
+
+  const response = await fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...headers,
+    },
+    body: JSON.stringify(payload),
+  });
+
+  return { status: response.status };
+}

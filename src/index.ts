@@ -110,25 +110,36 @@ program
   .description('List available project templates')
   .action(() => {
     console.log(BANNER);
-    console.log(chalk.bold('Available templates:'));
-    console.log(chalk.gray('─'.repeat(40)));
-    console.log(`  ${chalk.cyan('nextjs')}       Next.js with App Router, TypeScript, Tailwind`);
-    console.log(`  ${chalk.cyan('vite-react')}   Vite + React SPA with TypeScript, Tailwind`);
-    console.log(`  ${chalk.cyan('api')}          Express.js API with TypeScript`);
-    console.log(`  ${chalk.cyan('cli')}          CLI tool with Commander, TypeScript`);
-    console.log(`  ${chalk.cyan('static')}       Static HTML/CSS/JS site with nginx`);
-    console.log(chalk.gray('─'.repeat(40)));
+    console.log(chalk.bold('Presets (quick start):'));
+    console.log(chalk.gray('─'.repeat(50)));
+    console.log(`  ${chalk.magenta('saas-starter')}     Next.js + Postgres + Auth (production)`);
+    console.log(`  ${chalk.magenta('api-microservice')} Express + Postgres (standard)`);
+    console.log(`  ${chalk.magenta('quick-cli')}        CLI tool (quick)`);
+    console.log(`  ${chalk.magenta('landing-page')}     Static site (quick)`);
+    console.log(`  ${chalk.magenta('mcp-tool')}         MCP server for AI tools (quick)`);
+    console.log(chalk.gray('─'.repeat(50)));
+
+    console.log('\n' + chalk.bold('Templates:'));
+    console.log(chalk.gray('─'.repeat(50)));
+    console.log(chalk.dim('  Web'));
+    console.log(`    ${chalk.cyan('nextjs')}       Full-stack React with App Router`);
+    console.log(`    ${chalk.cyan('vite-react')}   SPA with TypeScript, Tailwind`);
+    console.log(`    ${chalk.cyan('static')}       HTML/CSS/JS with nginx`);
+    console.log(chalk.dim('  Backend'));
+    console.log(`    ${chalk.cyan('api')}          Express.js REST API`);
+    console.log(`    ${chalk.cyan('worker')}       Background jobs with BullMQ + Redis`);
+    console.log(chalk.dim('  Tools'));
+    console.log(`    ${chalk.cyan('cli')}          Command-line app with Commander`);
+    console.log(`    ${chalk.cyan('mcp-server')}   MCP server for AI integrations`);
+    console.log(`    ${chalk.cyan('library')}      npm package with tsup + vitest`);
+    console.log(chalk.gray('─'.repeat(50)));
+
     console.log('\n' + chalk.bold('Complexity Tracks:'));
-    console.log(chalk.gray('─'.repeat(40)));
-    console.log(`  ${chalk.yellow('quick')}        Minimal questions, fast scaffolding`);
-    console.log(`  ${chalk.green('standard')}     Full questionnaire, all features`);
-    console.log(`  ${chalk.red('production')}   Security-focused, compliance-ready`);
-    console.log(chalk.gray('─'.repeat(40)));
-    console.log('\nAll templates include:');
-    console.log('  - Docker with security best practices');
-    console.log('  - GitHub Actions CI/CD');
-    console.log('  - CLAUDE.md for AI assistance');
-    console.log('  - ESLint + TypeScript');
+    console.log(chalk.gray('─'.repeat(50)));
+    console.log(`  ${chalk.yellow('quick')}        ~5 questions, fast scaffolding`);
+    console.log(`  ${chalk.green('standard')}     ~10 questions, full features`);
+    console.log(`  ${chalk.red('production')}   ~12+ questions, security-focused`);
+    console.log(chalk.gray('─'.repeat(50)));
   });
 
 program.parse();

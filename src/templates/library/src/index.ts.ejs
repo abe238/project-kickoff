@@ -1,0 +1,15 @@
+/**
+ * <%= namePascal %>
+ * <%= description %>
+ */
+
+export function greet(name: string): string {
+  return `Hello, ${name}! from <%= nameKebab %>`;
+}
+
+export function add(a: number, b: number): number {
+  return a + b;
+}
+
+export type { GreetOptions } from "./types.js";
+export { createGreeter } from "./greeter.js";
