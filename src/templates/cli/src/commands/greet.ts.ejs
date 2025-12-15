@@ -1,0 +1,11 @@
+import chalk from 'chalk';
+
+export function greet(name: string, loud: boolean = false): void {
+  const message = `Hello, ${name}!`;
+
+  if (loud) {
+    console.log(chalk.bold.green(message.toUpperCase()));
+  } else {
+    console.log(chalk.green(message));
+  }
+}

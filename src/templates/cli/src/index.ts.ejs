@@ -1,0 +1,50 @@
+#!/usr/bin/env node
+
+import { Command } from 'commander';
+import chalk from 'chalk';
+<% if (cliInteractive) { %>import ora from 'ora';
+<% } %><% if (cliConfigFile) { %>import { loadConfig } from './lib/config.js';
+<% } %>import { greet } from './commands/greet.js';
+
+const VERSION = '1.0.0';
+
+const BANNER = `
+${chalk.blue('╔═══════════════════════════════════════════════════════════════╗')}
+${chalk.blue('║')}  ${chalk.bold.white('<%= namePascal %>')} - <%= description %>
+${chalk.blue('╚═══════════════════════════════════════════════════════════════╝')}
+`;
+
+const program = new Command();
+
+program
+  .name('<%= nameKebab %>')
+  .description('<%= description %>')
+  .version(VERSION);
+
+program
+  .command('greet')
+  .description('Say hello')
+  .argument('[name]', 'Name to greet', 'World')
+  .option('-l, --loud', 'Shout the greeting')
+  .action(async (name, options) => {
+    console.log(BANNER);
+<% if (cliInteractive) { %>
+    const spinner = ora('Processing...').start();
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    spinner.succeed('Ready');
+<% } %>
+    greet(name, options.loud);
+  });
+<% if (cliConfigFile) { %>
+
+program
+  .command('config')
+  .description('Show current configuration')
+  .action(async () => {
+    const config = await loadConfig();
+    console.log(chalk.bold('Current Configuration:'));
+    console.log(JSON.stringify(config, null, 2));
+  });
+<% } %>
+
+program.parse();

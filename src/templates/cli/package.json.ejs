@@ -1,0 +1,43 @@
+{
+  "name": "<%= nameKebab %>",
+  "version": "1.0.0",
+  "description": "<%= description %>",
+  "main": "dist/index.js",
+  "bin": {
+    "<%= nameKebab %>": "./dist/index.js"
+  },
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/index.ts",
+    "start": "node dist/index.js",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
+    "typecheck": "tsc --noEmit",
+    "prepare": "npm run build"
+  },
+  "keywords": ["cli"],
+  "author": "<%= githubUsername %>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@typescript-eslint/eslint-plugin": "^8.18.0",
+    "@typescript-eslint/parser": "^8.18.0",
+    "eslint": "^9.17.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  },
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "commander": "^12.1.0"<% if (cliInteractive) { %>,
+    "inquirer": "^12.2.0",
+    "ora": "^8.1.1"<% } %><% if (cliConfigFile) { %>,
+    "cosmiconfig": "^9.0.0"<% } %>
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "files": [
+    "dist"
+  ]
+}

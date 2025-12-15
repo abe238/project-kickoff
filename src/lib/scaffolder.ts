@@ -96,11 +96,12 @@ export async function scaffoldProject(
   }
 
   // Create additional directories based on config
-  if (config.needsDatabase && config.type !== 'static') {
+  // CLI projects don't need database or auth directories
+  if (config.needsDatabase && config.type !== 'static' && config.type !== 'cli') {
     await fs.ensureDir(path.join(projectDir, 'prisma'));
   }
 
-  if (config.needsAuth && config.type !== 'static') {
+  if (config.needsAuth && config.type !== 'static' && config.type !== 'cli') {
     await fs.ensureDir(path.join(projectDir, 'src', 'lib', 'auth'));
   }
 }

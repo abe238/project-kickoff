@@ -115,14 +115,20 @@ program
     console.log(`  ${chalk.cyan('nextjs')}       Next.js with App Router, TypeScript, Tailwind`);
     console.log(`  ${chalk.cyan('vite-react')}   Vite + React SPA with TypeScript, Tailwind`);
     console.log(`  ${chalk.cyan('api')}          Express.js API with TypeScript`);
+    console.log(`  ${chalk.cyan('cli')}          CLI tool with Commander, TypeScript`);
     console.log(`  ${chalk.cyan('static')}       Static HTML/CSS/JS site with nginx`);
+    console.log(chalk.gray('─'.repeat(40)));
+    console.log('\n' + chalk.bold('Complexity Tracks:'));
+    console.log(chalk.gray('─'.repeat(40)));
+    console.log(`  ${chalk.yellow('quick')}        Minimal questions, fast scaffolding`);
+    console.log(`  ${chalk.green('standard')}     Full questionnaire, all features`);
+    console.log(`  ${chalk.red('production')}   Security-focused, compliance-ready`);
     console.log(chalk.gray('─'.repeat(40)));
     console.log('\nAll templates include:');
     console.log('  - Docker with security best practices');
     console.log('  - GitHub Actions CI/CD');
     console.log('  - CLAUDE.md for AI assistance');
-    console.log('  - ESLint + Prettier');
-    console.log('  - Health check endpoint');
+    console.log('  - ESLint + TypeScript');
   });
 
 program.parse();

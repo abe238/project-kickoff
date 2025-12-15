@@ -1,0 +1,25 @@
+<% if (cliConfigFile) { %>import { cosmiconfig } from 'cosmiconfig';
+
+export interface Config {
+  debug?: boolean;
+  [key: string]: unknown;
+}
+
+const explorer = cosmiconfig('<%= nameKebab %>');
+
+export async function loadConfig(): Promise<Config> {
+  try {
+    const result = await explorer.search();
+    return result?.config ?? {};
+  } catch {
+    return {};
+  }
+}
+<% } else { %>export interface Config {
+  debug?: boolean;
+}
+
+export function loadConfig(): Config {
+  return {};
+}
+<% } %>
