@@ -2,7 +2,7 @@
 
 This document outlines all questions asked during `kickoff init` and how answers influence the generated project.
 
-> **Inspired by BMAD-METHOD**: This questionnaire uses scale-adaptive tracks and type-specific questions to reduce cognitive load while gathering the right information for each project type.
+> **Multi-Language Support**: Now supports TypeScript, Python, Go, Rust, and Deno with language-aware questions and options.
 
 ---
 
@@ -10,591 +10,708 @@ This document outlines all questions asked during `kickoff init` and how answers
 
 ```
 ┌─────────────────────────────────────────────────────┐
-│ PHASE 1: PROJECT CLASSIFICATION                     │
+│ PHASE 1: PROJECT SELECTION                          │
 ├─────────────────────────────────────────────────────┤
-│ Q0. Project complexity track?                       │
-│ Q1. Project name                                    │
-│ Q2. Project description                             │
-│ Q3. Project type                                    │
+│ Q0. Preset or Custom?                               │
+│ Q1. Complexity track (if custom)                    │
+│ Q2. Project name                                    │
+│ Q3. Project description                             │
+│ Q4. Project type (if custom)                        │
 └─────────────────────────────────────────────────────┘
           │
           ▼
 ┌─────────────────────────────────────────────────────┐
-│ PHASE 2: TYPE-SPECIFIC QUESTIONS                    │
+│ PHASE 2: RUNTIME & INFRASTRUCTURE                   │
 ├─────────────────────────────────────────────────────┤
-│ Web/API: Port, Database, Auth                       │
-│ CLI: Interactive, Config file, Shell completion    │
-│ Static: (minimal)                                   │
+│ Q5. Runtime (JS/TS only)                            │
+│ Q6. Port                                            │
+│ Q7. Database provider                               │
+│ Q8. ORM (language-aware)                            │
+│ Q9. Auth provider (language-aware)                  │
 └─────────────────────────────────────────────────────┘
           │
           ▼
 ┌─────────────────────────────────────────────────────┐
-│ PHASE 3: DEPLOYMENT (skipped for quick track)       │
+│ PHASE 3: TYPE-SPECIFIC QUESTIONS                    │
 ├─────────────────────────────────────────────────────┤
-│ Domain, GitHub username, Design system              │
+│ CLI: Interactive, Config, Shell completion          │
+│ MCP: Transport (stdio/SSE)                          │
+│ Library: Test framework                             │
+│ Python: Package manager                             │
+│ Go: Module path                                     │
+│ Rust: Edition                                       │
+└─────────────────────────────────────────────────────┘
+          │
+          ▼
+┌─────────────────────────────────────────────────────┐
+│ PHASE 4: AI/ML (if applicable)                      │
+├─────────────────────────────────────────────────────┤
+│ Q10. AI Framework                                   │
+│ Q11. Vector Database                                │
+│ Q12. Embedding Provider                             │
+│ Q13. Local AI Provider                              │
+└─────────────────────────────────────────────────────┘
+          │
+          ▼
+┌─────────────────────────────────────────────────────┐
+│ PHASE 5: DEPLOYMENT                                 │
+├─────────────────────────────────────────────────────┤
+│ Q14. Domain                                         │
+│ Q15. Web Server (production track)                  │
+│ Q16. GitHub username                                │
+│ Q17. Design system (frontend only)                  │
 └─────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## Question 0: Complexity Track (NEW)
+## Question 0: Preset Selection
 
-**Prompt:** `Project complexity:`
+**Prompt:** `Start with a preset or custom?`
 
-**Options:**
+**Presets Available:**
 
-| Value | Label | Description |
-|-------|-------|-------------|
-| `quick` | Quick | Clear scope, single feature, internal tool |
-| `standard` | Standard | Product/platform, multiple features |
-| `production` | Production | Compliance, multi-tenant, security-critical |
+### JavaScript/TypeScript
 
-### Track Behaviors
+| Preset | Stack | Best For |
+|--------|-------|----------|
+| `saas-starter` | Next.js + Supabase + Drizzle | Production SaaS applications |
+| `tanstack-hono` | TanStack Start + Turso + Better Auth | Type-safe full-stack apps |
+| `edge-api` | Hono + Turso + Bun | High-performance edge APIs |
+| `api-microservice` | Hono + Neon + Drizzle | Serverless microservices |
 
-**Quick Track**
-- Skips: Domain, design system, auth questions
-- Best for: Internal tools, prototypes, single-purpose utilities
-- Questions: ~5
+### Python
 
-**Standard Track** (Default)
-- Full questionnaire flow
-- Best for: Products, platforms, client projects
-- Questions: ~10
+| Preset | Stack | Best For |
+|--------|-------|----------|
+| `fastapi-starter` | FastAPI + PostgreSQL + SQLAlchemy | Python APIs with auto-docs |
+| `python-ml-api` | FastAPI + pgvector + LangChain | ML/AI Python services |
 
-**Production Track**
-- All standard questions + security considerations
-- Future: Will add compliance, monitoring, logging questions
-- Best for: Fintech, healthcare, enterprise applications
-- Questions: ~12+
+### Go
 
-**Comments:**
-<!--
-Track selection inspired by BMAD-METHOD's scale-adaptive approach.
-Future considerations:
-- Add domain-specific compliance questions for production track
-- Consider "enterprise" track for multi-tenant SaaS
--->
+| Preset | Stack | Best For |
+|--------|-------|----------|
+| `go-microservice` | Gin + PostgreSQL + GORM | High-performance Go services |
+
+### Rust
+
+| Preset | Stack | Best For |
+|--------|-------|----------|
+| `rust-api` | Axum + PostgreSQL + SQLx | Type-safe, fast Rust APIs |
+
+### AI/ML
+
+| Preset | Stack | Best For |
+|--------|-------|----------|
+| `ai-rag-app` | Next.js + Supabase Vector + Vercel AI | RAG applications |
+| `ai-agent` | Hono + Ollama + LangChain | Local AI agents |
+| `mlx-local` | FastAPI + MLX + Chroma | Apple Silicon AI apps |
+
+### Quick Start
+
+| Preset | Stack | Best For |
+|--------|-------|----------|
+| `quick-cli` | Commander + TypeScript | CLI tools |
+| `landing-page` | HTML/CSS/JS + nginx | Static sites |
+| `mcp-tool` | TypeScript + stdio/SSE | MCP servers for AI |
 
 ---
 
-## Question 1: Project Name
+## Question 1: Complexity Track
+
+**Prompt:** `Project complexity:`
+
+**Shown When:** Preset = `none` (custom)
+
+| Track | Questions | Skips | Best For |
+|-------|-----------|-------|----------|
+| `quick` | ~5 | Auth, Domain, Design System, AI/ML | Prototypes, internal tools |
+| `standard` | ~10 | Nothing | Products, platforms |
+| `production` | ~15+ | Nothing + adds Web Server | Enterprise, compliance |
+
+---
+
+## Question 2: Project Name
 
 **Prompt:** `Project name (kebab-case):`
 
 **Validation:**
-- Lowercase letters, numbers, and hyphens only
-- No spaces, underscores, or capitals
+- Lowercase, numbers, hyphens only
 - Max 50 characters
 
 **Used In:**
-- Folder name
-- package.json `name` field
-- Docker image name (`ghcr.io/username/project-name`)
-- Traefik route labels
-- README title
-- CLAUDE.md header
-- CLI binary name (for CLI projects)
-
-**Examples:**
-- `my-dashboard`
-- `api-gateway`
-- `landing-page`
-- `my-cli-tool`
-
-**Comments:**
-<!--
-Add notes here about naming conventions, reserved names, or project-specific patterns
--->
+- Folder name, package.json, Docker image name
+- Go module path (auto-generated)
+- Rust crate name (auto-generated)
+- Python package name (snake_case conversion)
 
 ---
 
-## Question 2: Project Description
+## Question 3: Project Description
 
 **Prompt:** `Project description:`
 
 **Default:** `A new project scaffolded with kickoff`
 
-**Used In:**
-- package.json `description` field
-- README.md intro
-- CLAUDE.md overview
-- HTML meta description (for web projects)
-- CLI help text banner
-
-**Examples:**
-- `Real-time dashboard for monitoring API performance`
-- `CLI tool for managing Docker deployments`
-- `Landing page for product launch`
-
-**Comments:**
-<!--
-Add notes here about description style, length recommendations, SEO considerations
--->
-
 ---
 
-## Question 3: Project Type
+## Question 4: Project Type
 
 **Prompt:** `Project type:`
 
-**Options:**
+**Shown When:** Preset = `none`
 
-| Value | Label | Description |
-|-------|-------|-------------|
-| `nextjs` | Next.js | Full-stack React with App Router |
-| `vite-react` | Vite + React | SPA Frontend |
-| `api` | Node.js API | Express backend |
-| `cli` | CLI Tool | Command-line application (NEW) |
-| `static` | Static Site | HTML/CSS/JS |
+### Full-Stack JS/TS
 
-### When to Choose Each:
+| Type | Framework | Runtime | Description |
+|------|-----------|---------|-------------|
+| `nextjs` | Next.js 15 | Node | App Router, RSC, Server Actions |
+| `tanstack-start` | TanStack Start | Bun/Node | React 19, type-safe routing |
 
-**Next.js (`nextjs`)**
-- Server-side rendering needed
-- SEO important
-- API routes in same repo
-- Full-stack in one deployment
+### Frontend
 
-**Vite + React (`vite-react`)**
-- Pure frontend SPA
-- Backend is separate service
-- Fast development builds
-- Client-side only
+| Type | Framework | Description |
+|------|-----------|-------------|
+| `vite-react` | Vite + React 19 | SPA with TypeScript |
+| `static` | HTML/CSS/JS | Static site with nginx |
 
-**Node.js API (`api`)**
-- Backend only, no UI
-- REST or GraphQL endpoints
-- Microservice architecture
-- Webhooks/integrations
+### Backend - Node/Bun
 
-**CLI Tool (`cli`)** ✨ NEW
-- Terminal applications
-- Developer tools
-- Automation scripts
-- Interactive prompts or flags-only
+| Type | Framework | Runtime | Description |
+|------|-----------|---------|-------------|
+| `hono-api` | Hono | Bun/Node | Edge-first, multi-runtime |
+| `elysia-api` | Elysia | Bun | Bun-native, Eden E2E types |
+| `express-api` | Express | Node | Battle-tested, huge ecosystem |
 
-**Static Site (`static`)**
-- Landing pages
-- Documentation sites
-- No dynamic content
-- Maximum performance
+### Backend - Deno
 
-**Comments:**
-<!--
-CLI template now implemented! Includes:
-- Commander for command parsing
-- Chalk for colored output
-- Optional: Inquirer for prompts, Cosmiconfig for config files
+| Type | Framework | Description |
+|------|-----------|-------------|
+| `fresh-api` | Fresh | Islands architecture, Deno native |
 
-Future project types to consider:
-- [ ] Library/Package - npm packages for distribution
-- [ ] Monorepo - Multiple packages in one repo (turborepo/nx)
-- [ ] Worker - Background job processors
-- [ ] Browser Extension - Chrome/Firefox extensions
--->
+### Backend - Python
+
+| Type | Framework | Description |
+|------|-----------|-------------|
+| `fastapi` | FastAPI | Async, automatic OpenAPI docs |
+| `litestar` | Litestar | High-performance, modern |
+
+### Backend - Go
+
+| Type | Framework | Description |
+|------|-----------|-------------|
+| `gin-api` | Gin | Fast, popular |
+| `fiber-api` | Fiber | Express-like API |
+| `echo-api` | Echo | Minimalist, extensible |
+
+### Backend - Rust
+
+| Type | Framework | Description |
+|------|-----------|-------------|
+| `axum-api` | Axum | Tokio-based, ergonomic |
+| `actix-api` | Actix | Actor-based, fastest |
+
+### Tools
+
+| Type | Description |
+|------|-------------|
+| `cli` | Command-line tool with Commander |
+| `mcp-server` | MCP server for AI integrations |
+| `library` | npm package with tsup + vitest |
+| `worker` | Background jobs with BullMQ + Redis |
 
 ---
 
-## Question 4: Development Port
+## Question 5: Runtime
+
+**Prompt:** `Runtime:`
+
+**Shown When:** JS/TS project types only (not Python/Go/Rust/Deno)
+
+| Runtime | Best For |
+|---------|----------|
+| `bun` | Speed, all-in-one (recommended for Hono/Elysia) |
+| `node` | Compatibility, wider ecosystem |
+
+**Auto-derived for:**
+- Python projects → `python`
+- Go projects → `go`
+- Rust projects → `rust`
+- Deno projects → `deno`
+
+---
+
+## Question 6: Port
 
 **Prompt:** `Development port:`
 
-**Default:** Random between 3000-9000
+**Default:** Random 3000-9000
 
-**Shown When:** Project type is NOT `cli`
-
-**Validation:**
-- Must be between 1024 and 65535
-- Ports below 1024 require root
-
-**Used In:**
-- Vite/Next.js dev server
-- Express listen port
-- Docker EXPOSE
-- docker-compose port mapping
-- Health check URLs
-
-**Common Ports:**
-- `3000` - Default for many frameworks
-- `5173` - Vite default
-- `8080` - Common alternative
-- `4000` - GraphQL convention
-
-**Comments:**
-<!--
-Add notes here about:
-- Port conflict resolution
-- Team conventions
-- Reserved ports to avoid
--->
+**Skipped For:** `cli`, `mcp-server`, `library`
 
 ---
 
-## CLI-Specific Questions (Type = `cli`)
+## Question 7: Database Provider
 
-### Question 4a: Interactive Prompts
+**Prompt:** `Database:`
+
+**Shown When:** Project can have database (APIs, full-stack)
+
+### Serverless (JS/TS recommended)
+
+| Provider | Type | Features | Cost |
+|----------|------|----------|------|
+| `supabase` | PostgreSQL | Auth + Storage + Realtime | Free/$25+ |
+| `neon` | PostgreSQL | Branching, scale-to-zero | Free/$19+ |
+| `turso` | SQLite (libSQL) | Edge-first, global | Free/$29+ |
+| `convex` | Reactive BaaS | Real-time, type-safe | Free/$25+ |
+
+### BaaS
+
+| Provider | Type | Features |
+|----------|------|----------|
+| `pocketbase` | SQLite BaaS | Single file, auth, realtime |
+| `firebase` | NoSQL | Google BaaS |
+
+### Self-Hosted (Docker required)
+
+| Provider | Type | Memory |
+|----------|------|--------|
+| `postgres-local` | PostgreSQL | 256MB+ |
+| `mysql-local` | MySQL | 512MB+ |
+| `mongodb-local` | MongoDB | 512MB+ |
+| `sqlite` | SQLite | N/A |
+
+### Enterprise
+
+| Provider | Type | Features |
+|----------|------|----------|
+| `planetscale` | MySQL + Vitess | Branching, serverless |
+| `cockroachdb` | Distributed SQL | Multi-region, ACID |
+
+**Language-Aware Defaults:**
+- JS/TS projects: Supabase (serverless)
+- Python/Go/Rust: postgres-local (self-hosted)
+
+---
+
+## Question 8: ORM
+
+**Prompt:** `ORM:`
+
+**Language-Aware Options:**
+
+### JavaScript/TypeScript
+
+| ORM | Style | Features |
+|-----|-------|----------|
+| `drizzle` | SQL-like | Fast, lightweight (recommended) |
+| `prisma` | Schema-first | Great DX, migrations |
+| `kysely` | Query builder | Type-safe SQL |
+
+### Python
+
+| ORM | Style | Features |
+|-----|-------|----------|
+| `sqlalchemy` | Standard | Mature, flexible (recommended) |
+| `sqlmodel` | Pydantic | FastAPI creator's ORM |
+| `tortoise` | Async | Django-like, async-first |
+
+### Go
+
+| ORM | Style | Features |
+|-----|-------|----------|
+| `gorm` | Full ORM | Auto-migrations (recommended) |
+| `sqlx-go` | Raw SQL | Type-safe, no magic |
+
+### Rust
+
+| ORM | Style | Features |
+|-----|-------|----------|
+| `sqlx-rust` | Compile-time | Async, checked queries (recommended) |
+| `sea-orm` | Active Record | Async, built on SQLx |
+| `diesel` | Sync | Mature, type-safe |
+
+**Auto-selected `none` for:** Convex, PocketBase, Firebase (BaaS handles data)
+
+---
+
+## Question 9: Authentication
+
+**Prompt:** `Authentication:`
+
+**Shown When:** Track ≠ quick AND project can have auth
+
+### Platform-Specific (shown first if applicable)
+
+| Provider | Platform | Features |
+|----------|----------|----------|
+| `supabase-auth` | Supabase | Built-in with DB |
+| `convex-auth` | Convex | Built-in with DB |
+| `firebase-auth` | Firebase | Built-in with DB |
+| `pocketbase-auth` | PocketBase | Built-in with DB |
+
+### Hosted (JS/TS focused)
+
+| Provider | Features | Cost |
+|----------|----------|------|
+| `clerk` | Pre-built components, social login | Free/$25+ |
+| `kinde` | B2B-focused, SAML SSO, feature flags | Free/$25+ |
+
+### Self-Hosted (JS/TS)
+
+| Provider | Features |
+|----------|----------|
+| `better-auth` | Modern, great DX (recommended) |
+| `lucia` | Lightweight, minimal |
+| `authjs` | NextAuth successor |
+
+### Enterprise
+
+| Provider | Features | Best For |
+|----------|----------|----------|
+| `auth0` | Enterprise-grade, Okta-owned | All languages |
+| `workos` | SSO, directory sync | B2B apps |
+
+---
+
+## CLI-Specific Questions
+
+**Shown When:** Type = `cli`
+
+### Interactive Prompts
 
 **Prompt:** `Include interactive prompts (inquirer)?`
 
 **Default:** Yes
 
-**If Yes, includes:**
-- `inquirer` package for interactive prompts
-- `ora` package for spinners
-- Example prompt in generated code
+**If Yes:** Includes `inquirer` and `ora` packages
 
-**When to use:**
-- Setup wizards
-- Configuration tools
-- User-facing CLIs
-
-**When to skip:**
-- Pure flag-based tools
-- CI/CD automation tools
-- Scripting utilities
-
----
-
-### Question 4b: Config File Support
+### Config File Support
 
 **Prompt:** `Support config file (~/.projectrc)?`
 
 **Default:** No
 
-**If Yes, includes:**
-- `cosmiconfig` package
-- Config loading from multiple locations:
-  - `~/.projectrc`
-  - `.projectrc.json`
-  - `project.config.js`
-- Example config command
+**If Yes:** Includes `cosmiconfig` package
 
-**When to use:**
-- Tools with many options
-- User preferences storage
-- Environment-specific settings
+### Shell Completion
 
----
-
-### Question 4c: Shell Completion
-
-**Prompt:** `Generate shell completions (bash/zsh)?`
+**Prompt:** `Generate shell completions?`
 
 **Default:** No
 
-**If Yes, includes:**
-- Commander's built-in completion support
-- Instructions for shell setup
+---
 
-**Comments:**
-<!--
-Shell completion is valuable for frequently-used CLIs.
-Consider adding this for tools used multiple times per day.
--->
+## MCP-Specific Questions
+
+**Shown When:** Type = `mcp-server`
+
+### Transport
+
+**Prompt:** `MCP transport:`
+
+| Transport | Description |
+|-----------|-------------|
+| `stdio` | Standard I/O (recommended) |
+| `sse` | Server-Sent Events |
 
 ---
 
-## Question 5: Database Required
+## Library-Specific Questions
 
-**Prompt:** `Need database?`
+**Shown When:** Type = `library`
 
-**Shown When:** Project type is `nextjs` or `api`
+### Test Framework
 
-**Default:**
-- `Yes` for Next.js, API
-- Not shown for Vite, Static, CLI
+**Prompt:** `Test framework:`
 
-**Conditional:** Shows Question 6 if Yes
-
-**Used In:**
-- Prisma schema generation
-- Docker compose database service
-- Environment variables template
-- CLAUDE.md architecture section
-
-**Comments:**
-<!--
-Add notes here about:
-- When to use external database services (Supabase, PlanetScale)
-- Database-as-a-service vs self-hosted
-- Data persistence considerations
--->
+| Framework | Description |
+|-----------|-------------|
+| `vitest` | Fast, modern (recommended) |
+| `jest` | Battle-tested |
 
 ---
 
-## Question 6: Database Type
+## Python-Specific Questions
 
-**Prompt:** `Database type:`
+**Shown When:** Type = `fastapi` or `litestar`
 
-**Shown When:** Question 5 = Yes
+### Package Manager
 
-**Options:**
+**Prompt:** `Python package manager:`
 
-| Value | Label | Use Case |
-|-------|-------|----------|
-| `postgres` | PostgreSQL | Production, multi-user, complex queries |
-| `sqlite` | SQLite | Development, single-user, embedded |
-
-### PostgreSQL
-- Production recommended
-- Requires running database server
-- Better for concurrent access
-- Rich ecosystem (PostGIS, full-text search)
-
-### SQLite
-- File-based, no server needed
-- Great for local tools
-- Single-user scenarios
-- Embedded applications
-
-**Comments:**
-<!--
-Add notes here about:
-- Other databases to support (MySQL, MongoDB, Redis)
-- Connection pooling considerations
-- Migration strategies
--->
+| Manager | Description | Generated Files |
+|---------|-------------|-----------------|
+| `uv` | Fast, Rust-based (recommended) | `pyproject.toml`, `uv.lock` |
+| `poetry` | Dependency management + publishing | `pyproject.toml`, `poetry.lock` |
+| `pip` | Standard, battle-tested | `requirements.txt` |
+| `pipenv` | Pipfile + lock file | `Pipfile`, `Pipfile.lock` |
 
 ---
 
-## Question 7: Authentication Required
+## Go-Specific Questions
 
-**Prompt:** `Need authentication?`
+**Shown When:** Type = `gin-api`, `fiber-api`, or `echo-api`
 
-**Shown When:**
-- Project type is `nextjs` or `api`
-- AND complexity track is NOT `quick`
+### Module Path
 
-**Default:** No
+**Prompt:** `Go module path (e.g., github.com/user/project):`
 
-**Used In:**
-- Auth middleware generation
-- JWT/session setup
-- Protected route examples
-- Environment variables for secrets
-
-**If Yes, generates:**
-- Password hashing utilities (bcrypt)
-- JWT token handling (jose)
-- Auth middleware
-- Login/logout patterns
-
-**Comments:**
-<!--
-Add notes here about:
-- External auth providers (Clerk, Auth0, NextAuth)
-- OAuth vs password auth
-- API key authentication
-- Session vs JWT tradeoffs
--->
+**Default:** `github.com/{githubUsername}/{projectName}`
 
 ---
 
-## Question 8: Production Domain
+## Rust-Specific Questions
 
-**Prompt:** `Production domain (leave empty for local only):`
+**Shown When:** Type = `axum-api` or `actix-api`
 
-**Shown When:**
-- Project type is NOT `cli`
-- AND complexity track is NOT `quick`
+### Edition
 
-**Default:** Empty (localhost only)
+**Prompt:** `Rust edition:`
 
-**Examples:**
-- `myapp.example.com`
-- `api.mydomain.io`
-- `dashboard.internal.company.com`
-
-**If Provided, enables:**
-- Traefik routing labels in docker-compose
-- SSL certificate configuration
-- Production health check URLs
-- Deployment instructions
-- CORS configuration
-
-**If Empty:**
-- Local development only
-- No Traefik labels
-- Simple port mapping
-
-**Comments:**
-<!--
-Add notes here about:
-- Subdomain conventions
-- Internal vs external domains
-- Multi-environment (staging, production)
-- Domain verification
--->
+| Edition | Description |
+|---------|-------------|
+| `2021` | Stable, widely supported (recommended) |
+| `2024` | Latest features (may need nightly) |
 
 ---
 
-## Question 9: GitHub Username
+## AI/ML Questions
+
+**Shown When:** Track ≠ quick AND project can have AI
+
+### AI Framework
+
+**Prompt:** `AI/ML Framework:`
+
+| Framework | Language | Features |
+|-----------|----------|----------|
+| `vercel-ai` | TypeScript | React hooks, streaming (recommended) |
+| `mastra` | TypeScript | TypeScript-first |
+| `instructor` | Python/JS | Structured outputs |
+| `langchain` | Python/JS | Chains, agents, RAG |
+| `llamaindex` | Python/JS | Data framework, RAG |
+| `semantic-kernel` | Various | Microsoft, enterprise |
+
+### Vector Database
+
+**Prompt:** `Vector Database:`
+
+**Shown When:** AI Framework ≠ none
+
+| Provider | Type | Cost |
+|----------|------|------|
+| `pinecone` | Managed | Free/$70+ |
+| `supabase-vector` | pgvector | Included with Supabase |
+| `pgvector` | PostgreSQL ext | Included with DB |
+| `qdrant` | Self-hosted | Free |
+| `chroma` | Self-hosted | Free |
+| `weaviate` | Self-hosted | Free |
+| `turbopuffer` | Managed | Pay-as-you-go |
+| `milvus` | Self-hosted | Free |
+
+### Embedding Provider
+
+**Prompt:** `Embedding Provider:`
+
+**Shown When:** Vector DB ≠ none
+
+| Provider | Models | Cost/1M tokens |
+|----------|--------|----------------|
+| `openai` | text-embedding-3 | $0.02-$0.13 |
+| `voyage` | voyage-large-2 | $0.10+ |
+| `cohere` | embed-english-v3 | $0.10 |
+| `google` | text-embedding-004 | $0.025 |
+| `together` | Various | $0.008 |
+| `ollama` | nomic-embed, mxbai | Free (local) |
+| `huggingface` | sentence-transformers | Free (local) |
+| `fastembed` | Lightweight | Free (local) |
+
+### Local AI Provider
+
+**Prompt:** `Local AI/LLM Provider:`
+
+**Shown When:** AI Framework ≠ none AND Track ≠ quick
+
+#### Cross-Platform
+
+| Provider | Memory | GPU Required |
+|----------|--------|--------------|
+| `ollama` | 8GB+ | Optional |
+| `lmstudio` | 8GB+ | Optional |
+| `jan` | 8GB+ | Optional |
+
+#### Apple Silicon (M1/M2/M3/M4)
+
+| Provider | Memory | Description |
+|----------|--------|-------------|
+| `mlx` | 16GB+ | MLX framework, fastest on Mac |
+| `mlx-lm` | 16GB+ | MLX LLM package |
+
+#### Production (GPU Required)
+
+| Provider | Memory | GPU |
+|----------|--------|-----|
+| `vllm` | 16GB+ | CUDA required |
+| `localai` | 8GB+ | Optional |
+| `tgi` | 16GB+ | CUDA required |
+
+#### Advanced
+
+| Provider | Memory | Description |
+|----------|--------|-------------|
+| `llamacpp` | 8GB+ | Low-level, max control |
+| `text-gen-webui` | 16GB+ | Full-featured UI |
+
+---
+
+## Deployment Questions
+
+### Domain
+
+**Prompt:** `Production domain (empty for local only):`
+
+**Shown When:** Track ≠ quick AND type is deployable
+
+**If Provided:** Enables Traefik/Caddy labels, SSL config
+
+### Web Server
+
+**Prompt:** `Web server / reverse proxy:`
+
+**Shown When:** Track = production AND domain is set
+
+| Server | Features | Config File |
+|--------|----------|-------------|
+| `caddy` | Auto-HTTPS, simple (recommended) | `Caddyfile` |
+| `nginx` | High-performance | `nginx.conf` |
+| `traefik` | Docker/K8s native | `traefik.yml` |
+
+### GitHub Username
 
 **Prompt:** `GitHub username:`
 
 **Default:** `abe238`
 
-**Used In:**
-- ghcr.io image path (`ghcr.io/username/project`)
-- GitHub repository links
-- README badges
-- GitHub Actions workflow
+**Used In:** ghcr.io image path, GitHub Actions
 
-**Comments:**
-<!--
-Add notes here about:
-- Organization accounts vs personal
-- Private registries
-- Alternative container registries (Docker Hub, ECR)
--->
-
----
-
-## Question 10: Design System
+### Design System
 
 **Prompt:** `Include Gemini-style design system?`
 
-**Shown When:**
-- Project type is `nextjs` or `vite-react`
-- AND complexity track is NOT `quick`
+**Shown When:** Frontend project AND Track ≠ quick
 
-**Default:** Yes for frontend projects
-
-**If Yes, includes:**
-- Tailwind config with design tokens
-- Color palette (dark theme)
-- Typography scale
-- Spacing system
-- Component styles
-
-**Design Tokens:**
-```
-Backgrounds: #0d0d0d → #1a1a1a → #262626
-Text: #e8eaed (primary) → #9aa0a6 (secondary)
-Accent: #8ab4f8 (blue) | #81c995 (green) | #f28b82 (red)
-Border radius: 8px (cards) | 20px (buttons) | 28px (inputs)
-```
-
-**Comments:**
-<!--
-Add notes here about:
-- Alternative design systems
-- Light mode support
-- Custom branding
-- Component libraries (shadcn, Radix)
--->
+**If Yes:** Tailwind config with dark theme design tokens
 
 ---
 
 ## Template Decision Matrix
 
-| Question | Next.js | Vite | API | CLI | Static |
-|----------|---------|------|-----|-----|--------|
-| Port | ✓ | ✓ | ✓ | ✗ | ✓ |
-| CLI Interactive | ✗ | ✗ | ✗ | ✓ | ✗ |
-| CLI Config File | ✗ | ✗ | ✗ | ✓ | ✗ |
-| CLI Shell Completion | ✗ | ✗ | ✗ | ✓ | ✗ |
-| Database | ✓ | ✗ | ✓ | ✗ | ✗ |
-| Auth | ✓ | ✗ | ✓ | ✗ | ✗ |
-| Domain | ✓ | ✓ | ✓ | ✗ | ✓ |
-| Design System | ✓ | ✓ | ✗ | ✗ | ✗ |
-
-### Track Impact on Questions
-
-| Question | Quick | Standard | Production |
-|----------|-------|----------|------------|
-| Complexity Track | ✓ | ✓ | ✓ |
-| Name | ✓ | ✓ | ✓ |
-| Description | ✓ | ✓ | ✓ |
-| Type | ✓ | ✓ | ✓ |
-| Port | ✓ | ✓ | ✓ |
-| Database | ✓ | ✓ | ✓ |
-| Auth | ✗ | ✓ | ✓ |
-| Domain | ✗ | ✓ | ✓ |
-| Design System | ✗ | ✓ | ✓ |
-| *Future: Monitoring* | ✗ | ✗ | ✓ |
-| *Future: Logging* | ✗ | ✗ | ✓ |
-| *Future: Compliance* | ✗ | ✗ | ✓ |
+| Question | Next.js | Vite | API | Python | Go | Rust | CLI | MCP | Library | Static |
+|----------|---------|------|-----|--------|----|----|-----|-----|---------|--------|
+| Runtime | JS only | JS only | JS only | auto | auto | auto | JS only | JS only | JS only | ✗ |
+| Port | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | ✗ | ✓ |
+| Database | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | ✗ | ✗ |
+| ORM | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | ✗ | ✗ |
+| Auth | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | ✗ | ✗ |
+| AI/ML | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | ✗ | ✗ |
+| Domain | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✗ | ✗ | ✓ |
+| Design System | ✓ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
+| CLI Options | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✓ | ✗ | ✗ | ✗ |
+| MCP Transport | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✓ | ✗ | ✗ |
+| Test Framework | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ | ✓ | ✗ |
+| Package Manager | ✗ | ✗ | ✗ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ | ✗ |
+| Module Path | ✗ | ✗ | ✗ | ✗ | ✓ | ✗ | ✗ | ✗ | ✗ | ✗ |
+| Rust Edition | ✗ | ✗ | ✗ | ✗ | ✗ | ✓ | ✗ | ✗ | ✗ | ✗ |
 
 ---
 
-## BMAD-Inspired Expansion Ideas
+## Computed Context Flags
 
-Based on analysis of the [BMAD-METHOD](https://github.com/bmad-code-org/BMAD-METHOD) project scaffolding approach.
+The scaffolder computes these flags from your answers:
 
-### Type-Specific Architecture Questions (Future)
+### Database Flags
 
-**For API Projects:**
-- [ ] API style? (REST / GraphQL / tRPC)
-- [ ] API versioning? (URL /v1/ / Header / None)
-- [ ] Rate limiting? (Yes / No)
-- [ ] OpenAPI docs generation? (Yes / No)
+| Flag | True When |
+|------|-----------|
+| `usesPostgres` | postgres-local, supabase, neon, cockroachdb |
+| `usesMysql` | mysql-local, planetscale |
+| `usesMongo` | mongodb-local |
+| `usesBaaS` | supabase, convex, pocketbase, firebase |
+| `needsDocker` | Self-hosted DB, vector DB, or local AI |
 
-**For Next.js/Vite Projects:**
-- [ ] Rendering strategy? (SSR / SPA / ISR)
-- [ ] Real-time features? (None / WebSockets / SSE)
-- [ ] State management? (React Context / Zustand / Redux)
+### AI/ML Flags
 
-**For Production Track:**
-- [ ] Domain type? (General / Fintech / Healthcare / Internal)
-- [ ] Monitoring? (None / Sentry / Full observability)
-- [ ] Logging? (Console / Structured JSON / Centralized)
-- [ ] Deployment target? (VPS-Traefik / Vercel / Kubernetes)
+| Flag | True When |
+|------|-----------|
+| `hasAI` | AI framework ≠ none |
+| `hasVectorDB` | Vector DB ≠ none |
+| `hasEmbeddings` | Embedding provider ≠ none |
+| `hasLocalAI` | Local AI ≠ none |
+| `isRAGApp` | Has vector DB AND embeddings |
+| `usesMLX` | Local AI = mlx or mlx-lm |
+| `needsGPU` | vllm, tgi, text-gen-webui, or huggingface embeddings |
 
-### Detection-Based Classification (Future)
+### Language Flags
 
-BMAD uses keyword detection to suggest project type. We could implement:
-
-```yaml
-detection_signals:
-  api: ["API", "REST", "GraphQL", "backend", "endpoints"]
-  cli: ["CLI", "command-line", "terminal", "interactive"]
-  nextjs: ["SSR", "SEO", "full-stack", "server-side"]
-  vite-react: ["SPA", "frontend", "client-side", "dashboard"]
-```
-
-### Brownfield Support (Future)
-
-- [ ] Add "Greenfield vs Brownfield" question
-- [ ] For brownfield: Skip scaffolding, only generate specific files
-- [ ] Analyze existing package.json/tsconfig.json for compatibility
+| Flag | True When |
+|------|-----------|
+| `isTypeScript` | JS/TS project types |
+| `isPython` | fastapi, litestar |
+| `isGo` | gin-api, fiber-api, echo-api |
+| `isRust` | axum-api, actix-api |
+| `isDeno` | fresh-api |
 
 ---
 
-## Additional Questions to Consider
+## Name Transformations
 
-### High Priority
-- [ ] **Deployment Target** - VPS, Vercel, Railway, Fly.io, Kubernetes
-- [ ] **API Style** - REST, GraphQL, tRPC (for api/nextjs)
-- [ ] **Monitoring** - None, Sentry, Full (Prometheus/Grafana)
+| Input | Kebab | Pascal | Camel | Snake |
+|-------|-------|--------|-------|-------|
+| `my-project` | my-project | MyProject | myProject | my_project |
+| `API Gateway` | api-gateway | ApiGateway | apiGateway | api_gateway |
 
-### Medium Priority
-- [ ] **Package Manager** - npm, yarn, pnpm, bun
-- [ ] **Testing Framework** - Jest, Vitest, Playwright
-- [ ] **Logging** - Console, Pino, Winston
-
-### Low Priority
-- [ ] **CI/CD Platform** - GitHub Actions (default), GitLab CI, CircleCI
-- [ ] **Container Registry** - ghcr.io (default), Docker Hub, ECR
+Used for: folder names, class names, variable names, Python modules
 
 ---
 
-## Template Variations to Consider
+## Environment Variables by Provider
 
-- [ ] **Next.js + Prisma + Auth** - Full-stack starter with everything
-- [ ] **API + Queue** - Background job processing with BullMQ
-- [ ] **Monorepo** - Multiple apps/packages with Turborepo
-- [ ] **Library** - npm package template with proper exports
-- [ ] **Worker** - Background job processor with health checks
+### Databases
+
+| Provider | Variables |
+|----------|-----------|
+| Supabase | `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY` |
+| Neon | `DATABASE_URL` |
+| Turso | `TURSO_DATABASE_URL`, `TURSO_AUTH_TOKEN` |
+| Convex | `CONVEX_DEPLOYMENT` |
+| PlanetScale | `DATABASE_URL` |
+
+### Auth
+
+| Provider | Variables |
+|----------|-----------|
+| Clerk | `CLERK_SECRET_KEY`, `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` |
+| Kinde | `KINDE_ISSUER_URL`, `KINDE_CLIENT_ID`, `KINDE_CLIENT_SECRET`, `KINDE_REDIRECT_URI` |
+| Auth0 | `AUTH0_SECRET`, `AUTH0_BASE_URL`, `AUTH0_ISSUER_BASE_URL`, `AUTH0_CLIENT_ID`, `AUTH0_CLIENT_SECRET` |
+| Better Auth | `BETTER_AUTH_SECRET` |
+| AuthJS | `AUTH_SECRET`, `AUTH_URL` |
+
+### AI/ML
+
+| Provider | Variables |
+|----------|-----------|
+| OpenAI | `OPENAI_API_KEY` |
+| Pinecone | `PINECONE_API_KEY`, `PINECONE_INDEX` |
+| Voyage | `VOYAGE_API_KEY` |
+| Cohere | `COHERE_API_KEY` |
+| Together | `TOGETHER_API_KEY` |
 
 ---
 
-## Notes
+## Version History
 
-<!--
-General notes about the questionnaire:
-- v1.1.0: Added CLI template and complexity track
-- Complexity track reduces cognitive load for simple projects
-- CLI-specific questions replace web-specific ones
-- BMAD insights inform future expansion
--->
+- **v2.0.0**: Multi-language support (Python, Go, Rust, Deno), AI/ML features, new auth providers (Kinde), MLX support
+- **v1.1.0**: Added CLI template, complexity tracks
+- **v1.0.0**: Initial release with Next.js, Vite, API, Static

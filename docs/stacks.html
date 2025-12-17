@@ -1,0 +1,2607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Stack Bible - Project Kickoff Guide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0a0a0a;
+      --bg-secondary: #141414;
+      --bg-tertiary: #1e1e1e;
+      --bg-card: #181818;
+      --text-primary: #f5f5f5;
+      --text-secondary: #a0a0a0;
+      --text-muted: #666;
+      --accent-blue: #3b82f6;
+      --accent-green: #22c55e;
+      --accent-purple: #a855f7;
+      --accent-orange: #f97316;
+      --accent-pink: #ec4899;
+      --accent-cyan: #06b6d4;
+      --accent-yellow: #eab308;
+      --accent-red: #ef4444;
+      --border: #2a2a2a;
+      --radius: 12px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Header */
+    header {
+      background: linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+      padding: 48px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    header h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    header p {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      max-width: 700px;
+    }
+
+    /* Navigation */
+    nav {
+      position: sticky;
+      top: 0;
+      background: rgba(10, 10, 10, 0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+      padding: 16px 0;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .nav-links a:hover, .nav-links a.active {
+      background: var(--bg-tertiary);
+      color: var(--text-primary);
+    }
+
+    /* Search */
+    .search-container {
+      padding: 24px 0;
+    }
+
+    .search-box {
+      width: 100%;
+      max-width: 500px;
+      padding: 14px 20px;
+      font-size: 1rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-box:focus {
+      border-color: var(--accent-blue);
+    }
+
+    .search-box::placeholder {
+      color: var(--text-muted);
+    }
+
+    /* Sections */
+    section {
+      padding: 48px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    section:last-child {
+      border-bottom: none;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .section-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+
+    .section-header h2 {
+      font-size: 1.75rem;
+      font-weight: 600;
+    }
+
+    .section-header p {
+      color: var(--text-secondary);
+      margin-top: 4px;
+    }
+
+    /* Cards Grid */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      border-color: var(--accent-blue);
+      transform: translateY(-2px);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .card-logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      background: var(--bg-tertiary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+
+    .card-logo img {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+    }
+
+    .card-title {
+      flex: 1;
+    }
+
+    .card-title h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .card-title .language-tag {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .card-badges {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .badge {
+      font-size: 0.7rem;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .badge-blue { background: rgba(59, 130, 246, 0.2); color: var(--accent-blue); }
+    .badge-green { background: rgba(34, 197, 94, 0.2); color: var(--accent-green); }
+    .badge-purple { background: rgba(168, 85, 247, 0.2); color: var(--accent-purple); }
+    .badge-orange { background: rgba(249, 115, 22, 0.2); color: var(--accent-orange); }
+    .badge-pink { background: rgba(236, 72, 153, 0.2); color: var(--accent-pink); }
+    .badge-cyan { background: rgba(6, 182, 212, 0.2); color: var(--accent-cyan); }
+    .badge-yellow { background: rgba(234, 179, 8, 0.2); color: var(--accent-yellow); }
+
+    .card-description {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+
+    .card-best-for {
+      background: var(--bg-tertiary);
+      border-radius: 8px;
+      padding: 12px;
+      margin-bottom: 16px;
+    }
+
+    .card-best-for h4 {
+      font-size: 0.75rem;
+      color: var(--accent-green);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .card-best-for ul {
+      list-style: none;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .card-best-for li {
+      padding: 4px 0;
+      padding-left: 16px;
+      position: relative;
+    }
+
+    .card-best-for li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--accent-green);
+    }
+
+    .card-links {
+      display: flex;
+      gap: 12px;
+    }
+
+    .card-link {
+      font-size: 0.85rem;
+      color: var(--accent-blue);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .card-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Preset Section */
+    .preset-card {
+      background: linear-gradient(135deg, var(--bg-card), var(--bg-tertiary));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+
+    .preset-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+
+    .preset-title h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .preset-title p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    .preset-stack {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .preset-stack span {
+      background: var(--bg-primary);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .preset-description {
+      color: var(--text-secondary);
+      margin-bottom: 16px;
+      line-height: 1.7;
+    }
+
+    .preset-details {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .preset-detail {
+      background: var(--bg-primary);
+      padding: 16px;
+      border-radius: 8px;
+    }
+
+    .preset-detail h4 {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .preset-detail p {
+      font-size: 0.9rem;
+    }
+
+    /* Comparison Tables */
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      margin-top: 24px;
+    }
+
+    .comparison-table th,
+    .comparison-table td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .comparison-table th {
+      background: var(--bg-secondary);
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.5px;
+    }
+
+    .comparison-table tr:hover td {
+      background: var(--bg-secondary);
+    }
+
+    .check {
+      color: var(--accent-green);
+    }
+
+    .cross {
+      color: var(--text-muted);
+    }
+
+    /* Footer */
+    footer {
+      padding: 48px 0;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    footer a {
+      color: var(--accent-blue);
+      text-decoration: none;
+    }
+
+    /* Mobile */
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 2rem;
+      }
+
+      .cards-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-links {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding-bottom: 8px;
+      }
+    }
+
+    /* Animations */
+    .fade-in {
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* Tab content */
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <h1>The Stack Bible</h1>
+    <p>A comprehensive guide to every framework, database, ORM, and tool available in Project Kickoff. Find the perfect stack for your next project.</p>
+  </div>
+</header>
+
+<nav>
+  <div class="container">
+    <ul class="nav-links">
+      <li><a href="#quickstart" class="active">Quick Start</a></li>
+      <li><a href="#presets">Presets</a></li>
+      <li><a href="#frameworks">Frameworks</a></li>
+      <li><a href="#databases">Databases</a></li>
+      <li><a href="#orms">ORMs</a></li>
+      <li><a href="#auth">Authentication</a></li>
+      <li><a href="#ai">AI/ML</a></li>
+      <li><a href="#vectordb">Vector DBs</a></li>
+      <li><a href="#localai">Local AI</a></li>
+      <li><a href="#webservers">Web Servers</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main>
+  <div class="container">
+    <div class="search-container">
+      <input type="text" class="search-box" placeholder="Search for any tool, framework, or database..." id="searchBox">
+    </div>
+
+    <!-- HOW TO USE SECTION -->
+    <section id="quickstart" style="margin-bottom: 48px;">
+      <div class="section-header">
+        <div class="section-icon" style="background: linear-gradient(135deg, var(--accent-green), var(--accent-cyan));">
+          🚀
+        </div>
+        <div>
+          <h2>Quick Start</h2>
+          <p>Get up and running in 30 seconds</p>
+        </div>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-top: 24px;">
+        <!-- Install -->
+        <div style="background: var(--bg-card); border-radius: var(--radius); padding: 24px; border: 1px solid var(--border);">
+          <h3 style="color: var(--accent-cyan); margin-bottom: 16px; font-size: 16px;">1. Install</h3>
+          <pre style="background: var(--bg-primary); padding: 16px; border-radius: 8px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 14px;"><code style="color: var(--text-primary);">npm install -g project-kickoff</code></pre>
+          <p style="color: var(--text-muted); font-size: 13px; margin-top: 12px;">Or use npx without installing: <code style="background: var(--bg-tertiary); padding: 2px 6px; border-radius: 4px;">npx project-kickoff init</code></p>
+        </div>
+
+        <!-- Create Project -->
+        <div style="background: var(--bg-card); border-radius: var(--radius); padding: 24px; border: 1px solid var(--border);">
+          <h3 style="color: var(--accent-green); margin-bottom: 16px; font-size: 16px;">2. Create Project</h3>
+          <pre style="background: var(--bg-primary); padding: 16px; border-radius: 8px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 14px;"><code style="color: var(--text-primary);">kickoff init</code></pre>
+          <p style="color: var(--text-muted); font-size: 13px; margin-top: 12px;">Answer the prompts or pick a preset. Your project is scaffolded with best practices.</p>
+        </div>
+
+        <!-- Start Coding -->
+        <div style="background: var(--bg-card); border-radius: var(--radius); padding: 24px; border: 1px solid var(--border);">
+          <h3 style="color: var(--accent-purple); margin-bottom: 16px; font-size: 16px;">3. Start Coding</h3>
+          <pre style="background: var(--bg-primary); padding: 16px; border-radius: 8px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 14px;"><code style="color: var(--text-primary);">cd my-project && npm run dev</code></pre>
+          <p style="color: var(--text-muted); font-size: 13px; margin-top: 12px;">Everything is configured: TypeScript, linting, Docker, CI/CD, and more.</p>
+        </div>
+      </div>
+
+      <!-- CLI Commands Reference -->
+      <div style="background: var(--bg-secondary); border-radius: var(--radius); padding: 24px; margin-top: 24px; border: 1px solid var(--border);">
+        <h3 style="margin-bottom: 16px; font-size: 16px;">CLI Commands</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px;">
+          <div>
+            <code style="color: var(--accent-cyan); font-family: 'JetBrains Mono', monospace;">kickoff init</code>
+            <p style="color: var(--text-muted); font-size: 13px; margin-top: 4px;">Interactive project generator</p>
+          </div>
+          <div>
+            <code style="color: var(--accent-cyan); font-family: 'JetBrains Mono', monospace;">kickoff init --dry-run</code>
+            <p style="color: var(--text-muted); font-size: 13px; margin-top: 4px;">Preview without creating files</p>
+          </div>
+          <div>
+            <code style="color: var(--accent-cyan); font-family: 'JetBrains Mono', monospace;">kickoff list</code>
+            <p style="color: var(--text-muted); font-size: 13px; margin-top: 4px;">Show all available options</p>
+          </div>
+          <div>
+            <code style="color: var(--accent-cyan); font-family: 'JetBrains Mono', monospace;">kickoff list --verbose</code>
+            <p style="color: var(--text-muted); font-size: 13px; margin-top: 4px;">Detailed descriptions</p>
+          </div>
+          <div>
+            <code style="color: var(--accent-cyan); font-family: 'JetBrains Mono', monospace;">kickoff stacks [category]</code>
+            <p style="color: var(--text-muted); font-size: 13px; margin-top: 4px;">Deep dive: frameworks, databases, orms, auth, ai</p>
+          </div>
+          <div>
+            <code style="color: var(--accent-cyan); font-family: 'JetBrains Mono', monospace;">kickoff --help</code>
+            <p style="color: var(--text-muted); font-size: 13px; margin-top: 4px;">Show all commands</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- What You Get -->
+      <div style="background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(6, 182, 212, 0.1)); border-radius: var(--radius); padding: 24px; margin-top: 24px; border: 1px solid var(--border);">
+        <h3 style="margin-bottom: 16px; font-size: 16px;">What You Get</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; font-size: 14px; color: var(--text-secondary);">
+          <div>✓ TypeScript configured</div>
+          <div>✓ ESLint + Prettier</div>
+          <div>✓ Docker + docker-compose</div>
+          <div>✓ GitHub Actions CI/CD</div>
+          <div>✓ Environment variables</div>
+          <div>✓ Database migrations</div>
+          <div>✓ Authentication setup</div>
+          <div>✓ API documentation</div>
+          <div>✓ Testing framework</div>
+          <div>✓ Security best practices</div>
+          <div>✓ Production Dockerfile</div>
+          <div>✓ Git initialized</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRESETS SECTION -->
+    <section id="presets">
+      <div class="section-header">
+        <div class="section-icon" style="background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));">
+          ⚡
+        </div>
+        <div>
+          <h2>Presets</h2>
+          <p>Pre-configured stacks for common use cases. Start building in seconds.</p>
+        </div>
+      </div>
+
+      <div class="preset-card" data-search="saas starter nextjs supabase drizzle production">
+        <div class="preset-header">
+          <div class="preset-title">
+            <h3>SaaS Starter</h3>
+            <p>Production-ready SaaS application</p>
+          </div>
+          <div class="preset-stack">
+            <span>Next.js</span>
+            <span>Supabase</span>
+            <span>Drizzle</span>
+          </div>
+        </div>
+        <p class="preset-description">
+          The gold standard for building SaaS applications. Next.js provides server-side rendering and API routes, Supabase gives you a PostgreSQL database with built-in authentication, real-time subscriptions, and file storage. Drizzle ORM offers type-safe database queries with minimal overhead.
+        </p>
+        <div class="preset-details">
+          <div class="preset-detail">
+            <h4>Best For</h4>
+            <p>Multi-tenant SaaS, dashboards, admin panels</p>
+          </div>
+          <div class="preset-detail">
+            <h4>Complexity</h4>
+            <p>Production track (~15 questions)</p>
+          </div>
+          <div class="preset-detail">
+            <h4>Deployment</h4>
+            <p>Vercel, Docker + VPS</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="preset-card" data-search="tanstack hono turso better auth type-safe">
+        <div class="preset-header">
+          <div class="preset-title">
+            <h3>TanStack + Hono</h3>
+            <p>Type-safe full-stack with edge database</p>
+          </div>
+          <div class="preset-stack">
+            <span>TanStack Start</span>
+            <span>Turso</span>
+            <span>Better Auth</span>
+          </div>
+        </div>
+        <p class="preset-description">
+          The cutting-edge TypeScript stack. TanStack Start brings React 19 with type-safe routing and server functions. Turso provides a globally-distributed SQLite database at the edge. Better Auth is a modern, self-hosted authentication solution with excellent developer experience.
+        </p>
+        <div class="preset-details">
+          <div class="preset-detail">
+            <h4>Best For</h4>
+            <p>Global apps, low-latency requirements</p>
+          </div>
+          <div class="preset-detail">
+            <h4>Complexity</h4>
+            <p>Standard track (~10 questions)</p>
+          </div>
+          <div class="preset-detail">
+            <h4>Deployment</h4>
+            <p>Edge runtimes, Cloudflare, Vercel</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="preset-card" data-search="edge api hono turso bun fast performance">
+        <div class="preset-header">
+          <div class="preset-title">
+            <h3>Edge API</h3>
+            <p>Blazing fast edge-first API</p>
+          </div>
+          <div class="preset-stack">
+            <span>Hono</span>
+            <span>Turso</span>
+            <span>Bun</span>
+          </div>
+        </div>
+        <p class="preset-description">
+          Maximum performance for API endpoints. Hono is an ultralight framework (14KB) that runs everywhere - Bun, Deno, Cloudflare Workers, Node.js. Paired with Turso's edge-replicated SQLite, your API responses come from the nearest datacenter.
+        </p>
+        <div class="preset-details">
+          <div class="preset-detail">
+            <h4>Best For</h4>
+            <p>High-traffic APIs, edge computing</p>
+          </div>
+          <div class="preset-detail">
+            <h4>Complexity</h4>
+            <p>Quick track (~5 questions)</p>
+          </div>
+          <div class="preset-detail">
+            <h4>Deployment</h4>
+            <p>Cloudflare Workers, Fly.io, Deno Deploy</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="preset-card" data-search="fastapi python postgresql sqlalchemy ml machine learning">
+        <div class="preset-header">
+          <div class="preset-title">
+            <h3>FastAPI Starter</h3>
+            <p>Modern Python API</p>
+          </div>
+          <div class="preset-stack">
+            <span>FastAPI</span>
+            <span>PostgreSQL</span>
+            <span>SQLAlchemy</span>
+          </div>
+        </div>
+        <p class="preset-description">
+          The Python standard for building APIs. FastAPI provides automatic OpenAPI documentation, async support, and Pydantic validation out of the box. SQLAlchemy is the most mature Python ORM with incredible flexibility. Uses uv for fast package management.
+        </p>
+        <div class="preset-details">
+          <div class="preset-detail">
+            <h4>Best For</h4>
+            <p>ML backends, data APIs, Python shops</p>
+          </div>
+          <div class="preset-detail">
+            <h4>Complexity</h4>
+            <p>Standard track (~10 questions)</p>
+          </div>
+          <div class="preset-detail">
+            <h4>Deployment</h4>
+            <p>Docker, Railway, Render</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="preset-card" data-search="ai rag retrieval augmented generation nextjs supabase vector vercel">
+        <div class="preset-header">
+          <div class="preset-title">
+            <h3>AI RAG App</h3>
+            <p>Retrieval Augmented Generation</p>
+          </div>
+          <div class="preset-stack">
+            <span>Next.js</span>
+            <span>Supabase Vector</span>
+            <span>Vercel AI</span>
+          </div>
+        </div>
+        <p class="preset-description">
+          Build AI applications that can search and reason over your own data. Supabase Vector (pgvector) stores embeddings alongside your regular data. Vercel AI SDK provides React hooks for streaming chat interfaces. Perfect for chatbots, document Q&A, and semantic search.
+        </p>
+        <div class="preset-details">
+          <div class="preset-detail">
+            <h4>Best For</h4>
+            <p>Chatbots, document search, knowledge bases</p>
+          </div>
+          <div class="preset-detail">
+            <h4>Complexity</h4>
+            <p>Standard track (~10 questions)</p>
+          </div>
+          <div class="preset-detail">
+            <h4>Deployment</h4>
+            <p>Vercel, Docker + VPS</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="preset-card" data-search="mlx apple silicon local ai fastapi chroma langchain mac">
+        <div class="preset-header">
+          <div class="preset-title">
+            <h3>MLX Local</h3>
+            <p>Apple Silicon AI development</p>
+          </div>
+          <div class="preset-stack">
+            <span>FastAPI</span>
+            <span>MLX</span>
+            <span>Chroma</span>
+          </div>
+        </div>
+        <p class="preset-description">
+          Optimized for Apple Silicon Macs (M1/M2/M3/M4). MLX is Apple's machine learning framework that leverages the unified memory architecture for blazing fast inference without a discrete GPU. Run Llama, Mistral, and other models locally with excellent performance.
+        </p>
+        <div class="preset-details">
+          <div class="preset-detail">
+            <h4>Best For</h4>
+            <p>Local AI development, privacy-focused apps</p>
+          </div>
+          <div class="preset-detail">
+            <h4>Complexity</h4>
+            <p>Standard track (~10 questions)</p>
+          </div>
+          <div class="preset-detail">
+            <h4>Requirements</h4>
+            <p>Apple Silicon Mac, 16GB+ RAM</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="preset-card" data-search="go golang gin postgresql gorm microservice performance">
+        <div class="preset-header">
+          <div class="preset-title">
+            <h3>Go Microservice</h3>
+            <p>High-performance Go API</p>
+          </div>
+          <div class="preset-stack">
+            <span>Gin</span>
+            <span>PostgreSQL</span>
+            <span>GORM</span>
+          </div>
+        </div>
+        <p class="preset-description">
+          Go's simplicity meets production-grade tooling. Gin is the most popular Go web framework with middleware support and excellent performance. GORM provides a full-featured ORM with auto-migrations. Compiles to a single binary for easy deployment.
+        </p>
+        <div class="preset-details">
+          <div class="preset-detail">
+            <h4>Best For</h4>
+            <p>Microservices, high-throughput APIs</p>
+          </div>
+          <div class="preset-detail">
+            <h4>Complexity</h4>
+            <p>Standard track (~10 questions)</p>
+          </div>
+          <div class="preset-detail">
+            <h4>Deployment</h4>
+            <p>Docker, Kubernetes, bare metal</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="preset-card" data-search="rust axum postgresql sqlx type-safe compile-time">
+        <div class="preset-header">
+          <div class="preset-title">
+            <h3>Rust API</h3>
+            <p>Type-safe, memory-safe API</p>
+          </div>
+          <div class="preset-stack">
+            <span>Axum</span>
+            <span>PostgreSQL</span>
+            <span>SQLx</span>
+          </div>
+        </div>
+        <p class="preset-description">
+          Maximum safety and performance. Axum is built on Tokio for async I/O with an ergonomic API. SQLx provides compile-time checked SQL queries - your queries are verified against your database schema at build time. Zero runtime overhead.
+        </p>
+        <div class="preset-details">
+          <div class="preset-detail">
+            <h4>Best For</h4>
+            <p>Performance-critical services, systems programming</p>
+          </div>
+          <div class="preset-detail">
+            <h4>Complexity</h4>
+            <p>Standard track (~10 questions)</p>
+          </div>
+          <div class="preset-detail">
+            <h4>Deployment</h4>
+            <p>Docker, static binary</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FRAMEWORKS SECTION -->
+    <section id="frameworks">
+      <div class="section-header">
+        <div class="section-icon" style="background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));">
+          🏗️
+        </div>
+        <div>
+          <h2>Web Frameworks</h2>
+          <p>The foundation of your application. Choose based on language preference and performance needs.</p>
+        </div>
+      </div>
+
+      <!-- Hono vs Express vs Elysia Comparison -->
+      <div class="comparison-box" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(6, 182, 212, 0.1)); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 32px;">
+        <h3 style="margin-bottom: 16px; display: flex; align-items: center; gap: 12px;">
+          <span style="font-size: 24px;">⚔️</span>
+          <span>Hono vs Express vs Elysia: Backend Framework Decision</span>
+        </h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
+          <div style="background: var(--bg-card); padding: 16px; border-radius: 8px; border-left: 4px solid #E36002;">
+            <h4 style="color: #E36002; margin-bottom: 10px; font-size: 14px;">Hono</h4>
+            <ul style="list-style: none; padding: 0; margin: 0; font-size: 13px; color: var(--text-secondary);">
+              <li style="padding: 4px 0;">✓ Edge/serverless deployment</li>
+              <li style="padding: 4px 0;">✓ Multi-runtime (Bun, Node, Deno, CF)</li>
+              <li style="padding: 4px 0;">✓ ~14KB, ultra-lightweight</li>
+              <li style="padding: 4px 0;">✓ Modern web-standards API</li>
+            </ul>
+          </div>
+          <div style="background: var(--bg-card); padding: 16px; border-radius: 8px; border-left: 4px solid #000000;">
+            <h4 style="color: #a0a0a0; margin-bottom: 10px; font-size: 14px;">Express</h4>
+            <ul style="list-style: none; padding: 0; margin: 0; font-size: 13px; color: var(--text-secondary);">
+              <li style="padding: 4px 0;">✓ Team knows Express already</li>
+              <li style="padding: 4px 0;">✓ Need specific middleware</li>
+              <li style="padding: 4px 0;">✓ Traditional Node.js server</li>
+              <li style="padding: 4px 0; color: var(--text-muted);">✗ No native edge support</li>
+            </ul>
+          </div>
+          <div style="background: var(--bg-card); padding: 16px; border-radius: 8px; border-left: 4px solid #7C3AED;">
+            <h4 style="color: #7C3AED; margin-bottom: 10px; font-size: 14px;">Elysia</h4>
+            <ul style="list-style: none; padding: 0; margin: 0; font-size: 13px; color: var(--text-secondary);">
+              <li style="padding: 4px 0;">✓ Using Bun runtime</li>
+              <li style="padding: 4px 0;">✓ Want tRPC-like type safety</li>
+              <li style="padding: 4px 0;">✓ Maximum performance needed</li>
+              <li style="padding: 4px 0; color: var(--text-muted);">✗ Bun-only (not Node.js)</li>
+            </ul>
+          </div>
+        </div>
+        <div style="margin-top: 16px; padding: 12px; background: var(--bg-tertiary); border-radius: 8px; font-size: 13px; color: var(--text-muted);">
+          <strong style="color: var(--text-secondary);">Quick pick:</strong>
+          <span style="color: #E36002;">Hono</span> = modern, portable, edge-ready (recommended default).
+          <span style="color: #a0a0a0;">Express</span> = legacy/familiarity, massive middleware ecosystem.
+          <span style="color: #7C3AED;">Elysia</span> = Bun-native with Eden type safety.
+        </div>
+      </div>
+
+      <div class="cards-grid">
+        <!-- Next.js -->
+        <div class="card" data-search="nextjs react server components app router ssr ssg">
+          <div class="card-header">
+            <div class="card-logo">
+              <img src="https://cdn.simpleicons.org/nextdotjs/white" alt="Next.js">
+            </div>
+            <div class="card-title">
+              <h3>Next.js</h3>
+              <span class="language-tag">TypeScript / React</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-blue">Full-Stack</span>
+            <span class="badge badge-green">Production</span>
+            <span class="badge badge-purple">SSR/SSG</span>
+          </div>
+          <p class="card-description">
+            The React framework for production. Next.js 15 brings React Server Components, Server Actions, and the App Router for a seamless full-stack experience. Vercel's framework with the largest React ecosystem.
+          </p>
+          <div class="card-best-for">
+            <h4>Best For</h4>
+            <ul>
+              <li>SEO-critical marketing sites</li>
+              <li>SaaS dashboards with auth</li>
+              <li>E-commerce platforms</li>
+              <li>Content-heavy applications</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://nextjs.org" target="_blank" class="card-link">Website ↗</a>
+            <a href="https://nextjs.org/docs" target="_blank" class="card-link">Docs ↗</a>
+          </div>
+        </div>
+
+        <!-- Hono -->
+        <div class="card" data-search="hono edge cloudflare workers bun deno fast lightweight">
+          <div class="card-header">
+            <div class="card-logo">🔥</div>
+            <div class="card-title">
+              <h3>Hono</h3>
+              <span class="language-tag">TypeScript / Multi-runtime</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-orange">Edge-First</span>
+            <span class="badge badge-cyan">14KB</span>
+            <span class="badge badge-green">Multi-Runtime</span>
+          </div>
+          <p class="card-description">
+            Ultralight web framework that runs everywhere. Just 14KB, Hono works on Bun, Deno, Node.js, Cloudflare Workers, and more. Express-like API with Web Standard APIs. The fastest growing JS framework.
+          </p>
+          <div class="card-best-for">
+            <h4>Best For</h4>
+            <ul>
+              <li>Edge computing / Cloudflare Workers</li>
+              <li>High-performance APIs</li>
+              <li>Microservices</li>
+              <li>Serverless functions</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://hono.dev" target="_blank" class="card-link">Website ↗</a>
+            <a href="https://hono.dev/docs" target="_blank" class="card-link">Docs ↗</a>
+          </div>
+        </div>
+
+        <!-- Elysia -->
+        <div class="card" data-search="elysia bun eden type-safe end-to-end">
+          <div class="card-header">
+            <div class="card-logo">🦊</div>
+            <div class="card-title">
+              <h3>Elysia</h3>
+              <span class="language-tag">TypeScript / Bun</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-purple">Bun-Native</span>
+            <span class="badge badge-blue">E2E Types</span>
+            <span class="badge badge-green">Fast</span>
+          </div>
+          <p class="card-description">
+            TypeScript framework designed for Bun's speed. Features Eden for end-to-end type safety between server and client - like tRPC but faster. Validation, OpenAPI docs, and WebSocket support built-in.
+          </p>
+          <div class="card-best-for">
+            <h4>Best For</h4>
+            <ul>
+              <li>Type-safe APIs with client SDK</li>
+              <li>Real-time applications</li>
+              <li>Bun-first projects</li>
+              <li>tRPC alternative</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://elysiajs.com" target="_blank" class="card-link">Website ↗</a>
+            <a href="https://elysiajs.com/introduction.html" target="_blank" class="card-link">Docs ↗</a>
+          </div>
+        </div>
+
+        <!-- Express -->
+        <div class="card" data-search="express node.js middleware ecosystem stable">
+          <div class="card-header">
+            <div class="card-logo">
+              <img src="https://cdn.simpleicons.org/express/white" alt="Express">
+            </div>
+            <div class="card-title">
+              <h3>Express</h3>
+              <span class="language-tag">JavaScript / Node.js</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-yellow">Battle-Tested</span>
+            <span class="badge badge-blue">Huge Ecosystem</span>
+          </div>
+          <p class="card-description">
+            The original Node.js framework. Minimal, unopinionated, with the largest middleware ecosystem. If you need a specific integration, there's probably an Express middleware for it. 10+ years of production use.
+          </p>
+          <div class="card-best-for">
+            <h4>Best For</h4>
+            <ul>
+              <li>Teams familiar with Express</li>
+              <li>Projects needing specific middleware</li>
+              <li>Legacy system integration</li>
+              <li>Learning Node.js</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://expressjs.com" target="_blank" class="card-link">Website ↗</a>
+            <a href="https://expressjs.com/en/guide/routing.html" target="_blank" class="card-link">Docs ↗</a>
+          </div>
+        </div>
+
+        <!-- FastAPI -->
+        <div class="card" data-search="fastapi python async openapi swagger pydantic">
+          <div class="card-header">
+            <div class="card-logo">
+              <img src="https://cdn.simpleicons.org/fastapi/009688" alt="FastAPI">
+            </div>
+            <div class="card-title">
+              <h3>FastAPI</h3>
+              <span class="language-tag">Python / Async</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-green">Auto Docs</span>
+            <span class="badge badge-purple">Pydantic</span>
+            <span class="badge badge-cyan">Async</span>
+          </div>
+          <p class="card-description">
+            Modern Python API framework. Automatic OpenAPI/Swagger documentation, Pydantic validation, async support, and excellent IDE integration. Created by the same developer as SQLModel. The Python standard for APIs.
+          </p>
+          <div class="card-best-for">
+            <h4>Best For</h4>
+            <ul>
+              <li>ML/AI model serving</li>
+              <li>Data science APIs</li>
+              <li>Teams using Python</li>
+              <li>Auto-documented APIs</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://fastapi.tiangolo.com" target="_blank" class="card-link">Website ↗</a>
+            <a href="https://fastapi.tiangolo.com/tutorial/" target="_blank" class="card-link">Docs ↗</a>
+          </div>
+        </div>
+
+        <!-- Gin -->
+        <div class="card" data-search="gin go golang fast performance middleware">
+          <div class="card-header">
+            <div class="card-logo">
+              <img src="https://cdn.simpleicons.org/gin/00ADD8" alt="Gin">
+            </div>
+            <div class="card-title">
+              <h3>Gin</h3>
+              <span class="language-tag">Go</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-cyan">High Performance</span>
+            <span class="badge badge-blue">Most Popular</span>
+          </div>
+          <p class="card-description">
+            The most popular Go web framework. Martini-like API with up to 40x better performance. Middleware support, JSON validation, route grouping. The go-to choice for Go developers building APIs.
+          </p>
+          <div class="card-best-for">
+            <h4>Best For</h4>
+            <ul>
+              <li>High-throughput APIs</li>
+              <li>Microservices in Go</li>
+              <li>Teams familiar with Go</li>
+              <li>Performance-critical systems</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://gin-gonic.com" target="_blank" class="card-link">Website ↗</a>
+            <a href="https://gin-gonic.com/docs/" target="_blank" class="card-link">Docs ↗</a>
+          </div>
+        </div>
+
+        <!-- Fiber -->
+        <div class="card" data-search="fiber go golang express-like fasthttp">
+          <div class="card-header">
+            <div class="card-logo">⚡</div>
+            <div class="card-title">
+              <h3>Fiber</h3>
+              <span class="language-tag">Go</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-orange">Express-like</span>
+            <span class="badge badge-green">FastHTTP</span>
+          </div>
+          <p class="card-description">
+            Express-inspired Go framework built on FastHTTP. If you're coming from Node.js/Express, Fiber feels familiar. Zero memory allocation, extreme performance. Great for developers transitioning to Go.
+          </p>
+          <div class="card-best-for">
+            <h4>Best For</h4>
+            <ul>
+              <li>Node.js devs learning Go</li>
+              <li>Express-like API design</li>
+              <li>Maximum Go performance</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://gofiber.io" target="_blank" class="card-link">Website ↗</a>
+            <a href="https://docs.gofiber.io" target="_blank" class="card-link">Docs ↗</a>
+          </div>
+        </div>
+
+        <!-- Axum -->
+        <div class="card" data-search="axum rust tokio async type-safe tower">
+          <div class="card-header">
+            <div class="card-logo">🦀</div>
+            <div class="card-title">
+              <h3>Axum</h3>
+              <span class="language-tag">Rust / Tokio</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-orange">Tokio</span>
+            <span class="badge badge-purple">Type-Safe</span>
+            <span class="badge badge-blue">Tower</span>
+          </div>
+          <p class="card-description">
+            Ergonomic Rust web framework from the Tokio team. Built on Tower for middleware and Hyper for HTTP. Type-safe extractors, excellent error handling. The recommended choice for new Rust web projects.
+          </p>
+          <div class="card-best-for">
+            <h4>Best For</h4>
+            <ul>
+              <li>Type-safe Rust APIs</li>
+              <li>Tokio ecosystem integration</li>
+              <li>New Rust projects</li>
+              <li>Microservices</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://github.com/tokio-rs/axum" target="_blank" class="card-link">GitHub ↗</a>
+            <a href="https://docs.rs/axum" target="_blank" class="card-link">Docs ↗</a>
+          </div>
+        </div>
+
+        <!-- Actix -->
+        <div class="card" data-search="actix rust actor fastest performance">
+          <div class="card-header">
+            <div class="card-logo">🦀</div>
+            <div class="card-title">
+              <h3>Actix Web</h3>
+              <span class="language-tag">Rust / Actor</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-red">Fastest</span>
+            <span class="badge badge-purple">Actor Model</span>
+          </div>
+          <p class="card-description">
+            One of the fastest web frameworks in any language. Built on the Actor model for concurrent request handling. Mature, battle-tested in production. Choose when raw performance is the priority.
+          </p>
+          <div class="card-best-for">
+            <h4>Best For</h4>
+            <ul>
+              <li>Maximum performance requirements</li>
+              <li>High-concurrency systems</li>
+              <li>Actor-based architectures</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://actix.rs" target="_blank" class="card-link">Website ↗</a>
+            <a href="https://actix.rs/docs" target="_blank" class="card-link">Docs ↗</a>
+          </div>
+        </div>
+
+        <!-- Fresh -->
+        <div class="card" data-search="fresh deno islands preact edge">
+          <div class="card-header">
+            <div class="card-logo">🍋</div>
+            <div class="card-title">
+              <h3>Fresh</h3>
+              <span class="language-tag">TypeScript / Deno</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-yellow">Deno Native</span>
+            <span class="badge badge-green">Islands</span>
+            <span class="badge badge-cyan">Zero JS Default</span>
+          </div>
+          <p class="card-description">
+            Next-gen web framework for Deno. Islands architecture means zero JavaScript by default - only hydrate what needs interactivity. Built-in Tailwind, file-based routing, deploy to Deno Deploy instantly.
+          </p>
+          <div class="card-best-for">
+            <h4>Best For</h4>
+            <ul>
+              <li>Deno-first projects</li>
+              <li>Performance-focused sites</li>
+              <li>Minimal JavaScript shipping</li>
+              <li>Edge deployment</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://fresh.deno.dev" target="_blank" class="card-link">Website ↗</a>
+            <a href="https://fresh.deno.dev/docs" target="_blank" class="card-link">Docs ↗</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DATABASES SECTION -->
+    <section id="databases">
+      <div class="section-header">
+        <div class="section-icon" style="background: linear-gradient(135deg, var(--accent-green), var(--accent-cyan));">
+          🗄️
+        </div>
+        <div>
+          <h2>Databases</h2>
+          <p>Where your data lives. Serverless for simplicity, self-hosted for control.</p>
+        </div>
+      </div>
+
+      <!-- Supabase vs Neon vs Turso Comparison -->
+      <div class="comparison-box" style="background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(6, 182, 212, 0.1)); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 32px;">
+        <h3 style="margin-bottom: 16px; display: flex; align-items: center; gap: 12px;">
+          <span style="font-size: 24px;">⚔️</span>
+          <span>Supabase vs Neon vs Turso: The Decision Guide</span>
+        </h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
+          <div style="background: var(--bg-card); padding: 16px; border-radius: 8px; border-left: 4px solid #3FCF8E;">
+            <h4 style="color: #3FCF8E; margin-bottom: 10px; font-size: 14px;">Supabase</h4>
+            <ul style="list-style: none; padding: 0; margin: 0; font-size: 13px; color: var(--text-secondary);">
+              <li style="padding: 4px 0;">✓ Need auth + storage + DB together</li>
+              <li style="padding: 4px 0;">✓ Real-time subscriptions needed</li>
+              <li style="padding: 4px 0;">✓ Want Firebase-like DX, open-source</li>
+              <li style="padding: 4px 0; color: var(--text-muted);">✗ Not edge-optimized</li>
+            </ul>
+          </div>
+          <div style="background: var(--bg-card); padding: 16px; border-radius: 8px; border-left: 4px solid #00E5CC;">
+            <h4 style="color: #00E5CC; margin-bottom: 10px; font-size: 14px;">Neon</h4>
+            <ul style="list-style: none; padding: 0; margin: 0; font-size: 13px; color: var(--text-secondary);">
+              <li style="padding: 4px 0;">✓ Need Postgres specifically</li>
+              <li style="padding: 4px 0;">✓ Want DB branching (like git)</li>
+              <li style="padding: 4px 0;">✓ Vercel integration matters</li>
+              <li style="padding: 4px 0; color: var(--text-muted);">✗ Just a database (no auth)</li>
+            </ul>
+          </div>
+          <div style="background: var(--bg-card); padding: 16px; border-radius: 8px; border-left: 4px solid #4FF8D2;">
+            <h4 style="color: #4FF8D2; margin-bottom: 10px; font-size: 14px;">Turso</h4>
+            <ul style="list-style: none; padding: 0; margin: 0; font-size: 13px; color: var(--text-secondary);">
+              <li style="padding: 4px 0;">✓ Edge-first / low latency critical</li>
+              <li style="padding: 4px 0;">✓ SQLite familiarity preferred</li>
+              <li style="padding: 4px 0;">✓ Embedded replicas needed</li>
+              <li style="padding: 4px 0; color: var(--text-muted);">✗ Less ecosystem than Postgres</li>
+            </ul>
+          </div>
+        </div>
+        <div style="margin-top: 16px; padding: 12px; background: var(--bg-tertiary); border-radius: 8px; font-size: 13px; color: var(--text-muted);">
+          <strong style="color: var(--text-secondary);">Quick pick:</strong>
+          <span style="color: #3FCF8E;">Supabase</span> = all-in-one BaaS (auth+DB+storage).
+          <span style="color: #00E5CC;">Neon</span> = pure serverless Postgres with branching.
+          <span style="color: #4FF8D2;">Turso</span> = edge-first SQLite with global replication.
+        </div>
+      </div>
+
+      <div class="cards-grid">
+        <!-- Supabase -->
+        <div class="card" data-search="supabase postgres postgresql auth storage realtime baas">
+          <div class="card-header">
+            <div class="card-logo">
+              <img src="https://cdn.simpleicons.org/supabase/3FCF8E" alt="Supabase">
+            </div>
+            <div class="card-title">
+              <h3>Supabase</h3>
+              <span class="language-tag">PostgreSQL / BaaS</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-green">All-in-One</span>
+            <span class="badge badge-purple">Open Source</span>
+            <span class="badge badge-blue">Realtime</span>
+          </div>
+          <p class="card-description">
+            The open source Firebase alternative. Full PostgreSQL database with built-in Auth, Storage, Edge Functions, and Realtime subscriptions. Row-level security, pgvector for AI, instant APIs. The default choice for JS/TS projects.
+          </p>
+          <div class="card-best-for">
+            <h4>Best For</h4>
+            <ul>
+              <li>Full-stack JS/TS applications</li>
+              <li>Startups wanting to move fast</li>
+              <li>Apps needing auth + storage + db</li>
+              <li>Real-time features</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://supabase.com" target="_blank" class="card-link">Website ↗</a>
+            <a href="https://supabase.com/docs" target="_blank" class="card-link">Docs ↗</a>
+          </div>
+        </div>
+
+        <!-- Neon -->
+        <div class="card" data-search="neon postgres postgresql serverless branching scale-to-zero">
+          <div class="card-header">
+            <div class="card-logo">
+              <img src="https://cdn.simpleicons.org/neon/00E599" alt="Neon">
+            </div>
+            <div class="card-title">
+              <h3>Neon</h3>
+              <span class="language-tag">Serverless PostgreSQL</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-green">Serverless</span>
+            <span class="badge badge-cyan">Branching</span>
+            <span class="badge badge-purple">Scale-to-Zero</span>
+          </div>
+          <p class="card-description">
+            Serverless Postgres that scales to zero. Database branching like Git - create a branch for development, preview deployments, or testing. Instant provisioning, autoscaling, and a generous free tier.
+          </p>
+          <div class="card-best-for">
+            <h4>Best For</h4>
+            <ul>
+              <li>Preview environments per PR</li>
+              <li>Cost-sensitive projects</li>
+              <li>Development/staging branches</li>
+              <li>Serverless applications</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://neon.tech" target="_blank" class="card-link">Website ↗</a>
+            <a href="https://neon.tech/docs" target="_blank" class="card-link">Docs ↗</a>
+          </div>
+        </div>
+
+        <!-- Turso -->
+        <div class="card" data-search="turso sqlite libsql edge global replicated">
+          <div class="card-header">
+            <div class="card-logo">
+              <img src="https://cdn.simpleicons.org/turso/4FF8D2" alt="Turso">
+            </div>
+            <div class="card-title">
+              <h3>Turso</h3>
+              <span class="language-tag">SQLite / libSQL</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-cyan">Edge-First</span>
+            <span class="badge badge-green">Global</span>
+            <span class="badge badge-yellow">SQLite</span>
+          </div>
+          <p class="card-description">
+            SQLite at the edge. Built on libSQL (SQLite fork), Turso replicates your database to 30+ global locations. Sub-millisecond reads from the nearest replica. Embedded replicas for offline-first apps.
+          </p>
+          <div class="card-best-for">
+            <h4>Best For</h4>
+            <ul>
+              <li>Global applications needing low latency</li>
+              <li>Edge computing (Cloudflare, Deno)</li>
+              <li>SQLite-compatible projects</li>
+              <li>Offline-first mobile apps</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://turso.tech" target="_blank" class="card-link">Website ↗</a>
+            <a href="https://docs.turso.tech" target="_blank" class="card-link">Docs ↗</a>
+          </div>
+        </div>
+
+        <!-- Convex -->
+        <div class="card" data-search="convex reactive realtime baas type-safe">
+          <div class="card-header">
+            <div class="card-logo">🔷</div>
+            <div class="card-title">
+              <h3>Convex</h3>
+              <span class="language-tag">Reactive BaaS</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-purple">Reactive</span>
+            <span class="badge badge-blue">Type-Safe</span>
+            <span class="badge badge-green">Real-time</span>
+          </div>
+          <p class="card-description">
+            The reactive backend-as-a-service. Convex is a database that syncs - queries automatically update when data changes. Type-safe from database to frontend, built-in file storage, scheduled jobs, and serverless functions.
+          </p>
+          <div class="card-best-for">
+            <h4>Best For</h4>
+            <ul>
+              <li>Real-time collaborative apps</li>
+              <li>Chat applications</li>
+              <li>Live dashboards</li>
+              <li>Type-safe full-stack</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://convex.dev" target="_blank" class="card-link">Website ↗</a>
+            <a href="https://docs.convex.dev" target="_blank" class="card-link">Docs ↗</a>
+          </div>
+        </div>
+
+        <!-- PocketBase -->
+        <div class="card" data-search="pocketbase sqlite single-file self-hosted auth realtime">
+          <div class="card-header">
+            <div class="card-logo">📦</div>
+            <div class="card-title">
+              <h3>PocketBase</h3>
+              <span class="language-tag">SQLite / Self-hosted</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-yellow">Single File</span>
+            <span class="badge badge-green">Self-Hosted</span>
+            <span class="badge badge-blue">Auth Built-in</span>
+          </div>
+          <p class="card-description">
+            Backend in a single file. PocketBase is a Go binary that includes SQLite database, auth, file storage, real-time subscriptions, and an admin dashboard. Deploy anywhere, no external dependencies.
+          </p>
+          <div class="card-best-for">
+            <h4>Best For</h4>
+            <ul>
+              <li>Small to medium projects</li>
+              <li>Self-hosted requirements</li>
+              <li>Prototypes and MVPs</li>
+              <li>Offline-first applications</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://pocketbase.io" target="_blank" class="card-link">Website ↗</a>
+            <a href="https://pocketbase.io/docs" target="_blank" class="card-link">Docs ↗</a>
+          </div>
+        </div>
+
+        <!-- SQLite -->
+        <div class="card" data-search="sqlite local file embedded cli desktop">
+          <div class="card-header">
+            <div class="card-logo">🗃️</div>
+            <div class="card-title">
+              <h3>SQLite</h3>
+              <span class="language-tag">File-based / Local</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-green">Zero Config</span>
+            <span class="badge badge-blue">ACID</span>
+            <span class="badge badge-purple">Most Deployed</span>
+          </div>
+          <p class="card-description">
+            <strong>The most deployed database in the world.</strong> A single file, no server process, zero configuration. Every smartphone has SQLite. Perfect for CLIs, desktop apps, prototypes, local development, and embedded systems. ACID-compliant with surprising performance.
+          </p>
+          <div class="card-best-for">
+            <h4>Why Choose This</h4>
+            <ul>
+              <li><strong>CLI tools</strong> - No DB server to configure</li>
+              <li><strong>Desktop apps</strong> - Electron, Tauri, native</li>
+              <li><strong>Prototyping</strong> - Fastest path to working DB</li>
+              <li><strong>Local dev</strong> - Simple before scaling</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://sqlite.org" target="_blank" class="card-link">Website ↗</a>
+            <a href="https://sqlite.org/docs.html" target="_blank" class="card-link">Docs ↗</a>
+          </div>
+        </div>
+
+        <!-- Redis -->
+        <div class="card" data-search="redis cache sessions pub sub queues memory">
+          <div class="card-header">
+            <div class="card-logo">
+              <img src="https://cdn.simpleicons.org/redis/DC382D" alt="Redis">
+            </div>
+            <div class="card-title">
+              <h3>Redis</h3>
+              <span class="language-tag">In-Memory / Cache</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-red">In-Memory</span>
+            <span class="badge badge-blue">Pub/Sub</span>
+            <span class="badge badge-yellow">Queues</span>
+          </div>
+          <p class="card-description">
+            <strong>The swiss army knife of data.</strong> In-memory data store used for caching, session management, message queues, pub/sub, and real-time leaderboards. Often paired with a primary database. Sub-millisecond latency.
+          </p>
+          <div class="card-best-for">
+            <h4>Why Choose This</h4>
+            <ul>
+              <li><strong>Caching layer</strong> - Speed up slow DB queries</li>
+              <li><strong>Session storage</strong> - Fast auth token lookup</li>
+              <li><strong>Job queues</strong> - Background task processing</li>
+              <li><strong>Real-time</strong> - Leaderboards, live counts</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://redis.io" target="_blank" class="card-link">Website ↗</a>
+            <a href="https://redis.io/docs" target="_blank" class="card-link">Docs ↗</a>
+          </div>
+        </div>
+
+        <!-- Upstash -->
+        <div class="card" data-search="upstash redis serverless edge rest">
+          <div class="card-header">
+            <div class="card-logo">
+              <img src="https://cdn.simpleicons.org/upstash/00E9A3" alt="Upstash">
+            </div>
+            <div class="card-title">
+              <h3>Upstash</h3>
+              <span class="language-tag">Serverless Redis</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-green">Serverless</span>
+            <span class="badge badge-blue">REST API</span>
+            <span class="badge badge-purple">Edge</span>
+          </div>
+          <p class="card-description">
+            <strong>Redis for serverless.</strong> Pay-per-request Redis with REST API that works at the edge. No connection pooling headaches. Works with Vercel, Cloudflare Workers, and any serverless platform.
+          </p>
+          <div class="card-best-for">
+            <h4>Why Choose This</h4>
+            <ul>
+              <li><strong>Serverless apps</strong> - No connection limits</li>
+              <li><strong>Edge functions</strong> - REST works everywhere</li>
+              <li><strong>Pay-per-use</strong> - Great for variable load</li>
+              <li><strong>Vercel integration</strong> - First-class support</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://upstash.com" target="_blank" class="card-link">Website ↗</a>
+            <a href="https://upstash.com/docs" target="_blank" class="card-link">Docs ↗</a>
+          </div>
+        </div>
+
+        <!-- Cloudflare D1 -->
+        <div class="card" data-search="d1 cloudflare sqlite edge workers">
+          <div class="card-header">
+            <div class="card-logo">
+              <img src="https://cdn.simpleicons.org/cloudflare/F38020" alt="Cloudflare">
+            </div>
+            <div class="card-title">
+              <h3>Cloudflare D1</h3>
+              <span class="language-tag">Edge SQLite</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-orange">Edge</span>
+            <span class="badge badge-blue">SQLite</span>
+            <span class="badge badge-purple">Workers</span>
+          </div>
+          <p class="card-description">
+            <strong>SQLite at the edge.</strong> Native to Cloudflare Workers with automatic replication. Zero cold starts, SQL you know. Best choice if you're already in the Cloudflare ecosystem.
+          </p>
+          <div class="card-best-for">
+            <h4>Why Choose This</h4>
+            <ul>
+              <li><strong>Cloudflare stack</strong> - Native Workers integration</li>
+              <li><strong>Edge-native</strong> - Data close to users</li>
+              <li><strong>SQLite syntax</strong> - Familiar SQL</li>
+              <li><strong>Free tier</strong> - 5GB storage free</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://developers.cloudflare.com/d1" target="_blank" class="card-link">Docs ↗</a>
+          </div>
+        </div>
+
+        <!-- Valkey -->
+        <div class="card" data-search="valkey redis open-source fork cache">
+          <div class="card-header">
+            <div class="card-logo">🔑</div>
+            <div class="card-title">
+              <h3>Valkey</h3>
+              <span class="language-tag">Open-Source Redis</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-green">Open Source</span>
+            <span class="badge badge-blue">Redis Fork</span>
+            <span class="badge badge-purple">Drop-in</span>
+          </div>
+          <p class="card-description">
+            <strong>Redis, truly open source.</strong> Community fork created after Redis changed to a non-open-source license. 100% compatible, backed by Linux Foundation. Choose when open-source licensing matters.
+          </p>
+          <div class="card-best-for">
+            <h4>Why Choose This</h4>
+            <ul>
+              <li><strong>License concerns</strong> - True BSD license</li>
+              <li><strong>Redis compatible</strong> - Drop-in replacement</li>
+              <li><strong>Community backed</strong> - Linux Foundation</li>
+              <li><strong>Same features</strong> - All Redis functionality</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://valkey.io" target="_blank" class="card-link">Website ↗</a>
+            <a href="https://valkey.io/docs" target="_blank" class="card-link">Docs ↗</a>
+          </div>
+        </div>
+
+        <!-- Dragonfly -->
+        <div class="card" data-search="dragonfly redis fast performance cache">
+          <div class="card-header">
+            <div class="card-logo">🐉</div>
+            <div class="card-title">
+              <h3>Dragonfly</h3>
+              <span class="language-tag">Fast Redis Alternative</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-red">25x Faster</span>
+            <span class="badge badge-blue">Redis Compatible</span>
+            <span class="badge badge-green">Multi-threaded</span>
+          </div>
+          <p class="card-description">
+            <strong>Redis, but 25x faster.</strong> Modern C++ rewrite that's Redis/Memcached compatible. Multi-threaded architecture uses all cores. Same RAM, way more throughput.
+          </p>
+          <div class="card-best-for">
+            <h4>Why Choose This</h4>
+            <ul>
+              <li><strong>High throughput</strong> - 25x Redis performance</li>
+              <li><strong>Cost savings</strong> - Same RAM, more capacity</li>
+              <li><strong>Drop-in</strong> - Redis API compatible</li>
+              <li><strong>Modern arch</strong> - Uses all CPU cores</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://dragonflydb.io" target="_blank" class="card-link">Website ↗</a>
+            <a href="https://dragonflydb.io/docs" target="_blank" class="card-link">Docs ↗</a>
+          </div>
+        </div>
+
+        <!-- PostgreSQL Local -->
+        <div class="card" data-search="postgresql postgres local docker self-hosted">
+          <div class="card-header">
+            <div class="card-logo">
+              <img src="https://cdn.simpleicons.org/postgresql/4169E1" alt="PostgreSQL">
+            </div>
+            <div class="card-title">
+              <h3>PostgreSQL (Local)</h3>
+              <span class="language-tag">Self-hosted / Docker</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-blue">Full Control</span>
+            <span class="badge badge-purple">Extensions</span>
+            <span class="badge badge-green">Free</span>
+          </div>
+          <p class="card-description">
+            The world's most advanced open source database. Run PostgreSQL locally via Docker for development, or self-host in production. Full control, all extensions available, no vendor lock-in.
+          </p>
+          <div class="card-best-for">
+            <h4>Best For</h4>
+            <ul>
+              <li>Full control over data</li>
+              <li>Custom extensions needed</li>
+              <li>Development environments</li>
+              <li>Cost-sensitive production</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://postgresql.org" target="_blank" class="card-link">Website ↗</a>
+            <a href="https://postgresql.org/docs" target="_blank" class="card-link">Docs ↗</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ORMS SECTION -->
+    <section id="orms">
+      <div class="section-header">
+        <div class="section-icon" style="background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));">
+          🔗
+        </div>
+        <div>
+          <h2>ORMs & Query Builders</h2>
+          <p>Bridge between your code and database. Type-safety vs flexibility.</p>
+        </div>
+      </div>
+
+      <!-- Drizzle vs Prisma Comparison -->
+      <div class="comparison-box" style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(168, 85, 247, 0.1)); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 32px;">
+        <h3 style="margin-bottom: 16px; display: flex; align-items: center; gap: 12px;">
+          <span style="font-size: 24px;">⚔️</span>
+          <span>Drizzle vs Prisma: The Decision Guide</span>
+        </h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
+          <div style="background: var(--bg-card); padding: 20px; border-radius: 8px; border-left: 4px solid var(--accent-cyan);">
+            <h4 style="color: var(--accent-cyan); margin-bottom: 12px;">Choose Drizzle when...</h4>
+            <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px; color: var(--text-secondary);">
+              <li style="padding: 6px 0; border-bottom: 1px solid var(--border);">✓ You know SQL and want queries that look like SQL</li>
+              <li style="padding: 6px 0; border-bottom: 1px solid var(--border);">✓ Deploying to edge/serverless (no binary engine)</li>
+              <li style="padding: 6px 0; border-bottom: 1px solid var(--border);">✓ Bundle size matters (7KB vs Prisma's 2MB+)</li>
+              <li style="padding: 6px 0; border-bottom: 1px solid var(--border);">✓ You want predictable queries (no magic)</li>
+              <li style="padding: 6px 0;">✓ Performance is critical (thinner abstraction)</li>
+            </ul>
+          </div>
+          <div style="background: var(--bg-card); padding: 20px; border-radius: 8px; border-left: 4px solid var(--accent-purple);">
+            <h4 style="color: var(--accent-purple); margin-bottom: 12px;">Choose Prisma when...</h4>
+            <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px; color: var(--text-secondary);">
+              <li style="padding: 6px 0; border-bottom: 1px solid var(--border);">✓ You want the best developer experience</li>
+              <li style="padding: 6px 0; border-bottom: 1px solid var(--border);">✓ Visual DB browser (Prisma Studio) is valuable</li>
+              <li style="padding: 6px 0; border-bottom: 1px solid var(--border);">✓ Team is new to SQL/databases</li>
+              <li style="padding: 6px 0; border-bottom: 1px solid var(--border);">✓ Complex relations and nested queries</li>
+              <li style="padding: 6px 0;">✓ You prefer schema DSL over TypeScript schemas</li>
+            </ul>
+          </div>
+        </div>
+        <div style="margin-top: 16px; padding: 12px; background: var(--bg-tertiary); border-radius: 8px; font-size: 13px; color: var(--text-muted);">
+          <strong style="color: var(--text-secondary);">Bottom line:</strong> Drizzle = SQL-first, lightweight, edge-ready. Prisma = DX-first, visual tools, higher abstraction. Both are excellent—pick based on your deployment target and SQL comfort level.
+        </div>
+      </div>
+
+      <div class="cards-grid">
+        <!-- Drizzle -->
+        <div class="card" data-search="drizzle orm typescript sql-like lightweight edge serverless">
+          <div class="card-header">
+            <div class="card-logo">💧</div>
+            <div class="card-title">
+              <h3>Drizzle</h3>
+              <span class="language-tag">TypeScript</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-green">7KB Bundle</span>
+            <span class="badge badge-blue">SQL-like</span>
+            <span class="badge badge-purple">Edge-Ready</span>
+          </div>
+          <p class="card-description">
+            <strong>The SQL lover's ORM.</strong> Write TypeScript that reads like SQL—what you write is what executes. No query engine, no code generation step, no binary. Schema defined in TypeScript files. Migrations are raw SQL you can read and edit.
+          </p>
+          <div class="card-best-for">
+            <h4>Why Choose This</h4>
+            <ul>
+              <li><strong>Edge deployment</strong> - No binary = works on Cloudflare, Vercel Edge, Deno Deploy</li>
+              <li><strong>SQL control</strong> - Queries are predictable, easy to optimize</li>
+              <li><strong>Tiny footprint</strong> - ~7KB vs Prisma's 2MB+ client</li>
+              <li><strong>Fast cold starts</strong> - Critical for serverless</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://orm.drizzle.team" target="_blank" class="card-link">Website ↗</a>
+            <a href="https://orm.drizzle.team/docs/overview" target="_blank" class="card-link">Docs ↗</a>
+          </div>
+        </div>
+
+        <!-- Prisma -->
+        <div class="card" data-search="prisma orm typescript schema migrations studio visual">
+          <div class="card-header">
+            <div class="card-logo">
+              <img src="https://cdn.simpleicons.org/prisma/2D3748" alt="Prisma">
+            </div>
+            <div class="card-title">
+              <h3>Prisma</h3>
+              <span class="language-tag">TypeScript</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-purple">Best DX</span>
+            <span class="badge badge-blue">Visual Studio</span>
+            <span class="badge badge-green">Battle-Tested</span>
+          </div>
+          <p class="card-description">
+            <strong>The DX-first ORM.</strong> Write schemas in Prisma's intuitive DSL, get a fully typed client generated automatically. Prisma Studio lets you browse/edit data visually. Handles complex relations elegantly. The most popular Node.js ORM by far.
+          </p>
+          <div class="card-best-for">
+            <h4>Why Choose This</h4>
+            <ul>
+              <li><strong>Best-in-class DX</strong> - Autocomplete, error messages, documentation</li>
+              <li><strong>Visual DB browser</strong> - Prisma Studio for non-SQL team members</li>
+              <li><strong>Complex relations</strong> - Nested writes, eager loading done right</li>
+              <li><strong>Huge ecosystem</strong> - Tutorials, plugins, community support</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://prisma.io" target="_blank" class="card-link">Website ↗</a>
+            <a href="https://prisma.io/docs" target="_blank" class="card-link">Docs ↗</a>
+          </div>
+        </div>
+
+        <!-- SQLAlchemy -->
+        <div class="card" data-search="sqlalchemy python orm mature flexible">
+          <div class="card-header">
+            <div class="card-logo">🐍</div>
+            <div class="card-title">
+              <h3>SQLAlchemy</h3>
+              <span class="language-tag">Python</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-yellow">Battle-Tested</span>
+            <span class="badge badge-blue">Flexible</span>
+            <span class="badge badge-green">15+ Years</span>
+          </div>
+          <p class="card-description">
+            The Python SQL toolkit and ORM. Two APIs: Core for SQL expression language, ORM for object mapping. Supports every database, incredible flexibility. The standard for Python database access.
+          </p>
+          <div class="card-best-for">
+            <h4>Best For</h4>
+            <ul>
+              <li>Python applications</li>
+              <li>Complex queries</li>
+              <li>Multiple database support</li>
+              <li>Production Python apps</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://sqlalchemy.org" target="_blank" class="card-link">Website ↗</a>
+            <a href="https://docs.sqlalchemy.org" target="_blank" class="card-link">Docs ↗</a>
+          </div>
+        </div>
+
+        <!-- GORM -->
+        <div class="card" data-search="gorm go golang orm auto-migration">
+          <div class="card-header">
+            <div class="card-logo">
+              <img src="https://cdn.simpleicons.org/go/00ADD8" alt="Go">
+            </div>
+            <div class="card-title">
+              <h3>GORM</h3>
+              <span class="language-tag">Go</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-cyan">Go Standard</span>
+            <span class="badge badge-purple">Auto-Migrate</span>
+            <span class="badge badge-green">Hooks</span>
+          </div>
+          <p class="card-description">
+            The fantastic ORM for Go. Full-featured with associations, hooks, eager loading, and auto-migrations. Define models as Go structs, GORM handles the SQL. The most popular Go ORM.
+          </p>
+          <div class="card-best-for">
+            <h4>Best For</h4>
+            <ul>
+              <li>Go applications</li>
+              <li>Rapid development</li>
+              <li>Auto-migrations</li>
+              <li>Complex associations</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://gorm.io" target="_blank" class="card-link">Website ↗</a>
+            <a href="https://gorm.io/docs" target="_blank" class="card-link">Docs ↗</a>
+          </div>
+        </div>
+
+        <!-- SQLx Rust -->
+        <div class="card" data-search="sqlx rust compile-time async">
+          <div class="card-header">
+            <div class="card-logo">🦀</div>
+            <div class="card-title">
+              <h3>SQLx</h3>
+              <span class="language-tag">Rust</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-orange">Compile-Time</span>
+            <span class="badge badge-purple">Async</span>
+            <span class="badge badge-blue">No Runtime</span>
+          </div>
+          <p class="card-description">
+            Compile-time verified SQL queries for Rust. Your SQL is checked against your actual database schema at build time. Async-first, supports Postgres, MySQL, SQLite. Zero runtime cost.
+          </p>
+          <div class="card-best-for">
+            <h4>Best For</h4>
+            <ul>
+              <li>Type-safe SQL in Rust</li>
+              <li>Catching errors at compile-time</li>
+              <li>High-performance Rust apps</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://github.com/launchbadge/sqlx" target="_blank" class="card-link">GitHub ↗</a>
+            <a href="https://docs.rs/sqlx" target="_blank" class="card-link">Docs ↗</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AUTH SECTION -->
+    <section id="auth">
+      <div class="section-header">
+        <div class="section-icon" style="background: linear-gradient(135deg, var(--accent-orange), var(--accent-yellow));">
+          🔐
+        </div>
+        <div>
+          <h2>Authentication</h2>
+          <p>Secure your app. Hosted for speed, self-hosted for control.</p>
+        </div>
+      </div>
+
+      <!-- Auth Comparison -->
+      <div class="comparison-box" style="background: linear-gradient(135deg, rgba(249, 115, 22, 0.1), rgba(234, 179, 8, 0.1)); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 32px;">
+        <h3 style="margin-bottom: 16px; display: flex; align-items: center; gap: 12px;">
+          <span style="font-size: 24px;">⚔️</span>
+          <span>Clerk vs Kinde vs Better Auth: Auth Decision Guide</span>
+        </h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
+          <div style="background: var(--bg-card); padding: 16px; border-radius: 8px; border-left: 4px solid #6C47FF;">
+            <h4 style="color: #6C47FF; margin-bottom: 10px; font-size: 14px;">Clerk</h4>
+            <ul style="list-style: none; padding: 0; margin: 0; font-size: 13px; color: var(--text-secondary);">
+              <li style="padding: 4px 0;">✓ Beautiful pre-built UI components</li>
+              <li style="padding: 4px 0;">✓ Organizations/multi-tenancy</li>
+              <li style="padding: 4px 0;">✓ Premium features out-of-box</li>
+              <li style="padding: 4px 0; color: var(--text-muted);">✗ Most expensive at scale</li>
+            </ul>
+          </div>
+          <div style="background: var(--bg-card); padding: 16px; border-radius: 8px; border-left: 4px solid #000000;">
+            <h4 style="color: #a0a0a0; margin-bottom: 10px; font-size: 14px;">Kinde</h4>
+            <ul style="list-style: none; padding: 0; margin: 0; font-size: 13px; color: var(--text-secondary);">
+              <li style="padding: 4px 0;">✓ Generous free tier</li>
+              <li style="padding: 4px 0;">✓ Built-in feature flags</li>
+              <li style="padding: 4px 0;">✓ Simpler pricing</li>
+              <li style="padding: 4px 0; color: var(--text-muted);">✗ Newer, smaller ecosystem</li>
+            </ul>
+          </div>
+          <div style="background: var(--bg-card); padding: 16px; border-radius: 8px; border-left: 4px solid #22c55e;">
+            <h4 style="color: #22c55e; margin-bottom: 10px; font-size: 14px;">Better Auth</h4>
+            <ul style="list-style: none; padding: 0; margin: 0; font-size: 13px; color: var(--text-secondary);">
+              <li style="padding: 4px 0;">✓ Self-hosted, full control</li>
+              <li style="padding: 4px 0;">✓ No vendor lock-in or costs</li>
+              <li style="padding: 4px 0;">✓ Framework-agnostic</li>
+              <li style="padding: 4px 0; color: var(--text-muted);">✗ More setup required</li>
+            </ul>
+          </div>
+        </div>
+        <div style="margin-top: 16px; padding: 12px; background: var(--bg-tertiary); border-radius: 8px; font-size: 13px; color: var(--text-muted);">
+          <strong style="color: var(--text-secondary);">Quick pick:</strong>
+          <span style="color: #6C47FF;">Clerk</span> = best UX, premium features, pay-per-MAU.
+          <span style="color: #a0a0a0;">Kinde</span> = balanced value, feature flags included.
+          <span style="color: #22c55e;">Better Auth</span> = self-hosted, no recurring costs, full control.
+        </div>
+      </div>
+
+      <div class="cards-grid">
+        <!-- Clerk -->
+        <div class="card" data-search="clerk auth authentication hosted components social">
+          <div class="card-header">
+            <div class="card-logo">
+              <img src="https://cdn.simpleicons.org/clerk/6C47FF" alt="Clerk">
+            </div>
+            <div class="card-title">
+              <h3>Clerk</h3>
+              <span class="language-tag">Hosted / Components</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-purple">Pre-built UI</span>
+            <span class="badge badge-blue">Social Login</span>
+            <span class="badge badge-green">React/Next</span>
+          </div>
+          <p class="card-description">
+            Drop-in authentication with beautiful pre-built components. Sign-in, sign-up, user profiles, organization management - all ready to use. Best-in-class React/Next.js integration. Get auth done in minutes.
+          </p>
+          <div class="card-best-for">
+            <h4>Best For</h4>
+            <ul>
+              <li>Rapid MVP development</li>
+              <li>Teams without auth expertise</li>
+              <li>B2C applications</li>
+              <li>Social login requirements</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://clerk.com" target="_blank" class="card-link">Website ↗</a>
+            <a href="https://clerk.com/docs" target="_blank" class="card-link">Docs ↗</a>
+          </div>
+        </div>
+
+        <!-- Kinde -->
+        <div class="card" data-search="kinde auth authentication b2b sso saml feature-flags">
+          <div class="card-header">
+            <div class="card-logo">🔑</div>
+            <div class="card-title">
+              <h3>Kinde</h3>
+              <span class="language-tag">Hosted / B2B</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-orange">B2B-Focused</span>
+            <span class="badge badge-purple">SAML SSO</span>
+            <span class="badge badge-blue">Feature Flags</span>
+          </div>
+          <p class="card-description">
+            Authentication built for B2B SaaS. Enterprise SSO (SAML, OIDC), organization management, role-based access, and built-in feature flags. Multi-tenant by default. Growing fast as a Clerk alternative.
+          </p>
+          <div class="card-best-for">
+            <h4>Best For</h4>
+            <ul>
+              <li>B2B SaaS applications</li>
+              <li>Enterprise customers (SSO)</li>
+              <li>Multi-tenant apps</li>
+              <li>Feature flag integration</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://kinde.com" target="_blank" class="card-link">Website ↗</a>
+            <a href="https://docs.kinde.com" target="_blank" class="card-link">Docs ↗</a>
+          </div>
+        </div>
+
+        <!-- Better Auth -->
+        <div class="card" data-search="better-auth self-hosted modern typescript">
+          <div class="card-header">
+            <div class="card-logo">🛡️</div>
+            <div class="card-title">
+              <h3>Better Auth</h3>
+              <span class="language-tag">Self-hosted / TypeScript</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-green">Self-Hosted</span>
+            <span class="badge badge-purple">Modern</span>
+            <span class="badge badge-blue">TypeScript</span>
+          </div>
+          <p class="card-description">
+            Modern, self-hosted authentication for TypeScript. Excellent developer experience with first-class TypeScript support. OAuth, magic links, sessions - all with minimal configuration. No vendor lock-in.
+          </p>
+          <div class="card-best-for">
+            <h4>Best For</h4>
+            <ul>
+              <li>Self-hosted requirements</li>
+              <li>TypeScript projects</li>
+              <li>Cost-conscious teams</li>
+              <li>Data sovereignty</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://better-auth.com" target="_blank" class="card-link">Website ↗</a>
+            <a href="https://better-auth.com/docs" target="_blank" class="card-link">Docs ↗</a>
+          </div>
+        </div>
+
+        <!-- Auth0 -->
+        <div class="card" data-search="auth0 okta enterprise sso mfa">
+          <div class="card-header">
+            <div class="card-logo">
+              <img src="https://cdn.simpleicons.org/auth0/EB5424" alt="Auth0">
+            </div>
+            <div class="card-title">
+              <h3>Auth0</h3>
+              <span class="language-tag">Enterprise / Okta</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-orange">Enterprise</span>
+            <span class="badge badge-blue">All Languages</span>
+            <span class="badge badge-purple">MFA</span>
+          </div>
+          <p class="card-description">
+            Enterprise-grade identity platform (now Okta). SDKs for every language, advanced MFA, breach detection, compliance features. The choice for enterprises needing advanced security and compliance.
+          </p>
+          <div class="card-best-for">
+            <h4>Best For</h4>
+            <ul>
+              <li>Enterprise requirements</li>
+              <li>Compliance (SOC2, HIPAA)</li>
+              <li>Multi-language projects</li>
+              <li>Advanced security needs</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://auth0.com" target="_blank" class="card-link">Website ↗</a>
+            <a href="https://auth0.com/docs" target="_blank" class="card-link">Docs ↗</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AI SECTION -->
+    <section id="ai">
+      <div class="section-header">
+        <div class="section-icon" style="background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));">
+          🤖
+        </div>
+        <div>
+          <h2>AI/ML Frameworks</h2>
+          <p>Build intelligent applications. From chat interfaces to complex agents.</p>
+        </div>
+      </div>
+
+      <div class="cards-grid">
+        <!-- Vercel AI SDK -->
+        <div class="card" data-search="vercel ai sdk react hooks streaming chat">
+          <div class="card-header">
+            <div class="card-logo">▲</div>
+            <div class="card-title">
+              <h3>Vercel AI SDK</h3>
+              <span class="language-tag">TypeScript / React</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-purple">React Hooks</span>
+            <span class="badge badge-blue">Streaming</span>
+            <span class="badge badge-green">Multi-Provider</span>
+          </div>
+          <p class="card-description">
+            The React SDK for building AI-powered UIs. useChat() for streaming chat, useCompletion() for text generation. Works with OpenAI, Anthropic, Google, and more. Handles streaming, loading states, error handling.
+          </p>
+          <div class="card-best-for">
+            <h4>Best For</h4>
+            <ul>
+              <li>Chat interfaces</li>
+              <li>React/Next.js applications</li>
+              <li>Streaming responses</li>
+              <li>Quick AI integration</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://sdk.vercel.ai" target="_blank" class="card-link">Website ↗</a>
+            <a href="https://sdk.vercel.ai/docs" target="_blank" class="card-link">Docs ↗</a>
+          </div>
+        </div>
+
+        <!-- LangChain -->
+        <div class="card" data-search="langchain python javascript chains agents rag">
+          <div class="card-header">
+            <div class="card-logo">🦜</div>
+            <div class="card-title">
+              <h3>LangChain</h3>
+              <span class="language-tag">Python / JavaScript</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-green">Comprehensive</span>
+            <span class="badge badge-purple">Agents</span>
+            <span class="badge badge-orange">RAG</span>
+          </div>
+          <p class="card-description">
+            The most comprehensive LLM framework. Chains for composing calls, agents for autonomous tasks, retrievers for RAG. Supports every LLM provider. Can be complex, but handles every use case.
+          </p>
+          <div class="card-best-for">
+            <h4>Best For</h4>
+            <ul>
+              <li>Complex AI workflows</li>
+              <li>Autonomous agents</li>
+              <li>RAG applications</li>
+              <li>Production AI systems</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://langchain.com" target="_blank" class="card-link">Website ↗</a>
+            <a href="https://python.langchain.com/docs" target="_blank" class="card-link">Docs ↗</a>
+          </div>
+        </div>
+
+        <!-- LlamaIndex -->
+        <div class="card" data-search="llamaindex rag data indexing retrieval">
+          <div class="card-header">
+            <div class="card-logo">🦙</div>
+            <div class="card-title">
+              <h3>LlamaIndex</h3>
+              <span class="language-tag">Python / JavaScript</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-blue">Data Framework</span>
+            <span class="badge badge-purple">RAG-Focused</span>
+            <span class="badge badge-green">Indexing</span>
+          </div>
+          <p class="card-description">
+            The data framework for LLM applications. Specialized in connecting LLMs to your data - documents, APIs, databases. Superior indexing and retrieval strategies. The choice for RAG-heavy applications.
+          </p>
+          <div class="card-best-for">
+            <h4>Best For</h4>
+            <ul>
+              <li>Document Q&A</li>
+              <li>Knowledge bases</li>
+              <li>Data-heavy AI apps</li>
+              <li>Advanced retrieval</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://llamaindex.ai" target="_blank" class="card-link">Website ↗</a>
+            <a href="https://docs.llamaindex.ai" target="_blank" class="card-link">Docs ↗</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VECTOR DB SECTION -->
+    <section id="vectordb">
+      <div class="section-header">
+        <div class="section-icon" style="background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));">
+          📊
+        </div>
+        <div>
+          <h2>Vector Databases</h2>
+          <p>Store and search embeddings. Essential for semantic search and RAG.</p>
+        </div>
+      </div>
+
+      <div class="cards-grid">
+        <!-- Pinecone -->
+        <div class="card" data-search="pinecone vector database managed scalable">
+          <div class="card-header">
+            <div class="card-logo">🌲</div>
+            <div class="card-title">
+              <h3>Pinecone</h3>
+              <span class="language-tag">Managed / Serverless</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-green">Managed</span>
+            <span class="badge badge-blue">Scalable</span>
+            <span class="badge badge-purple">Production</span>
+          </div>
+          <p class="card-description">
+            The leading managed vector database. Fully serverless, scales automatically, handles billions of vectors. Simple API, great SDKs. The default choice for production RAG applications.
+          </p>
+          <div class="card-best-for">
+            <h4>Best For</h4>
+            <ul>
+              <li>Production RAG systems</li>
+              <li>Enterprise scale</li>
+              <li>Teams wanting managed service</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://pinecone.io" target="_blank" class="card-link">Website ↗</a>
+            <a href="https://docs.pinecone.io" target="_blank" class="card-link">Docs ↗</a>
+          </div>
+        </div>
+
+        <!-- Chroma -->
+        <div class="card" data-search="chroma vector database local lightweight python">
+          <div class="card-header">
+            <div class="card-logo">🎨</div>
+            <div class="card-title">
+              <h3>Chroma</h3>
+              <span class="language-tag">Local / Self-hosted</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-yellow">Dev-Friendly</span>
+            <span class="badge badge-green">Local First</span>
+            <span class="badge badge-purple">Python Native</span>
+          </div>
+          <p class="card-description">
+            The AI-native open-source embedding database. Runs locally with zero config, or deploy to production. Python-native API, great for prototyping and development. Simple but capable.
+          </p>
+          <div class="card-best-for">
+            <h4>Best For</h4>
+            <ul>
+              <li>Local AI development</li>
+              <li>Prototyping RAG apps</li>
+              <li>Python projects</li>
+              <li>Self-hosted requirements</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://trychroma.com" target="_blank" class="card-link">Website ↗</a>
+            <a href="https://docs.trychroma.com" target="_blank" class="card-link">Docs ↗</a>
+          </div>
+        </div>
+
+        <!-- pgvector -->
+        <div class="card" data-search="pgvector postgresql postgres extension">
+          <div class="card-header">
+            <div class="card-logo">
+              <img src="https://cdn.simpleicons.org/postgresql/4169E1" alt="PostgreSQL">
+            </div>
+            <div class="card-title">
+              <h3>pgvector</h3>
+              <span class="language-tag">PostgreSQL Extension</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-blue">Use Existing DB</span>
+            <span class="badge badge-green">No Extra Service</span>
+            <span class="badge badge-purple">SQL</span>
+          </div>
+          <p class="card-description">
+            Vector similarity search for PostgreSQL. Add vector capabilities to your existing Postgres database. No separate service to manage, query vectors with SQL. Built into Supabase, Neon, etc.
+          </p>
+          <div class="card-best-for">
+            <h4>Best For</h4>
+            <ul>
+              <li>Already using PostgreSQL</li>
+              <li>Simplicity (one database)</li>
+              <li>SQL-based vector queries</li>
+              <li>Supabase/Neon users</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://github.com/pgvector/pgvector" target="_blank" class="card-link">GitHub ↗</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LOCAL AI SECTION -->
+    <section id="localai">
+      <div class="section-header">
+        <div class="section-icon" style="background: linear-gradient(135deg, var(--accent-yellow), var(--accent-orange));">
+          🏠
+        </div>
+        <div>
+          <h2>Local AI Providers</h2>
+          <p>Run LLMs on your own hardware. Privacy, cost savings, offline capability.</p>
+        </div>
+      </div>
+
+      <div class="cards-grid">
+        <!-- Ollama -->
+        <div class="card" data-search="ollama local llm easy llama mistral">
+          <div class="card-header">
+            <div class="card-logo">🦙</div>
+            <div class="card-title">
+              <h3>Ollama</h3>
+              <span class="language-tag">Cross-platform / Docker</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-green">Easy Setup</span>
+            <span class="badge badge-blue">Many Models</span>
+            <span class="badge badge-purple">OpenAI API</span>
+          </div>
+          <p class="card-description">
+            The easiest way to run LLMs locally. One command to download and run Llama, Mistral, Code Llama, and more. OpenAI-compatible API, works with existing tools. The default choice for local AI.
+          </p>
+          <div class="card-best-for">
+            <h4>Best For</h4>
+            <ul>
+              <li>Getting started with local AI</li>
+              <li>Development and testing</li>
+              <li>Privacy-sensitive applications</li>
+              <li>Cost savings</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://ollama.ai" target="_blank" class="card-link">Website ↗</a>
+            <a href="https://github.com/ollama/ollama" target="_blank" class="card-link">GitHub ↗</a>
+          </div>
+        </div>
+
+        <!-- MLX -->
+        <div class="card" data-search="mlx apple silicon mac m1 m2 m3 m4 fast">
+          <div class="card-header">
+            <div class="card-logo">🍎</div>
+            <div class="card-title">
+              <h3>MLX</h3>
+              <span class="language-tag">Apple Silicon / Python</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-purple">Apple Silicon</span>
+            <span class="badge badge-orange">Fastest on Mac</span>
+            <span class="badge badge-green">Unified Memory</span>
+          </div>
+          <p class="card-description">
+            Apple's machine learning framework for Apple Silicon. Leverages unified memory for incredible performance without a discrete GPU. Run Llama 3, Mistral, and others at speeds rivaling CUDA. Mac-only.
+          </p>
+          <div class="card-best-for">
+            <h4>Best For</h4>
+            <ul>
+              <li>Mac developers (M1/M2/M3/M4)</li>
+              <li>Fast local inference</li>
+              <li>No GPU required</li>
+              <li>Privacy-focused development</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://github.com/ml-explore/mlx" target="_blank" class="card-link">GitHub ↗</a>
+            <a href="https://ml-explore.github.io/mlx" target="_blank" class="card-link">Docs ↗</a>
+          </div>
+        </div>
+
+        <!-- vLLM -->
+        <div class="card" data-search="vllm production gpu cuda serving fast">
+          <div class="card-header">
+            <div class="card-logo">⚡</div>
+            <div class="card-title">
+              <h3>vLLM</h3>
+              <span class="language-tag">Linux / CUDA</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-red">GPU Required</span>
+            <span class="badge badge-purple">Production</span>
+            <span class="badge badge-blue">OpenAI API</span>
+          </div>
+          <p class="card-description">
+            High-throughput LLM serving engine. PagedAttention for efficient memory use, continuous batching, tensor parallelism. OpenAI-compatible API. The choice for production self-hosted LLM deployment.
+          </p>
+          <div class="card-best-for">
+            <h4>Best For</h4>
+            <ul>
+              <li>Production LLM serving</li>
+              <li>High-throughput requirements</li>
+              <li>GPU servers (NVIDIA)</li>
+              <li>Cost-effective self-hosting</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://docs.vllm.ai" target="_blank" class="card-link">Website ↗</a>
+            <a href="https://github.com/vllm-project/vllm" target="_blank" class="card-link">GitHub ↗</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WEB SERVERS SECTION -->
+    <section id="webservers">
+      <div class="section-header">
+        <div class="section-icon" style="background: linear-gradient(135deg, var(--accent-green), var(--accent-yellow));">
+          🌐
+        </div>
+        <div>
+          <h2>Web Servers</h2>
+          <p>Reverse proxy and SSL termination. The gateway to your application.</p>
+        </div>
+      </div>
+
+      <div class="cards-grid">
+        <!-- Caddy -->
+        <div class="card" data-search="caddy auto-https simple reverse-proxy">
+          <div class="card-header">
+            <div class="card-logo">🔒</div>
+            <div class="card-title">
+              <h3>Caddy</h3>
+              <span class="language-tag">Go / Auto-HTTPS</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-green">Auto-HTTPS</span>
+            <span class="badge badge-blue">Simple Config</span>
+            <span class="badge badge-purple">Modern</span>
+          </div>
+          <p class="card-description">
+            The web server that automatically gets HTTPS. Zero-config SSL with Let's Encrypt, simple Caddyfile configuration, HTTP/3 support. The modern alternative to nginx for most use cases.
+          </p>
+          <div class="card-best-for">
+            <h4>Best For</h4>
+            <ul>
+              <li>Most web applications</li>
+              <li>Auto-SSL requirements</li>
+              <li>Simple deployments</li>
+              <li>Modern HTTP features</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://caddyserver.com" target="_blank" class="card-link">Website ↗</a>
+            <a href="https://caddyserver.com/docs" target="_blank" class="card-link">Docs ↗</a>
+          </div>
+        </div>
+
+        <!-- nginx -->
+        <div class="card" data-search="nginx high-performance battle-tested reverse-proxy">
+          <div class="card-header">
+            <div class="card-logo">
+              <img src="https://cdn.simpleicons.org/nginx/009639" alt="nginx">
+            </div>
+            <div class="card-title">
+              <h3>nginx</h3>
+              <span class="language-tag">C / High-Performance</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-yellow">Battle-Tested</span>
+            <span class="badge badge-blue">High Traffic</span>
+            <span class="badge badge-green">Flexible</span>
+          </div>
+          <p class="card-description">
+            The industry-standard web server. Powers a significant portion of the internet. Extremely configurable, handles massive traffic, extensive documentation. More complex than Caddy but more powerful.
+          </p>
+          <div class="card-best-for">
+            <h4>Best For</h4>
+            <ul>
+              <li>High-traffic applications</li>
+              <li>Complex routing rules</li>
+              <li>Teams with nginx experience</li>
+              <li>Advanced caching</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://nginx.org" target="_blank" class="card-link">Website ↗</a>
+            <a href="https://nginx.org/en/docs" target="_blank" class="card-link">Docs ↗</a>
+          </div>
+        </div>
+
+        <!-- Traefik -->
+        <div class="card" data-search="traefik docker kubernetes auto-discovery cloud-native">
+          <div class="card-header">
+            <div class="card-logo">
+              <img src="https://cdn.simpleicons.org/traefikproxy/24A1C1" alt="Traefik">
+            </div>
+            <div class="card-title">
+              <h3>Traefik</h3>
+              <span class="language-tag">Go / Cloud-Native</span>
+            </div>
+          </div>
+          <div class="card-badges">
+            <span class="badge badge-cyan">Docker Native</span>
+            <span class="badge badge-purple">Auto-Discovery</span>
+            <span class="badge badge-blue">K8s Ready</span>
+          </div>
+          <p class="card-description">
+            The cloud-native application proxy. Auto-discovers services from Docker, Kubernetes, etc. Configure routes via labels, no config file changes needed. The choice for container orchestration.
+          </p>
+          <div class="card-best-for">
+            <h4>Best For</h4>
+            <ul>
+              <li>Docker Compose deployments</li>
+              <li>Kubernetes ingress</li>
+              <li>Dynamic service discovery</li>
+              <li>Microservices architecture</li>
+            </ul>
+          </div>
+          <div class="card-links">
+            <a href="https://traefik.io" target="_blank" class="card-link">Website ↗</a>
+            <a href="https://doc.traefik.io" target="_blank" class="card-link">Docs ↗</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="container">
+    <p>Built with ❤️ for the <a href="https://github.com/abe238/project-kickoff">Project Kickoff</a> CLI</p>
+    <p style="margin-top: 8px;">Run <code style="background: var(--bg-secondary); padding: 4px 8px; border-radius: 4px;">kickoff init</code> to get started</p>
+  </div>
+</footer>
+
+<script>
+  // Search functionality
+  const searchBox = document.getElementById('searchBox');
+  const cards = document.querySelectorAll('.card, .preset-card');
+
+  searchBox.addEventListener('input', (e) => {
+    const query = e.target.value.toLowerCase();
+
+    cards.forEach(card => {
+      const searchText = card.dataset.search?.toLowerCase() || '';
+      const cardText = card.textContent.toLowerCase();
+
+      if (searchText.includes(query) || cardText.includes(query)) {
+        card.classList.remove('hidden');
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+  });
+
+  // Smooth scroll for nav links
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const targetId = link.getAttribute('href').slice(1);
+      const target = document.getElementById(targetId);
+
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
+
+        // Update active state
+        document.querySelectorAll('.nav-links a').forEach(l => l.classList.remove('active'));
+        link.classList.add('active');
+      }
+    });
+  });
+
+  // Update active nav on scroll
+  const sections = document.querySelectorAll('section');
+  const navLinks = document.querySelectorAll('.nav-links a');
+
+  window.addEventListener('scroll', () => {
+    let current = '';
+
+    sections.forEach(section => {
+      const sectionTop = section.offsetTop - 100;
+      if (scrollY >= sectionTop) {
+        current = section.getAttribute('id');
+      }
+    });
+
+    navLinks.forEach(link => {
+      link.classList.remove('active');
+      if (link.getAttribute('href') === `#${current}`) {
+        link.classList.add('active');
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
