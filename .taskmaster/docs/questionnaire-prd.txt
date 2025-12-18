@@ -1,0 +1,100 @@
+# Smart Interactive Questionnaire System PRD
+
+## Overview
+Build an intelligent interactive questionnaire system that guides users through stack selection with detailed pros/cons/tradeoffs for every choice, then dynamically generates templates based on selections.
+
+## Goals
+1. Ask intelligent questions about user's project needs
+2. Show pros/cons/tradeoffs for EVERY stack choice
+3. Dynamically generate templates based on à la carte selections
+4. Explain reasoning for each choice in CLI output
+
+## Requirements
+
+### Task 1: Create Stack Knowledge Base
+Create comprehensive knowledge base with all stack options including:
+- StackOption interface with id, name, description, pros, cons, tradeoffs, bestFor, monthlyCost, requiredEnvVars, compatibleWith, incompatibleWith, complexity
+- Knowledge files for: databases (18 options), ORMs (12 options), auth (12 options), frontend frameworks (4 options), backend frameworks (12 options), AI frameworks (7 options), vector DBs (9 options), runtimes (6 options)
+- Compatibility matrix defining which stacks work together
+
+Files: src/knowledge/types.ts, src/knowledge/databases.ts, src/knowledge/orms.ts, src/knowledge/auth.ts, src/knowledge/frameworks.ts, src/knowledge/ai.ts, src/knowledge/compatibility.ts, src/knowledge/index.ts
+
+### Task 2: Create Recommendation Scoring Engine
+Build scoring system that:
+- Scores stack options based on user requirements
+- Weights factors like complexity, cost, ecosystem maturity
+- Generates human-readable reasoning explanations
+- Provides warnings for potential issues
+
+Files: src/recommender/types.ts, src/recommender/scorer.ts, src/recommender/explainer.ts, src/recommender/index.ts
+
+### Task 3: Build Questionnaire Flow System
+Create question flow engine with:
+- Question interface supporting single/multi/confirm types
+- Conditional logic (showWhen function based on previous answers)
+- Progressive disclosure with follow-up questions
+- Branching based on project type selection
+
+Files: src/questionnaire/types.ts, src/questionnaire/flow.ts, src/questionnaire/questions.ts
+
+### Task 4: Create Interactive CLI Renderer
+Build rich CLI UI that:
+- Displays questions with emoji icons and descriptions
+- Shows pros/cons/tradeoffs boxes during selection
+- Renders comparison tables
+- Displays final stack summary with reasoning
+
+Use @inquirer/prompts for interactive selection. Include boxen and chalk for styling.
+
+Files: src/questionnaire/renderer.ts, src/questionnaire/index.ts
+
+### Task 5: Refactor Templates into Composable Modules
+Split existing templates into composable fragments:
+- Base templates (README, CLAUDE.md, .gitignore, .env.example)
+- Runtime-specific (node, bun, python, go, rust)
+- Frontend frameworks (nextjs, tanstack, vite-react)
+- Backend frameworks (hono, express, fastapi, gin)
+- Database integrations (supabase, neon, turso, postgres)
+- ORM layers (drizzle, prisma, sqlalchemy)
+- Auth providers (clerk, better-auth, supabase-auth)
+- AI integrations (vercel-ai, langchain, ollama)
+- Deployment configs (docker, github-actions)
+
+Files: src/templates/fragments/*, src/generator/types.ts
+
+### Task 6: Implement Template Stitching Engine
+Create generator that:
+- Collects required fragments based on user selections
+- Resolves template dependencies
+- Merges package.json, tsconfig.json, .env files intelligently
+- Handles conflicts between fragments
+- Outputs final project structure
+
+Files: src/generator/collector.ts, src/generator/merger.ts, src/generator/resolver.ts, src/generator/index.ts
+
+### Task 7: Integrate Questionnaire with Generator
+Connect all systems:
+- Map questionnaire answers to template fragments
+- Pass combined context to EJS templates
+- Generate reasoning summary in CLI output
+- Support --interactive flag for smart mode
+- Update create command to use new flow
+
+Files: src/cli.ts (update), src/lib/prompter.ts (update)
+
+### Task 8: Add Tests and Verification
+Create comprehensive tests:
+- Unit tests for knowledge base validation
+- Unit tests for scoring algorithm
+- Integration tests for questionnaire flow
+- E2E test for full project generation
+- Verify all presets still work
+
+Files: src/knowledge/*.test.ts, src/questionnaire/*.test.ts, src/generator/*.test.ts
+
+## Technical Notes
+- Use TypeScript strict mode
+- All knowledge data should be type-safe
+- CLI should work in non-interactive mode with --preset flag
+- Templates must be backwards compatible with existing presets
+- Use @inquirer/prompts (not inquirer) for modern async prompts
