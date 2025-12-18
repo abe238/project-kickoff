@@ -9,6 +9,23 @@ export * from './types';
 // Export flow engine
 export { QuestionFlow, createGroupedFlow, runFlow } from './flow';
 
+// Export renderer
+export {
+  renderQuestion,
+  renderOptionDetails,
+  renderComparisonTable,
+  renderProgress,
+  renderCategoryHeader,
+  renderFinalSummary,
+  renderRecommendation,
+  renderWarning,
+  renderError,
+  renderSuccess,
+  renderInfo,
+  renderWelcome,
+  renderGoodbye,
+} from './renderer';
+
 // Export questions and groups
 export {
   allQuestions,
