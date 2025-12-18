@@ -282,7 +282,13 @@ const PRESETS: Record<Exclude<Preset, 'none'>, PresetConfig> = {
   },
 };
 
-export async function promptProjectConfig(): Promise<ProjectConfig> {
+export interface PromptOptions {
+  name?: string;
+  preset?: string;
+  useDefaults?: boolean;
+}
+
+export async function promptProjectConfig(options: PromptOptions = {}): Promise<ProjectConfig> {
   const answers = await inquirer.prompt([
     {
       type: 'list',

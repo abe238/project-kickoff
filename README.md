@@ -1,15 +1,15 @@
-# Project Kickoff
+# Kickoff v3.0.0
 
-CLI tool to scaffold production-ready projects with security best practices baked in. Supports multiple languages (TypeScript, Python, Go, Rust, Deno), databases, auth providers, and AI/ML integrations.
+Modern CLI scaffolding tool for production-ready projects with 2025 tech stacks. Multi-language support (TypeScript, Python, Go, Rust, Deno), AI/ML integrations, and security best practices baked in.
 
 ## Features
 
 - **Multi-Language**: TypeScript/Node, Python, Go, Rust, Deno support
-- **Security First**: Docker security best practices, non-root containers, resource limits
-- **CI/CD Ready**: GitHub Actions workflows with security scanning
-- **AI/ML Ready**: Vector databases, embeddings, local AI (including MLX for Apple Silicon)
-- **Modern Auth**: Clerk, Kinde, Auth0, Better Auth, and more
-- **Production Ready**: Traefik/Caddy/nginx, health endpoints, deployment scripts
+- **2025 Tech Stacks**: Supabase, Neon, Turso, Hono, TanStack Start, and more
+- **AI/ML Ready**: Vector databases, embeddings, local AI (Ollama, MLX for Apple Silicon)
+- **Modern Auth**: Clerk, Kinde, Auth0, Better Auth, Supabase Auth
+- **14 Presets**: One-command project setup for common use cases
+- **Interactive Docs**: HTML documentation accessible via CLI
 
 ## Installation
 
@@ -20,20 +20,36 @@ npm install -g project-kickoff
 Or run directly with npx:
 
 ```bash
-npx project-kickoff init
+npx project-kickoff create my-app
 ```
 
 ## Quick Start
 
 ```bash
-# Create a new project with interactive prompts
-kickoff init
+# Create a new project with interactive wizard
+kickoff create my-app
 
-# List all available templates and presets
+# Use a preset for instant setup
+kickoff create my-app --preset saas-starter
+
+# List all available presets
 kickoff list
 
 # Dry run to see what would be created
-kickoff init --dry-run
+kickoff create my-app --dry-run
+```
+
+## Documentation
+
+```bash
+# Open quick start guide in browser
+kickoff docs
+
+# Browse all presets with examples
+kickoff presets
+
+# Explore 2025 tech stacks
+kickoff stacks
 ```
 
 ---

@@ -1,17 +1,18 @@
 {
   "name": "project-kickoff",
-  "version": "2.0.0",
-  "description": "CLI tool to scaffold production-ready projects with security best practices baked in",
-  "main": "dist/index.js",
+  "version": "3.0.0",
+  "description": "Modern CLI scaffolding tool for production-ready projects with 2025 tech stacks",
+  "main": "dist/cli.js",
   "bin": {
-    "kickoff": "./dist/index.js"
+    "kickoff": "./dist/cli.js"
   },
   "type": "module",
   "scripts": {
     "build": "tsc && cp -r src/templates dist/",
-    "dev": "tsx src/index.ts",
-    "start": "node dist/index.js",
+    "dev": "tsx src/cli.ts",
+    "start": "node dist/cli.js",
     "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
@@ -22,8 +23,8 @@
     "scaffold",
     "project-generator",
     "typescript",
-    "docker",
-    "devops"
+    "2025-stacks",
+    "developer-tools"
   ],
   "author": "abe238",
   "license": "MIT",
@@ -33,6 +34,7 @@
     "@types/inquirer": "^9.0.7",
     "@types/node": "^22.10.2",
     "@vitest/coverage-v8": "^4.0.15",
+    "tsx": "^4.19.0",
     "typescript": "^5.7.2",
     "vitest": "^4.0.15"
   },
@@ -42,6 +44,7 @@
     "ejs": "^3.1.10",
     "execa": "^9.5.1",
     "fs-extra": "^11.2.0",
+    "handlebars": "^4.7.8",
     "inquirer": "^12.2.0",
     "ora": "^8.1.1"
   },

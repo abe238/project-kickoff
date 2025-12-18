@@ -1,115 +1,87 @@
-# Project Kickoff Enhancement PRD
+# Project Kickoff v3.0.0 - Documentation & Polish
 
 ## Overview
-Enhance project-kickoff CLI with new templates, robust questionnaire system, and advanced features.
+Consolidate all documentation into two comprehensive HTML files and implement final polish improvements for the kickoff CLI tool.
 
-## Phase 1: New Project Templates
+## Goals
+1. Create ONE usage guide HTML file (install, commands, troubleshooting)
+2. Create ONE comprehensive stacks HTML file with ALL options from types.ts
+3. Clean up duplicate docs files
+4. Add vitest configuration
+5. Final build verification
 
-### Task 1: MCP Server Template
-Create a Model Context Protocol server template for building AI tool integrations.
-- Package.json with @modelcontextprotocol/sdk
-- TypeScript configuration
-- Server entry point with stdio transport
-- Example tool definitions (greet, calculate)
-- Dockerfile for containerized deployment
-- README with usage instructions
-Dependencies: None
+## Requirements
 
-### Task 2: Worker/Job Template
-Create a background job processor template using BullMQ and Redis.
-- Package.json with bullmq, ioredis
-- Worker entry point with job handlers
-- Queue configuration
-- Health check endpoint
-- Docker-compose with Redis service
-- Example job (email, webhook)
-Dependencies: None
+### Task 1: Create USAGE.html - Comprehensive Usage Guide
+Create a single HTML file that covers:
+- Installation (npm, npx)
+- Quick start examples
+- All CLI commands with examples:
+  - kickoff create <name> [--preset] [--dry-run] [--skip-git] [-y]
+  - kickoff list
+  - kickoff stacks
+  - kickoff presets
+  - kickoff docs
+  - kickoff config [--show] [--reset]
+- Common workflows (SaaS app, AI app, Python API, Go service)
+- Troubleshooting section:
+  - Port conflicts
+  - Node version requirements
+  - Template errors
+  - Git initialization issues
+- Environment variables reference
+- Next steps after project creation
 
-### Task 3: Library/Package Template
-Create an npm library template with proper exports and build.
-- Package.json with exports field, types
-- tsup for building ESM/CJS
-- Vitest for testing
-- TypeDoc for documentation
-- changesets for versioning
-- README with API docs
-Dependencies: None
+### Task 2: Create Comprehensive STACKS.html
+Create a single comprehensive HTML file with ALL stack options from types.ts:
+- Project Types (18 types): nextjs, tanstack-start, vite-react, static, hono-api, elysia-api, express-api, fresh-api, fastapi, litestar, gin-api, fiber-api, echo-api, axum-api, actix-api, cli, mcp-server, worker, library
+- Databases (18 providers): supabase, neon, turso, d1, sqlite, convex, pocketbase, firebase, postgres-local, mysql-local, mongodb-local, redis, upstash, valkey, dragonfly, planetscale, cockroachdb, none
+- ORMs (12 options): drizzle, prisma, kysely, sqlalchemy, tortoise, sqlmodel, gorm, sqlx-go, diesel, sqlx-rust, sea-orm, none
+- Auth Providers (12): clerk, kinde, auth0, workos, better-auth, lucia, authjs, supabase-auth, convex-auth, firebase-auth, pocketbase-auth, none
+- Runtimes (6): node, bun, deno, python, go, rust
+- AI Frameworks (7): vercel-ai, langchain, llamaindex, mastra, instructor, semantic-kernel, none
+- Vector DBs (9): pinecone, weaviate, qdrant, chroma, pgvector, supabase-vector, turbopuffer, milvus, none
+- Embedding Providers (9): openai, cohere, voyage, ollama, huggingface, together, google, fastembed, none
+- Local AI Providers (11): ollama, lmstudio, jan, mlx, mlx-lm, vllm, localai, tgi, llamacpp, text-gen-webui, none
+- Web Servers (4): caddy, nginx, traefik, none
+- Presets (14): saas-starter, api-microservice, tanstack-hono, edge-api, fastapi-starter, python-ml-api, go-microservice, rust-api, ai-rag-app, ai-agent, mlx-local, quick-cli, landing-page, mcp-tool
 
-### Task 4: Discord Bot Template
-Create a Discord bot template with discord.js.
-- Package.json with discord.js
-- Bot entry point with client setup
-- Slash command registration
-- Example commands (ping, help)
-- Environment variables for token
-- Dockerfile for deployment
-Dependencies: None
+Include for each option:
+- Name and description
+- Best use cases
+- Required environment variables
+- Monthly cost (if applicable)
+- Language/runtime compatibility
+- Preset combinations
 
-## Phase 2: Questionnaire Robustness
+### Task 3: Delete Redundant Documentation Files
+Remove:
+- docs/QUICK_START.html (merged into USAGE.html)
+- docs/PRESETS.html (merged into STACKS.html)
+- docs/QUESTIONNAIRE.md (outdated)
 
-### Task 5: Presets System
-Add preset project archetypes that pre-fill questionnaire answers.
-- SaaS Starter preset (nextjs + postgres + auth)
-- API Microservice preset (api + postgres)
-- Quick CLI preset (cli + quick track)
-- Landing Page preset (static + quick)
-- Custom preset from config file
-Dependencies: Task 1-4
+### Task 4: Update CLI to Point to New Files
+Update src/cli.ts:
+- kickoff docs -> opens USAGE.html
+- kickoff stacks -> opens STACKS.html
+- Remove kickoff presets command (merged into stacks)
+- Update help text
 
-### Task 6: Config File Support
-Add ~/.kickoffrc config file for user preferences.
-- Default GitHub username
-- Preferred package manager (npm/yarn/pnpm)
-- Default complexity track
-- Custom presets storage
-- Use cosmiconfig for loading
-Dependencies: None
+### Task 5: Add Vitest Configuration
+Create vitest.config.ts with:
+- TypeScript support
+- Coverage configuration
+- Include/exclude patterns
 
-### Task 7: Brownfield Detection
-Detect existing projects and offer to add missing pieces.
-- Scan for package.json, tsconfig.json
-- Detect project type from dependencies
-- Offer to add Dockerfile, CI/CD, CLAUDE.md
-- Skip existing files, merge configs
-Dependencies: None
+### Task 6: Final Build and Verification
+- Run npm run build
+- Run npm test
+- Verify CLI commands work
+- Test opening HTML files
 
-## Phase 3: Template Questions
-
-### Task 8: MCP Server Questions
-Add MCP-specific questions to questionnaire.
-- Transport type (stdio/SSE)
-- Include example tools?
-- Resource definitions?
-Dependencies: Task 1
-
-### Task 9: Worker Questions
-Add worker-specific questions to questionnaire.
-- Queue backend (Redis/PostgreSQL)
-- Job retry configuration
-- Concurrency settings
-Dependencies: Task 2
-
-### Task 10: Update Type System
-Update types.ts with all new project types and options.
-- Add mcp, worker, library, discord-bot to ProjectType
-- Add transport, queueBackend options
-- Update TemplateContext interface
-Dependencies: Task 1-4
-
-## Phase 4: Testing & Polish
-
-### Task 11: Integration Tests
-Create integration tests for all templates.
-- Test each template scaffolds correctly
-- Test questionnaire flow
-- Test preset system
-- Test config file loading
-Dependencies: Task 1-10
-
-### Task 12: Documentation Update
-Update README and QUESTIONNAIRE.md with new features.
-- Document new templates
-- Document presets system
-- Document config file
-- Add examples for each template
-Dependencies: Task 1-11
+## Technical Notes
+- Use GitHub dark theme colors for HTML
+- Make pages mobile-responsive
+- Add search/filter functionality to STACKS.html
+- Include copy-to-clipboard for commands
+- Use Inter font for consistency

@@ -1,0 +1,95 @@
+{
+  "tasks": [
+    {
+      "id": "1",
+      "title": "Create USAGE.html - Comprehensive Usage Guide",
+      "description": "Create a single HTML file covering installation, all CLI commands, common workflows, troubleshooting, and next steps",
+      "status": "done",
+      "priority": "high",
+      "dependencies": [],
+      "phase": "Documentation",
+      "details": "Include: npm/npx install, kickoff create/list/stacks/docs/config commands with examples, SaaS/AI/Python/Go workflows, troubleshooting (port conflicts, node version, template errors, git issues), env vars reference",
+      "updatedAt": "2025-12-18T09:40:00.000Z",
+      "subtasks": []
+    },
+    {
+      "id": "2",
+      "title": "Create comprehensive STACKS.html with ALL options",
+      "description": "Create single HTML file with every stack option from types.ts - project types, databases, ORMs, auth, runtimes, AI frameworks, vector DBs, embeddings, local AI, web servers, and presets",
+      "status": "done",
+      "priority": "high",
+      "dependencies": [],
+      "phase": "Documentation",
+      "details": "Include: 18 project types, 18 databases, 12 ORMs, 12 auth providers, 6 runtimes, 7 AI frameworks, 9 vector DBs, 9 embedding providers, 11 local AI providers, 4 web servers, 14 presets. Each with name, description, use cases, env vars, costs, compatibility",
+      "subtasks": [],
+      "updatedAt": "2025-12-18T09:40:00.000Z"
+    },
+    {
+      "id": "3",
+      "title": "Delete redundant documentation files",
+      "description": "Remove QUICK_START.html, PRESETS.html, QUESTIONNAIRE.md as they are merged into the new files",
+      "status": "done",
+      "priority": "medium",
+      "dependencies": [
+        "1",
+        "2"
+      ],
+      "phase": "Cleanup",
+      "details": "Delete: docs/QUICK_START.html, docs/PRESETS.html, docs/QUESTIONNAIRE.md",
+      "subtasks": [],
+      "updatedAt": "2025-12-18T09:40:00.000Z"
+    },
+    {
+      "id": "4",
+      "title": "Update CLI to point to new documentation files",
+      "description": "Update cli.ts: kickoff docs opens USAGE.html, kickoff stacks opens STACKS.html, remove kickoff presets command",
+      "status": "done",
+      "priority": "high",
+      "dependencies": [
+        "1",
+        "2"
+      ],
+      "phase": "Implementation",
+      "details": "Modify src/cli.ts to update file paths and remove presets command",
+      "subtasks": [],
+      "updatedAt": "2025-12-18T09:40:00.000Z"
+    },
+    {
+      "id": "5",
+      "title": "Add vitest.config.ts",
+      "description": "Create vitest configuration file with TypeScript support, coverage config, and proper include/exclude patterns",
+      "status": "done",
+      "priority": "low",
+      "dependencies": [],
+      "phase": "Testing",
+      "details": "Configure vitest for ESM, TypeScript, v8 coverage",
+      "subtasks": [],
+      "updatedAt": "2025-12-18T09:40:00.000Z"
+    },
+    {
+      "id": "6",
+      "title": "Final build and verification",
+      "description": "Run build, tests, verify CLI commands, test HTML files open correctly",
+      "status": "done",
+      "priority": "high",
+      "dependencies": [
+        "3",
+        "4",
+        "5"
+      ],
+      "phase": "Verification",
+      "details": "npm run build, npm test, test all kickoff commands, verify HTML opens",
+      "subtasks": [],
+      "updatedAt": "2025-12-18T09:40:00.000Z"
+    }
+  ],
+  "metadata": {
+    "version": "1.0.0",
+    "lastModified": "2025-12-18T09:40:00.000Z",
+    "taskCount": 6,
+    "completedCount": 6,
+    "tags": [
+      "master"
+    ]
+  }
+}

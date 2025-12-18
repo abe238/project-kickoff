@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kickoff - Usage Guide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0d1117;
+      --bg-secondary: #161b22;
+      --bg-tertiary: #21262d;
+      --border: #30363d;
+      --text: #e6edf3;
+      --text-muted: #8b949e;
+      --accent: #58a6ff;
+      --green: #3fb950;
+      --purple: #a371f7;
+      --orange: #d29922;
+      --red: #f85149;
+      --cyan: #39c5cf;
+      --yellow: #d29922;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem; }
+
+    /* Header */
+    header {
+      text-align: center;
+      padding: 3rem 0;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 2rem;
+    }
+    h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+    .subtitle { color: var(--text-muted); font-size: 1.2rem; }
+    .version {
+      display: inline-block;
+      background: var(--bg-tertiary);
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      color: var(--green);
+      margin-top: 1rem;
+    }
+
+    /* Navigation */
+    nav {
+      position: sticky;
+      top: 0;
+      background: rgba(13, 17, 23, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 0;
+      z-index: 100;
+      margin-bottom: 2rem;
+    }
+    .nav-links {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+    .nav-links a:hover { background: var(--bg-tertiary); color: var(--text); }
+
+    /* Sections */
+    section { margin-bottom: 3rem; }
+    h2 {
+      font-size: 1.75rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+    }
+    h3 { font-size: 1.2rem; color: var(--purple); margin: 1.5rem 0 0.75rem; }
+    p { margin-bottom: 1rem; color: var(--text-muted); }
+
+    /* Code blocks */
+    pre {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      overflow-x: auto;
+      margin: 1rem 0;
+      position: relative;
+    }
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+    }
+    pre code { color: var(--text); }
+    .inline-code {
+      background: var(--bg-tertiary);
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+      color: var(--cyan);
+    }
+    .copy-btn {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      background: var(--bg-tertiary);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.35rem 0.6rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.75rem;
+      transition: all 0.2s;
+    }
+    .copy-btn:hover { background: var(--border); color: var(--text); }
+    .copy-btn.copied { background: var(--green); color: #000; border-color: var(--green); }
+
+    /* Cards */
+    .card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin: 1rem 0;
+    }
+    .card-title { font-weight: 600; color: var(--text); margin-bottom: 0.5rem; }
+
+    /* Command reference */
+    .cmd-grid {
+      display: grid;
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+    .cmd-item {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+    }
+    .cmd-name {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--cyan);
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+    .cmd-desc { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.75rem; }
+    .cmd-options { font-size: 0.85rem; }
+    .cmd-options dt {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--orange);
+      margin-top: 0.5rem;
+    }
+    .cmd-options dd { color: var(--text-muted); margin-left: 1rem; }
+
+    /* Workflow steps */
+    .steps { counter-reset: step; }
+    .step {
+      display: flex;
+      gap: 1rem;
+      margin: 1rem 0;
+      padding: 1rem;
+      background: var(--bg-secondary);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    .step::before {
+      counter-increment: step;
+      content: counter(step);
+      background: var(--accent);
+      color: var(--bg);
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .step-content { flex: 1; }
+    .step-title { font-weight: 600; margin-bottom: 0.25rem; }
+    .step-desc { color: var(--text-muted); font-size: 0.9rem; }
+
+    /* Troubleshooting */
+    .issue {
+      background: var(--bg-secondary);
+      border-left: 3px solid var(--red);
+      padding: 1rem;
+      margin: 1rem 0;
+      border-radius: 0 8px 8px 0;
+    }
+    .issue-title { color: var(--red); font-weight: 600; margin-bottom: 0.5rem; }
+    .solution {
+      background: var(--bg-tertiary);
+      border-left: 3px solid var(--green);
+      padding: 1rem;
+      margin-top: 0.75rem;
+      border-radius: 0 6px 6px 0;
+    }
+    .solution-title { color: var(--green); font-weight: 500; font-size: 0.9rem; margin-bottom: 0.5rem; }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+      font-size: 0.9rem;
+    }
+    th, td {
+      padding: 0.75rem;
+      text-align: left;
+      border: 1px solid var(--border);
+    }
+    th { background: var(--bg-tertiary); color: var(--text); font-weight: 600; }
+    td { background: var(--bg-secondary); color: var(--text-muted); }
+    td code { color: var(--cyan); }
+
+    /* Tags */
+    .tag {
+      display: inline-block;
+      padding: 0.15rem 0.5rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      margin-right: 0.25rem;
+    }
+    .tag-required { background: rgba(248, 81, 73, 0.2); color: var(--red); }
+    .tag-optional { background: rgba(139, 148, 158, 0.2); color: var(--text-muted); }
+
+    @media (max-width: 768px) {
+      .container { padding: 1rem; }
+      h1 { font-size: 2rem; }
+      .nav-links { gap: 0.25rem; }
+      .nav-links a { padding: 0.4rem 0.6rem; font-size: 0.8rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Kickoff</h1>
+      <p class="subtitle">Modern project scaffolding for 2025 tech stacks</p>
+      <span class="version">v3.0.0</span>
+    </header>
+
+    <nav>
+      <ul class="nav-links">
+        <li><a href="#installation">Installation</a></li>
+        <li><a href="#quick-start">Quick Start</a></li>
+        <li><a href="#commands">Commands</a></li>
+        <li><a href="#workflows">Workflows</a></li>
+        <li><a href="#troubleshooting">Troubleshooting</a></li>
+        <li><a href="#env-vars">Environment</a></li>
+      </ul>
+    </nav>
+
+    <section id="installation">
+      <h2>Installation</h2>
+
+      <h3>Global Install (Recommended)</h3>
+      <pre><code>npm install -g project-kickoff</code><button class="copy-btn" onclick="copyCode(this)">Copy</button></pre>
+      <p>After installation, the <code class="inline-code">kickoff</code> command is available globally.</p>
+
+      <h3>Using npx (No Install)</h3>
+      <pre><code>npx project-kickoff create my-app</code><button class="copy-btn" onclick="copyCode(this)">Copy</button></pre>
+      <p>Run directly without installing. Perfect for one-off use.</p>
+
+      <h3>Requirements</h3>
+      <table>
+        <tr><th>Requirement</th><th>Version</th><th>Notes</th></tr>
+        <tr><td>Node.js</td><td><code>&gt;=18.0.0</code></td><td>LTS recommended</td></tr>
+        <tr><td>npm</td><td><code>&gt;=8.0.0</code></td><td>Comes with Node.js</td></tr>
+        <tr><td>Git</td><td>Latest</td><td>For repository initialization</td></tr>
+      </table>
+    </section>
+
+    <section id="quick-start">
+      <h2>Quick Start</h2>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-content">
+            <div class="step-title">Create a new project</div>
+            <div class="step-desc">Interactive wizard guides you through options</div>
+            <pre><code>kickoff create my-app</code><button class="copy-btn" onclick="copyCode(this)">Copy</button></pre>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-content">
+            <div class="step-title">Or use a preset for instant setup</div>
+            <div class="step-desc">Skip the wizard with pre-configured stacks</div>
+            <pre><code>kickoff create my-app --preset saas-starter</code><button class="copy-btn" onclick="copyCode(this)">Copy</button></pre>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-content">
+            <div class="step-title">Install dependencies and start</div>
+            <div class="step-desc">Your project is ready to develop</div>
+            <pre><code>cd my-app && npm install && npm run dev</code><button class="copy-btn" onclick="copyCode(this)">Copy</button></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="commands">
+      <h2>CLI Commands</h2>
+
+      <div class="cmd-grid">
+        <div class="cmd-item">
+          <div class="cmd-name">kickoff create &lt;name&gt;</div>
+          <div class="cmd-desc">Create a new project with the interactive wizard or a preset</div>
+          <dl class="cmd-options">
+            <dt>-p, --preset &lt;name&gt;</dt>
+            <dd>Use a preset configuration (skip wizard)</dd>
+            <dt>-d, --directory &lt;path&gt;</dt>
+            <dd>Output directory (default: current)</dd>
+            <dt>--dry-run</dt>
+            <dd>Preview what would be created without writing files</dd>
+            <dt>--skip-install</dt>
+            <dd>Skip automatic package installation</dd>
+            <dt>--skip-git</dt>
+            <dd>Skip git repository initialization</dd>
+            <dt>-y, --yes</dt>
+            <dd>Use default values for all prompts</dd>
+            <dt>-v, --verbose</dt>
+            <dd>Enable verbose logging</dd>
+          </dl>
+        </div>
+
+        <div class="cmd-item">
+          <div class="cmd-name">kickoff list</div>
+          <div class="cmd-desc">Display all available presets with their tech stacks</div>
+        </div>
+
+        <div class="cmd-item">
+          <div class="cmd-name">kickoff stacks</div>
+          <div class="cmd-desc">Open the interactive stack explorer in your browser</div>
+        </div>
+
+        <div class="cmd-item">
+          <div class="cmd-name">kickoff docs</div>
+          <div class="cmd-desc">Open this usage guide in your browser</div>
+        </div>
+
+        <div class="cmd-item">
+          <div class="cmd-name">kickoff config</div>
+          <div class="cmd-desc">Manage default settings</div>
+          <dl class="cmd-options">
+            <dt>--show</dt>
+            <dd>Display current configuration</dd>
+            <dt>--reset</dt>
+            <dd>Reset to default settings</dd>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <section id="workflows">
+      <h2>Common Workflows</h2>
+
+      <h3>SaaS Application</h3>
+      <div class="card">
+        <div class="card-title">Next.js + Supabase + Drizzle ORM</div>
+        <pre><code>kickoff create my-saas --preset saas-starter
+cd my-saas
+npm install
+# Add your Supabase keys to .env
+npm run dev</code><button class="copy-btn" onclick="copyCode(this)">Copy</button></pre>
+        <p>Includes: Authentication, database, design system (shadcn/ui), Docker, CI/CD</p>
+      </div>
+
+      <h3>AI/RAG Application</h3>
+      <div class="card">
+        <div class="card-title">Next.js + Supabase Vector + Vercel AI SDK</div>
+        <pre><code>kickoff create my-ai-app --preset ai-rag-app
+cd my-ai-app
+npm install
+# Add OPENAI_API_KEY and Supabase keys to .env
+npm run dev</code><button class="copy-btn" onclick="copyCode(this)">Copy</button></pre>
+        <p>Includes: Vector search, embeddings, streaming AI responses, RAG pipeline</p>
+      </div>
+
+      <h3>Local AI Agent (No Cloud Costs)</h3>
+      <div class="card">
+        <div class="card-title">Hono + Ollama + LangChain</div>
+        <pre><code># First install Ollama: https://ollama.ai
+ollama pull llama3
+
+kickoff create my-agent --preset ai-agent
+cd my-agent
+bun install
+bun run dev</code><button class="copy-btn" onclick="copyCode(this)">Copy</button></pre>
+        <p>Includes: Local LLM inference, Chroma vector DB, LangChain agents</p>
+      </div>
+
+      <h3>Python API</h3>
+      <div class="card">
+        <div class="card-title">FastAPI + PostgreSQL + SQLAlchemy</div>
+        <pre><code>kickoff create my-api --preset fastapi-starter
+cd my-api
+uv sync  # or: pip install -r requirements.txt
+uvicorn main:app --reload</code><button class="copy-btn" onclick="copyCode(this)">Copy</button></pre>
+        <p>Includes: Async API, auto OpenAPI docs, database migrations, Docker</p>
+      </div>
+
+      <h3>Go Microservice</h3>
+      <div class="card">
+        <div class="card-title">Gin + PostgreSQL + GORM</div>
+        <pre><code>kickoff create my-service --preset go-microservice
+cd my-service
+go mod tidy
+docker compose up -d db
+go run main.go</code><button class="copy-btn" onclick="copyCode(this)">Copy</button></pre>
+        <p>Includes: High-performance API, connection pooling, structured logging</p>
+      </div>
+
+      <h3>Rust API</h3>
+      <div class="card">
+        <div class="card-title">Axum + PostgreSQL + SQLx</div>
+        <pre><code>kickoff create my-rust-api --preset rust-api
+cd my-rust-api
+docker compose up -d db
+cargo run</code><button class="copy-btn" onclick="copyCode(this)">Copy</button></pre>
+        <p>Includes: Compile-time SQL verification, async runtime, maximum performance</p>
+      </div>
+
+      <h3>Edge API</h3>
+      <div class="card">
+        <div class="card-title">Hono + Turso + Bun</div>
+        <pre><code>kickoff create my-edge-api --preset edge-api
+cd my-edge-api
+bun install
+# Add TURSO_DATABASE_URL and TURSO_AUTH_TOKEN to .env
+bun run dev</code><button class="copy-btn" onclick="copyCode(this)">Copy</button></pre>
+        <p>Includes: Edge-first, global SQLite, deploy to Cloudflare/Deno/Vercel</p>
+      </div>
+    </section>
+
+    <section id="troubleshooting">
+      <h2>Troubleshooting</h2>
+
+      <div class="issue">
+        <div class="issue-title">Error: Directory already exists</div>
+        <p>The project name you specified already exists as a directory.</p>
+        <div class="solution">
+          <div class="solution-title">Solution</div>
+          <p>Choose a different name or delete the existing directory:</p>
+          <pre><code>rm -rf my-app  # Be careful!
+kickoff create my-app</code></pre>
+        </div>
+      </div>
+
+      <div class="issue">
+        <div class="issue-title">Node.js version error</div>
+        <p>Kickoff requires Node.js 18 or higher.</p>
+        <div class="solution">
+          <div class="solution-title">Solution</div>
+          <p>Update Node.js using nvm or download from nodejs.org:</p>
+          <pre><code>nvm install 20
+nvm use 20
+node --version  # Should show v20.x.x</code></pre>
+        </div>
+      </div>
+
+      <div class="issue">
+        <div class="issue-title">Git initialization failed</div>
+        <p>Git is not installed or not in PATH.</p>
+        <div class="solution">
+          <div class="solution-title">Solution</div>
+          <p>Skip git init or install git:</p>
+          <pre><code># Skip git initialization
+kickoff create my-app --skip-git
+
+# Or install git
+# macOS: brew install git
+# Ubuntu: sudo apt install git</code></pre>
+        </div>
+      </div>
+
+      <div class="issue">
+        <div class="issue-title">Port 3000 already in use</div>
+        <p>Another application is using the default port.</p>
+        <div class="solution">
+          <div class="solution-title">Solution</div>
+          <p>Kill the process or use a different port:</p>
+          <pre><code># Find and kill the process
+lsof -i :3000
+kill -9 &lt;PID&gt;
+
+# Or change port in your project
+PORT=3001 npm run dev</code></pre>
+        </div>
+      </div>
+
+      <div class="issue">
+        <div class="issue-title">Template not found</div>
+        <p>The specified project type or preset doesn't exist.</p>
+        <div class="solution">
+          <div class="solution-title">Solution</div>
+          <p>List available options:</p>
+          <pre><code>kickoff list  # See all presets</code></pre>
+        </div>
+      </div>
+
+      <div class="issue">
+        <div class="issue-title">Permission denied errors</div>
+        <p>npm global install requires elevated permissions.</p>
+        <div class="solution">
+          <div class="solution-title">Solution</div>
+          <p>Fix npm permissions or use npx:</p>
+          <pre><code># Option 1: Use npx (no install needed)
+npx project-kickoff create my-app
+
+# Option 2: Fix npm permissions
+mkdir ~/.npm-global
+npm config set prefix '~/.npm-global'
+echo 'export PATH=~/.npm-global/bin:$PATH' >> ~/.bashrc
+source ~/.bashrc</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section id="env-vars">
+      <h2>Environment Variables</h2>
+      <p>After creating a project, copy <code class="inline-code">.env.example</code> to <code class="inline-code">.env</code> and fill in your values.</p>
+
+      <h3>Database Providers</h3>
+      <table>
+        <tr><th>Provider</th><th>Variables</th><th>Where to Get</th></tr>
+        <tr>
+          <td>Supabase</td>
+          <td><code>SUPABASE_URL</code><br><code>SUPABASE_ANON_KEY</code></td>
+          <td><a href="https://supabase.com/dashboard" target="_blank">supabase.com/dashboard</a></td>
+        </tr>
+        <tr>
+          <td>Neon</td>
+          <td><code>DATABASE_URL</code></td>
+          <td><a href="https://neon.tech/console" target="_blank">neon.tech/console</a></td>
+        </tr>
+        <tr>
+          <td>Turso</td>
+          <td><code>TURSO_DATABASE_URL</code><br><code>TURSO_AUTH_TOKEN</code></td>
+          <td><a href="https://turso.tech/dashboard" target="_blank">turso.tech/dashboard</a></td>
+        </tr>
+        <tr>
+          <td>Convex</td>
+          <td><code>CONVEX_DEPLOYMENT</code></td>
+          <td><a href="https://dashboard.convex.dev" target="_blank">dashboard.convex.dev</a></td>
+        </tr>
+      </table>
+
+      <h3>Auth Providers</h3>
+      <table>
+        <tr><th>Provider</th><th>Variables</th><th>Where to Get</th></tr>
+        <tr>
+          <td>Clerk</td>
+          <td><code>CLERK_SECRET_KEY</code><br><code>NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY</code></td>
+          <td><a href="https://dashboard.clerk.com" target="_blank">dashboard.clerk.com</a></td>
+        </tr>
+        <tr>
+          <td>Kinde</td>
+          <td><code>KINDE_ISSUER_URL</code><br><code>KINDE_CLIENT_ID</code><br><code>KINDE_CLIENT_SECRET</code></td>
+          <td><a href="https://app.kinde.com" target="_blank">app.kinde.com</a></td>
+        </tr>
+        <tr>
+          <td>Auth0</td>
+          <td><code>AUTH0_SECRET</code><br><code>AUTH0_ISSUER_BASE_URL</code><br><code>AUTH0_CLIENT_ID</code><br><code>AUTH0_CLIENT_SECRET</code></td>
+          <td><a href="https://manage.auth0.com" target="_blank">manage.auth0.com</a></td>
+        </tr>
+        <tr>
+          <td>Better Auth</td>
+          <td><code>BETTER_AUTH_SECRET</code></td>
+          <td>Generate with <code>openssl rand -base64 32</code></td>
+        </tr>
+      </table>
+
+      <h3>AI Providers</h3>
+      <table>
+        <tr><th>Provider</th><th>Variables</th><th>Where to Get</th></tr>
+        <tr>
+          <td>OpenAI</td>
+          <td><code>OPENAI_API_KEY</code></td>
+          <td><a href="https://platform.openai.com/api-keys" target="_blank">platform.openai.com/api-keys</a></td>
+        </tr>
+        <tr>
+          <td>Anthropic</td>
+          <td><code>ANTHROPIC_API_KEY</code></td>
+          <td><a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a></td>
+        </tr>
+        <tr>
+          <td>Pinecone</td>
+          <td><code>PINECONE_API_KEY</code><br><code>PINECONE_INDEX</code></td>
+          <td><a href="https://app.pinecone.io" target="_blank">app.pinecone.io</a></td>
+        </tr>
+        <tr>
+          <td>Ollama</td>
+          <td><code>OLLAMA_BASE_URL</code></td>
+          <td>Default: <code>http://localhost:11434</code></td>
+        </tr>
+      </table>
+    </section>
+
+    <section id="next-steps">
+      <h2>What's Included</h2>
+      <p>Every project created with Kickoff includes:</p>
+      <div class="card">
+        <ul style="list-style: none; padding: 0;">
+          <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border);">
+            <span style="color: var(--green); margin-right: 0.5rem;">✓</span>
+            <strong>TypeScript/Python/Go/Rust</strong> configured with strict mode
+          </li>
+          <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border);">
+            <span style="color: var(--green); margin-right: 0.5rem;">✓</span>
+            <strong>Docker + docker-compose</strong> ready for production
+          </li>
+          <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border);">
+            <span style="color: var(--green); margin-right: 0.5rem;">✓</span>
+            <strong>GitHub Actions CI/CD</strong> pipeline with security scanning
+          </li>
+          <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border);">
+            <span style="color: var(--green); margin-right: 0.5rem;">✓</span>
+            <strong>Database migrations</strong> + ORM setup
+          </li>
+          <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border);">
+            <span style="color: var(--green); margin-right: 0.5rem;">✓</span>
+            <strong>Auth integration</strong> (if selected)
+          </li>
+          <li style="padding: 0.5rem 0; border-bottom: 1px solid var(--border);">
+            <span style="color: var(--green); margin-right: 0.5rem;">✓</span>
+            <strong>AI/ML scaffolding</strong> (if selected)
+          </li>
+          <li style="padding: 0.5rem 0;">
+            <span style="color: var(--green); margin-right: 0.5rem;">✓</span>
+            <strong>Security best practices</strong> baked in
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <footer style="text-align: center; padding: 2rem 0; border-top: 1px solid var(--border); margin-top: 2rem; color: var(--text-muted);">
+      <p>
+        <a href="https://github.com/abe238/project-kickoff" style="color: var(--accent); text-decoration: none;">GitHub</a> ·
+        <a href="https://github.com/abe238/project-kickoff/issues" style="color: var(--accent); text-decoration: none;">Report Issues</a>
+      </p>
+      <p style="margin-top: 0.5rem; font-size: 0.85rem;">Kickoff v3.0.0 · MIT License</p>
+    </footer>
+  </div>
+
+  <script>
+    function copyCode(btn) {
+      const pre = btn.parentElement;
+      const code = pre.querySelector('code').textContent;
+      navigator.clipboard.writeText(code).then(() => {
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = 'Copy';
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>
