@@ -84,11 +84,26 @@
 
   <nav>
     <a href="USAGE.html" style="color:var(--green)">← Usage Guide</a>
-    <a href="#presets">Presets</a><a href="#complexity">Complexity</a><a href="#project-types">Project Types</a>
+    <a href="#validation">Validation</a><a href="#presets">Presets</a><a href="#complexity">Complexity</a><a href="#project-types">Project Types</a>
     <a href="#databases">Databases</a><a href="#orms">ORMs</a><a href="#auth">Auth</a><a href="#runtimes">Runtimes</a>
     <a href="#ai-frameworks">AI Frameworks</a><a href="#vector-dbs">Vector DBs</a><a href="#embeddings">Embeddings</a>
     <a href="#local-ai">Local AI</a><a href="#web-servers">Web Servers</a>
   </nav>
+
+  <section id="validation">
+    <h2>AI-Enhanced Stack Validation <span class="count">3 providers</span></h2>
+    <p style="color:var(--muted);margin-bottom:1.5rem">Intelligent validation catches compatibility issues before you code. Use <code style="color:var(--blue)">--validate</code> to enable AI-powered analysis.</p>
+    <div class="track-section">
+      <div class="track-card track-quick" style="border-color:var(--green)"><h3 style="color:var(--green)">Rule-Based (Default)</h3><ul><li>Instant, offline checks</li><li>Known incompatibilities</li><li>D1 + Prisma conflicts</li><li>NoSQL + SQL ORM mismatches</li><li>Always runs automatically</li></ul></div>
+      <div class="track-card track-production" style="border-color:var(--purple)"><h3 style="color:var(--purple)">LLM-Enhanced (--validate)</h3><ul><li>AI-powered architecture analysis</li><li>Performance recommendations</li><li>Edge case detection</li><li>Confidence scoring</li><li>Multi-provider fallback</li></ul></div>
+    </div>
+    <div class="cards" style="margin-top:1rem">
+      <div class="card" data-tags="paid api llm validation"><div class="card-header"><span class="card-name">anthropic</span><span class="badge badge-paid">API Key</span></div><div class="card-desc">Claude Sonnet 4.5 - Best for architecture analysis</div><div class="card-meta"><span class="meta-tag">ANTHROPIC_API_KEY</span><span class="meta-tag">Recommended</span></div></div>
+      <div class="card" data-tags="paid api llm validation"><div class="card-header"><span class="card-name">openai</span><span class="badge badge-paid">API Key</span></div><div class="card-desc">GPT-5 - Strong reasoning capabilities</div><div class="card-meta"><span class="meta-tag">OPENAI_API_KEY</span><span class="meta-tag">Fallback</span></div></div>
+      <div class="card" data-tags="paid api llm validation"><div class="card-header"><span class="card-name">gemini</span><span class="badge badge-free">Free Tier</span></div><div class="card-desc">Gemini 3 Flash - Fast and cost-effective</div><div class="card-meta"><span class="meta-tag">GEMINI_API_KEY</span><span class="meta-tag">Fallback</span></div></div>
+    </div>
+    <div class="preset-cmd" style="margin-top:1rem;background:var(--bg2)"><span>kickoff create my-app --validate --provider anthropic</span><button class="copy-btn" onclick="copyToClipboard(this)">Copy</button></div>
+  </section>
 
   <section id="presets">
     <h2>Presets <span class="count">14 options</span></h2>

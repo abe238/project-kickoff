@@ -268,6 +268,7 @@
         <li><a href="#quick-start">Quick Start</a></li>
         <li><a href="#interactive-wizard">Wizard</a></li>
         <li><a href="#commands">Commands</a></li>
+        <li><a href="#validation">Validation</a></li>
         <li><a href="#workflows">Workflows</a></li>
         <li><a href="#troubleshooting">Troubleshooting</a></li>
         <li><a href="#env-vars">Environment</a></li>
@@ -489,6 +490,12 @@ Next steps:
             <dd>Use default values for all prompts</dd>
             <dt>-v, --verbose</dt>
             <dd>Enable verbose logging</dd>
+            <dt>--validate</dt>
+            <dd>Run AI-enhanced stack validation before scaffolding</dd>
+            <dt>--provider &lt;name&gt;</dt>
+            <dd>LLM provider for validation (anthropic, openai, gemini, auto)</dd>
+            <dt>--no-rules</dt>
+            <dd>Skip rule-based validation (not recommended)</dd>
           </dl>
         </div>
 
@@ -518,6 +525,101 @@ Next steps:
           </dl>
         </div>
       </div>
+    </section>
+
+    <section id="validation">
+      <h2>AI-Enhanced Stack Validation</h2>
+      <p>Kickoff includes intelligent stack validation that catches compatibility issues before you start coding. Validation runs in two modes:</p>
+
+      <div class="card" style="border-left: 3px solid var(--green);">
+        <div class="card-title" style="color: var(--green);">Rule-Based Validation (Always On)</div>
+        <p>Instant, offline checks for known incompatibilities:</p>
+        <ul style="color: var(--text-muted); margin-left: 1.5rem;">
+          <li>D1 + Prisma edge runtime issues</li>
+          <li>NoSQL databases with SQL ORMs</li>
+          <li>Platform-specific auth requiring matching database</li>
+          <li>Apple Silicon-only options (MLX) on other platforms</li>
+        </ul>
+      </div>
+
+      <div class="card" style="border-left: 3px solid var(--purple);">
+        <div class="card-title" style="color: var(--purple);">LLM-Enhanced Validation (Optional)</div>
+        <p>AI-powered analysis using Claude, GPT-5, or Gemini:</p>
+        <ul style="color: var(--text-muted); margin-left: 1.5rem;">
+          <li>Architecture recommendations for your stack</li>
+          <li>Performance considerations and edge cases</li>
+          <li>Better alternatives based on your use case</li>
+          <li>Confidence scoring for reliability</li>
+        </ul>
+      </div>
+
+      <h3>Enable AI Validation</h3>
+      <pre><code># Enable AI-enhanced validation
+kickoff create my-app --validate
+
+# Choose specific LLM provider
+kickoff create my-app --validate --provider anthropic
+kickoff create my-app --validate --provider openai
+kickoff create my-app --validate --provider gemini</code><button class="copy-btn" onclick="copyCode(this)">Copy</button></pre>
+
+      <h3>Supported LLM Providers</h3>
+      <table>
+        <tr><th>Provider</th><th>Model</th><th>Environment Variable</th></tr>
+        <tr>
+          <td>Anthropic</td>
+          <td><code>Claude Sonnet 4.5</code></td>
+          <td><code>ANTHROPIC_API_KEY</code></td>
+        </tr>
+        <tr>
+          <td>OpenAI</td>
+          <td><code>GPT-5</code></td>
+          <td><code>OPENAI_API_KEY</code></td>
+        </tr>
+        <tr>
+          <td>Google</td>
+          <td><code>Gemini 3 Flash</code></td>
+          <td><code>GEMINI_API_KEY</code></td>
+        </tr>
+      </table>
+      <p>Set any API key in your <code class="inline-code">.env</code> file. The validator auto-detects available providers and falls back gracefully if one fails.</p>
+
+      <h3>Example Validation Output</h3>
+      <pre><code>Stack Validation Results
+──────────────────────────────────────────────────
+📋 Rule-Based Validation:
+  ✅ No compatibility issues found
+
+🤖 AI-Enhanced Validation (Claude - 92% confidence):
+  ⚠️ Warning: Better-Auth + Next.js + Bun
+     Build failures reported with this combination
+     💡 Consider using Node.js runtime or Clerk for auth
+
+  💡 Recommendations:
+  • Consider adding rate limiting for production API
+  • Supabase RLS pairs well with your auth choice
+──────────────────────────────────────────────────
+✅ Validation PASSED with warnings - Review recommendations</code><button class="copy-btn" onclick="copyCode(this)">Copy</button></pre>
+
+      <h3>Validation Behavior</h3>
+      <table>
+        <tr><th>Scenario</th><th>Result</th></tr>
+        <tr>
+          <td>Rule-based finds errors</td>
+          <td>Scaffolding blocked, must fix errors</td>
+        </tr>
+        <tr>
+          <td>LLM finds errors with &gt;70% confidence</td>
+          <td>Scaffolding blocked, must fix errors</td>
+        </tr>
+        <tr>
+          <td>Warnings only</td>
+          <td>Scaffolding proceeds, warnings displayed</td>
+        </tr>
+        <tr>
+          <td>No API keys available</td>
+          <td>Falls back to rule-based only</td>
+        </tr>
+      </table>
     </section>
 
     <section id="workflows">
@@ -807,7 +909,7 @@ source ~/.bashrc</code></pre>
         <a href="https://github.com/abe238/project-kickoff" style="color: var(--accent); text-decoration: none;">GitHub</a> ·
         <a href="https://github.com/abe238/project-kickoff/issues" style="color: var(--accent); text-decoration: none;">Report Issues</a>
       </p>
-      <p style="margin-top: 0.5rem; font-size: 0.85rem;">Kickoff v3.0.0 · MIT License</p>
+      <p style="margin-top: 0.5rem; font-size: 0.85rem;">Kickoff v3.0.0 · ISC License</p>
     </footer>
   </div>
 

@@ -450,6 +450,78 @@ project/
 
 ---
 
+## AI-Enhanced Stack Validation
+
+Kickoff includes intelligent stack validation that catches compatibility issues before you start coding.
+
+### Dual-Mode Validation
+
+| Mode | Speed | Requires API Key | Best For |
+|------|-------|------------------|----------|
+| **Rule-based** | Instant | No | Known incompatibilities, common mistakes |
+| **LLM-enhanced** | 2-5s | Yes | Architecture advice, edge cases, recommendations |
+
+### Usage
+
+```bash
+# Rule-based validation only (default, always runs)
+kickoff create my-app
+
+# Enable AI-enhanced validation
+kickoff create my-app --validate
+
+# Choose specific LLM provider
+kickoff create my-app --validate --provider anthropic
+kickoff create my-app --validate --provider openai
+kickoff create my-app --validate --provider gemini
+```
+
+### Supported LLM Providers
+
+| Provider | Model | Environment Variable |
+|----------|-------|---------------------|
+| Anthropic | Claude Sonnet 4.5 | `ANTHROPIC_API_KEY` |
+| OpenAI | GPT-5 | `OPENAI_API_KEY` |
+| Google | Gemini 3 Flash | `GEMINI_API_KEY` |
+
+Set any of these in your `.env` file. The validator auto-detects available providers and falls back gracefully.
+
+### What Gets Validated
+
+**Rule-based checks:**
+- D1 + Prisma incompatibility (edge runtime issues)
+- NoSQL databases with SQL ORMs
+- Platform-specific auth requiring matching database
+- Apple Silicon-only options (MLX) on other platforms
+
+**AI-enhanced analysis:**
+- Architecture recommendations for your stack
+- Performance considerations (e.g., Turbopuffer cold query latency)
+- Better alternatives based on your use case
+- Edge case compatibility issues
+
+### Example Output
+
+```
+Stack Validation Results
+──────────────────────────────────────────────────
+📋 Rule-Based Validation:
+  ✅ No compatibility issues found
+
+🤖 AI-Enhanced Validation (Claude - 92% confidence):
+  ⚠️ Warning: Better-Auth + Next.js + Bun
+     Build failures reported with this combination
+     💡 Consider using Node.js runtime or Clerk for auth
+
+  💡 Recommendations:
+  • Consider adding rate limiting for production API
+  • Supabase RLS pairs well with your auth choice
+──────────────────────────────────────────────────
+✅ Validation PASSED with warnings - Review recommendations
+```
+
+---
+
 ## Security Features
 
 Based on production incident lessons:
