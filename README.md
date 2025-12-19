@@ -1,5 +1,21 @@
 # Kickoff v3.0.0
 
+[![GitHub stars](https://img.shields.io/github/stars/abe238/project-kickoff?style=social)](https://github.com/abe238/project-kickoff/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/abe238/project-kickoff?style=social)](https://github.com/abe238/project-kickoff/network/members)
+[![GitHub watchers](https://img.shields.io/github/watchers/abe238/project-kickoff?style=social)](https://github.com/abe238/project-kickoff/watchers)
+
+[![npm version](https://img.shields.io/npm/v/project-kickoff?color=blue)](https://www.npmjs.com/package/project-kickoff)
+[![License: ISC](https://img.shields.io/badge/License-ISC-green.svg)](https://opensource.org/licenses/ISC)
+[![Node.js](https://img.shields.io/badge/Node.js-20%2B-339933?logo=node.js)](https://nodejs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178C6?logo=typescript)](https://www.typescriptlang.org/)
+
+[![GitHub last commit](https://img.shields.io/github/last-commit/abe238/project-kickoff)](https://github.com/abe238/project-kickoff/commits/main)
+[![GitHub issues](https://img.shields.io/github/issues/abe238/project-kickoff)](https://github.com/abe238/project-kickoff/issues)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/abe238/project-kickoff)](https://github.com/abe238/project-kickoff/pulls)
+[![GitHub repo size](https://img.shields.io/github/repo-size/abe238/project-kickoff)](https://github.com/abe238/project-kickoff)
+
+---
+
 Modern CLI scaffolding tool for production-ready projects with 2025 tech stacks. Multi-language support (TypeScript, Python, Go, Rust, Deno), AI/ML integrations, and security best practices baked in.
 
 ## Features
@@ -487,7 +503,7 @@ npm test
 
 ## License
 
-MIT
+ISC
 
 ---
 
