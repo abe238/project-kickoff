@@ -7,10 +7,15 @@ import path from 'path';
 import fs from 'fs-extra';
 import { execa } from 'execa';
 import { fileURLToPath } from 'url';
+import { config as dotenvConfig } from 'dotenv';
 import { promptProjectConfig } from './lib/prompter.js';
 import { scaffoldProject } from './lib/scaffolder.js';
 import { configManager } from './core/ConfigManager.js';
 import { logger } from './utils/Logger.js';
+import { validateStack, validateStackLocal, getLLMProviderInfo, type LLMProvider } from './core/validator.js';
+
+// Load environment variables from .env
+dotenvConfig();
 
 const VERSION = '3.0.0';
 
@@ -71,6 +76,9 @@ program
   .option('--skip-git', 'Skip git initialization')
   .option('-y, --yes', 'Use default values for all prompts')
   .option('-v, --verbose', 'Enable verbose logging')
+  .option('--validate', 'Run AI-enhanced stack validation before scaffolding')
+  .option('--provider <name>', 'LLM provider for validation (anthropic, openai, gemini, auto)', 'auto')
+  .option('--no-rules', 'Skip rule-based validation (not recommended)')
   .description('Create a new project')
   .action(async (name, options) => {
     console.log(BANNER);
@@ -97,6 +105,41 @@ program
         console.log(`  ${chalk.cyan('AI:')} ${config.aiFramework}${config.vectorDB !== 'none' ? ` + ${config.vectorDB}` : ''}`);
       }
       console.log(chalk.gray('─'.repeat(40)));
+
+      // Stack validation (rules always run unless --no-rules, LLM when --validate)
+      if (options.rules !== false || options.validate) {
+        console.log('\n' + chalk.bold('Stack Validation:'));
+
+        const validationSpinner = ora('Validating stack configuration...').start();
+
+        try {
+          const validationResult = await validateStack(config, {
+            useLLM: options.validate,
+            provider: options.provider as LLMProvider,
+            verbose: options.verbose,
+          });
+
+          validationSpinner.stop();
+          console.log(validationResult.summary);
+
+          if (!validationResult.valid) {
+            console.log(chalk.red('\n⛔ Stack validation failed. Please fix the errors above before creating the project.'));
+            console.log(chalk.dim('Tip: Use different stack choices or review the compatibility issues.\n'));
+            process.exit(1);
+          }
+
+          // Show LLM provider info if using validation
+          if (options.validate && validationResult.llmResult?.provider) {
+            console.log(chalk.dim(`\nUsed ${validationResult.llmResult.provider} for AI-enhanced validation`));
+          }
+        } catch (validationError) {
+          validationSpinner.fail('Validation error');
+          console.error(chalk.yellow('Warning: Validation failed, proceeding with caution'));
+          if (options.verbose) {
+            console.error(validationError);
+          }
+        }
+      }
 
       if (options.dryRun) {
         console.log(chalk.yellow('\n[Dry Run] Would create project at:'));
