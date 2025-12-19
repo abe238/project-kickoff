@@ -116,8 +116,9 @@
         "dependencies": [
           "1"
         ],
-        "status": "pending",
-        "subtasks": []
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-18T10:12:51.691Z"
       },
       {
         "id": "3",
@@ -130,8 +131,9 @@
           "1",
           "2"
         ],
-        "status": "pending",
-        "subtasks": []
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-18T10:16:34.993Z"
       },
       {
         "id": "4",
@@ -144,8 +146,9 @@
           "1",
           "2"
         ],
-        "status": "pending",
-        "subtasks": []
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-18T10:23:16.536Z"
       },
       {
         "id": "5",
@@ -158,8 +161,9 @@
           "3",
           "4"
         ],
-        "status": "pending",
-        "subtasks": []
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-18T14:45:10.362Z"
       },
       {
         "id": "6",
@@ -172,8 +176,9 @@
           "1",
           "2"
         ],
-        "status": "pending",
-        "subtasks": []
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-18T14:48:25.087Z"
       },
       {
         "id": "7",
@@ -185,8 +190,9 @@
         "dependencies": [
           "6"
         ],
-        "status": "pending",
-        "subtasks": []
+        "status": "done",
+        "subtasks": [],
+        "updatedAt": "2025-12-18T14:50:49.802Z"
       },
       {
         "id": "8",
@@ -199,8 +205,9 @@
           "5",
           "7"
         ],
-        "status": "pending",
-        "subtasks": []
+        "status": "in-progress",
+        "subtasks": [],
+        "updatedAt": "2025-12-18T14:51:19.206Z"
       },
       {
         "id": "9",
@@ -244,9 +251,9 @@
     ],
     "metadata": {
       "version": "1.0.0",
-      "lastModified": "2025-12-18T10:01:45.487Z",
+      "lastModified": "2025-12-18T14:51:19.207Z",
       "taskCount": 10,
-      "completedCount": 1,
+      "completedCount": 7,
       "tags": [
         "master"
       ]

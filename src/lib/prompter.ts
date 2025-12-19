@@ -289,6 +289,12 @@ export interface PromptOptions {
 }
 
 export async function promptProjectConfig(options: PromptOptions = {}): Promise<ProjectConfig> {
+  // If preset was provided via CLI, validate it
+  const cliPreset = options.preset as Preset | undefined;
+  if (cliPreset && cliPreset !== 'none' && !PRESETS[cliPreset as Exclude<Preset, 'none'>]) {
+    throw new Error(`Unknown preset: ${cliPreset}. Run 'kickoff list' to see available presets.`);
+  }
+
   const answers = await inquirer.prompt([
     {
       type: 'list',
@@ -318,6 +324,7 @@ export async function promptProjectConfig(options: PromptOptions = {}): Promise<
         { name: 'MCP Tool - AI tool server', value: 'mcp-tool' },
       ],
       default: 'none',
+      when: () => !cliPreset, // Skip if preset provided via CLI
     },
     {
       type: 'list',
@@ -329,19 +336,21 @@ export async function promptProjectConfig(options: PromptOptions = {}): Promise<
         { name: 'Production - Security-focused, compliance-ready', value: 'production' },
       ],
       default: 'standard',
-      when: (ans) => ans.preset === 'none',
+      when: (ans) => !cliPreset && ans.preset === 'none',
     },
     {
       type: 'input',
       name: 'name',
       message: 'Project name (kebab-case):',
       validate: validateProjectName,
+      when: () => !options.name, // Skip if name provided via CLI
     },
     {
       type: 'input',
       name: 'description',
       message: 'Project description:',
       default: 'A new project scaffolded with kickoff',
+      when: () => !cliPreset, // Skip for CLI presets - use default
     },
     {
       type: 'list',
@@ -377,7 +386,7 @@ export async function promptProjectConfig(options: PromptOptions = {}): Promise<
         { name: 'MCP Server (AI integrations)', value: 'mcp-server' },
         { name: 'Library (npm package)', value: 'library' },
       ],
-      when: (ans) => ans.preset === 'none',
+      when: (ans) => !cliPreset && ans.preset === 'none',
     },
     // Runtime (only for JS/TS projects that have a choice)
     {
@@ -394,7 +403,7 @@ export async function promptProjectConfig(options: PromptOptions = {}): Promise<
         return 'node';
       },
       when: (ans) => {
-        if (ans.preset !== 'none') return false;
+        if (cliPreset || ans.preset !== 'none') return false;
         const type = ans.type;
         // Only show runtime choice for JS/TS projects
         const jsTypes = ['nextjs', 'tanstack-start', 'vite-react', 'hono-api', 'elysia-api', 'express-api', 'worker', 'cli', 'mcp-server', 'library'];
@@ -411,7 +420,9 @@ export async function promptProjectConfig(options: PromptOptions = {}): Promise<
         return true;
       },
       when: (ans) => {
-        const type = ans.preset !== 'none' ? PRESETS[ans.preset as Exclude<Preset, 'none'>].type : ans.type;
+        if (cliPreset) return false; // Skip for CLI presets - use generated default
+        const effectivePreset = ans.preset;
+        const type = effectivePreset && effectivePreset !== 'none' ? PRESETS[effectivePreset as Exclude<Preset, 'none'>].type : ans.type;
         return needsPortQuestion(type);
       },
     },
@@ -479,7 +490,7 @@ export async function promptProjectConfig(options: PromptOptions = {}): Promise<
         return 'supabase';
       },
       when: (ans) => {
-        if (ans.preset !== 'none') return false;
+        if (cliPreset || ans.preset !== 'none') return false;
         return canHaveDatabase(ans.type);
       },
     },
@@ -540,7 +551,7 @@ export async function promptProjectConfig(options: PromptOptions = {}): Promise<
         return 'drizzle';
       },
       when: (ans) => {
-        if (ans.preset !== 'none') return false;
+        if (cliPreset || ans.preset !== 'none') return false;
         return ans.databaseProvider && ans.databaseProvider !== 'none';
       },
     },
@@ -606,7 +617,7 @@ export async function promptProjectConfig(options: PromptOptions = {}): Promise<
         return 'better-auth';
       },
       when: (ans) => {
-        if (ans.preset !== 'none') return false;
+        if (cliPreset || ans.preset !== 'none') return false;
         const type = ans.type;
         const track = ans.complexityTrack;
         return canHaveAuth(type) && track !== 'quick';
@@ -619,7 +630,9 @@ export async function promptProjectConfig(options: PromptOptions = {}): Promise<
       message: 'Include interactive prompts (inquirer)?',
       default: true,
       when: (ans) => {
-        const type = ans.preset !== 'none' ? PRESETS[ans.preset as Exclude<Preset, 'none'>].type : ans.type;
+        if (cliPreset) return false; // Skip for CLI presets - use defaults
+        const effectivePreset = ans.preset;
+        const type = effectivePreset && effectivePreset !== 'none' ? PRESETS[effectivePreset as Exclude<Preset, 'none'>].type : ans.type;
         return type === 'cli';
       },
     },
@@ -629,7 +642,9 @@ export async function promptProjectConfig(options: PromptOptions = {}): Promise<
       message: 'Support config file (~/.projectrc)?',
       default: false,
       when: (ans) => {
-        const type = ans.preset !== 'none' ? PRESETS[ans.preset as Exclude<Preset, 'none'>].type : ans.type;
+        if (cliPreset) return false; // Skip for CLI presets - use defaults
+        const effectivePreset = ans.preset;
+        const type = effectivePreset && effectivePreset !== 'none' ? PRESETS[effectivePreset as Exclude<Preset, 'none'>].type : ans.type;
         return type === 'cli';
       },
     },
@@ -639,7 +654,9 @@ export async function promptProjectConfig(options: PromptOptions = {}): Promise<
       message: 'Generate shell completions?',
       default: false,
       when: (ans) => {
-        const type = ans.preset !== 'none' ? PRESETS[ans.preset as Exclude<Preset, 'none'>].type : ans.type;
+        if (cliPreset) return false; // Skip for CLI presets - use defaults
+        const effectivePreset = ans.preset;
+        const type = effectivePreset && effectivePreset !== 'none' ? PRESETS[effectivePreset as Exclude<Preset, 'none'>].type : ans.type;
         return type === 'cli';
       },
     },
@@ -654,7 +671,9 @@ export async function promptProjectConfig(options: PromptOptions = {}): Promise<
       ],
       default: 'stdio',
       when: (ans) => {
-        const type = ans.preset !== 'none' ? PRESETS[ans.preset as Exclude<Preset, 'none'>].type : ans.type;
+        if (cliPreset) return false; // Skip for CLI presets - use defaults
+        const effectivePreset = ans.preset;
+        const type = effectivePreset && effectivePreset !== 'none' ? PRESETS[effectivePreset as Exclude<Preset, 'none'>].type : ans.type;
         return type === 'mcp-server';
       },
     },
@@ -669,7 +688,9 @@ export async function promptProjectConfig(options: PromptOptions = {}): Promise<
       ],
       default: 'vitest',
       when: (ans) => {
-        const type = ans.preset !== 'none' ? PRESETS[ans.preset as Exclude<Preset, 'none'>].type : ans.type;
+        if (cliPreset) return false; // Skip for CLI presets - use defaults
+        const effectivePreset = ans.preset;
+        const type = effectivePreset && effectivePreset !== 'none' ? PRESETS[effectivePreset as Exclude<Preset, 'none'>].type : ans.type;
         return type === 'library';
       },
     },
@@ -692,7 +713,7 @@ export async function promptProjectConfig(options: PromptOptions = {}): Promise<
       ],
       default: 'none',
       when: (ans) => {
-        if (ans.preset !== 'none') return false;
+        if (cliPreset || ans.preset !== 'none') return false;
         const type = ans.type;
         return canHaveAI(type) && ans.complexityTrack !== 'quick';
       },
@@ -728,7 +749,7 @@ export async function promptProjectConfig(options: PromptOptions = {}): Promise<
         return 'pinecone';
       },
       when: (ans) => {
-        if (ans.preset !== 'none') return false;
+        if (cliPreset || ans.preset !== 'none') return false;
         return ans.aiFramework && ans.aiFramework !== 'none';
       },
     },
@@ -753,7 +774,7 @@ export async function promptProjectConfig(options: PromptOptions = {}): Promise<
       ],
       default: 'openai',
       when: (ans) => {
-        if (ans.preset !== 'none') return false;
+        if (cliPreset || ans.preset !== 'none') return false;
         return ans.vectorDB && ans.vectorDB !== 'none';
       },
     },
@@ -781,7 +802,7 @@ export async function promptProjectConfig(options: PromptOptions = {}): Promise<
       ],
       default: 'none',
       when: (ans) => {
-        if (ans.preset !== 'none') return false;
+        if (cliPreset || ans.preset !== 'none') return false;
         return ans.aiFramework && ans.aiFramework !== 'none' && ans.complexityTrack !== 'quick';
       },
     },
@@ -792,8 +813,10 @@ export async function promptProjectConfig(options: PromptOptions = {}): Promise<
       message: 'Production domain (empty for local only):',
       default: '',
       when: (ans) => {
-        if (ans.preset !== 'none') {
-          const preset = PRESETS[ans.preset as Exclude<Preset, 'none'>];
+        if (cliPreset) return false; // Skip for CLI presets - use default
+        const effectivePreset = ans.preset;
+        if (effectivePreset && effectivePreset !== 'none') {
+          const preset = PRESETS[effectivePreset as Exclude<Preset, 'none'>];
           return preset.complexityTrack !== 'quick' && !isServerless(preset.type);
         }
         return ans.complexityTrack !== 'quick' && !isServerless(ans.type);
@@ -812,7 +835,7 @@ export async function promptProjectConfig(options: PromptOptions = {}): Promise<
       ],
       default: 'caddy',
       when: (ans) => {
-        if (ans.preset !== 'none') return false;
+        if (cliPreset || ans.preset !== 'none') return false;
         const track = ans.complexityTrack;
         return ans.domain && ans.domain.length > 0 && track === 'production';
       },
@@ -830,7 +853,7 @@ export async function promptProjectConfig(options: PromptOptions = {}): Promise<
       ],
       default: 'uv',
       when: (ans) => {
-        if (ans.preset !== 'none') return false;
+        if (cliPreset || ans.preset !== 'none') return false;
         return isPythonProject(ans.type);
       },
     },
@@ -844,7 +867,7 @@ export async function promptProjectConfig(options: PromptOptions = {}): Promise<
         return `github.com/${username}/${ans.name}`;
       },
       when: (ans) => {
-        if (ans.preset !== 'none') return false;
+        if (cliPreset || ans.preset !== 'none') return false;
         return isGoProject(ans.type);
       },
     },
@@ -859,7 +882,7 @@ export async function promptProjectConfig(options: PromptOptions = {}): Promise<
       ],
       default: '2021',
       when: (ans) => {
-        if (ans.preset !== 'none') return false;
+        if (cliPreset || ans.preset !== 'none') return false;
         return isRustProject(ans.type);
       },
     },
@@ -868,6 +891,7 @@ export async function promptProjectConfig(options: PromptOptions = {}): Promise<
       name: 'githubUsername',
       message: 'GitHub username:',
       default: 'abe238',
+      when: () => !cliPreset, // Skip for CLI presets - use default
     },
     // Design system
     {
@@ -876,16 +900,17 @@ export async function promptProjectConfig(options: PromptOptions = {}): Promise<
       message: 'Include Gemini-style design system?',
       default: true,
       when: (ans) => {
-        if (ans.preset !== 'none') return false;
+        if (cliPreset || ans.preset !== 'none') return false;
         return isFrontend(ans.type) && ans.complexityTrack !== 'quick';
       },
     },
   ]);
 
-  // Apply preset defaults
+  // Apply preset defaults (CLI preset takes precedence)
+  const effectivePreset = cliPreset || answers.preset || 'none';
   let presetDefaults: Partial<ProjectConfig> = {};
-  if (answers.preset !== 'none') {
-    const preset = PRESETS[answers.preset as Exclude<Preset, 'none'>];
+  if (effectivePreset !== 'none') {
+    const preset = PRESETS[effectivePreset as Exclude<Preset, 'none'>];
     presetDefaults = {
       type: preset.type,
       complexityTrack: preset.complexityTrack,
@@ -908,12 +933,12 @@ export async function promptProjectConfig(options: PromptOptions = {}): Promise<
   const finalRuntime = presetDefaults.runtime ?? answers.runtime ?? deriveRuntime(finalType);
 
   const config: ProjectConfig = {
-    preset: answers.preset,
+    preset: effectivePreset,
     complexityTrack: presetDefaults.complexityTrack ?? answers.complexityTrack ?? 'standard',
-    name: answers.name,
-    description: answers.description,
+    name: options.name || answers.name,
+    description: answers.description || 'A new project scaffolded with kickoff',
     type: finalType,
-    port: answers.port ?? 0,
+    port: answers.port ?? generateRandomPort(),
     runtime: finalRuntime,
     databaseProvider: presetDefaults.databaseProvider ?? answers.databaseProvider ?? 'none',
     orm: presetDefaults.orm ?? answers.orm ?? 'none',
@@ -923,15 +948,15 @@ export async function promptProjectConfig(options: PromptOptions = {}): Promise<
     localAI: presetDefaults.localAI ?? answers.localAI ?? 'none',
     aiFramework: presetDefaults.aiFramework ?? answers.aiFramework ?? 'none',
     domain: answers.domain ?? '',
-    githubUsername: answers.githubUsername,
+    githubUsername: answers.githubUsername || 'abe238',
     webServer: presetDefaults.webServer ?? answers.webServer ?? 'none',
     useDesignSystem: presetDefaults.useDesignSystem ?? answers.useDesignSystem ?? false,
     serverFramework: presetDefaults.serverFramework ?? deriveServerFramework(finalType),
-    cliInteractive: answers.cliInteractive,
-    cliConfigFile: answers.cliConfigFile,
-    cliShellCompletion: answers.cliShellCompletion,
-    mcpTransport: answers.mcpTransport,
-    libraryTestFramework: answers.libraryTestFramework,
+    cliInteractive: answers.cliInteractive ?? true,
+    cliConfigFile: answers.cliConfigFile ?? false,
+    cliShellCompletion: answers.cliShellCompletion ?? false,
+    mcpTransport: answers.mcpTransport ?? 'stdio',
+    libraryTestFramework: answers.libraryTestFramework ?? 'vitest',
     pythonPackageManager: presetDefaults.pythonPackageManager ?? answers.pythonPackageManager,
     goModulePath: answers.goModulePath,
     rustEdition: answers.rustEdition,
