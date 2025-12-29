@@ -580,3 +580,22 @@ ISC
 ---
 
 *Built with lessons learned from production deployments, security incidents, and real-world AI/ML applications.*
+
+---
+
+## About the Builder
+
+Hola. I'm **[Abe Diaz](https://abediaz.ai)**. By day, I'm Sr. Manager of Disaster Relief at Amazon, leading a team that uses AI and logistics to deliver 26+ million relief items and response technology across 200+ disasters worldwide. On weekends, I build artisanal developer tools like this :-P
+
+- 💼 [linkedin.com/in/abediaz](https://linkedin.com/in/abediaz)
+- 🌐 [abediaz.ai](https://abediaz.ai)
+- 🐙 [github.com/abe238](https://github.com/abe238)
+- 🐦 [@abe238](https://twitter.com/abe238)
+
+### Other Open Source Projects
+
+| Project | Description |
+|---------|-------------|
+| [gg-deploy](https://github.com/abe238/gg-deploy) | Domain → GitHub Pages in 60 seconds |
+| [gemini-deep-research](https://github.com/abe238/gemini-deep-research) | CLI for Gemini's Deep Research Agent |
+| [aipm-resume-analyzer](https://github.com/abe238/aipm-resume-analyzer) | Resume analysis against AI PM frameworks |
