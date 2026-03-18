@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Kickoff - Version Comparison Analysis</title>
+    <style>
+        :root {
+            --bg-primary: #0d1117;
+            --bg-secondary: #161b22;
+            --bg-tertiary: #21262d;
+            --text-primary: #c9d1d9;
+            --text-secondary: #8b949e;
+            --accent-blue: #58a6ff;
+            --accent-green: #3fb950;
+            --accent-red: #f85149;
+            --accent-yellow: #d29922;
+            --accent-purple: #a371f7;
+            --border-color: #30363d;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 24px;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-blue);
+        }
+
+        .card h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            font-size: 1.2rem;
+        }
+
+        .card.main h3 { color: var(--accent-blue); }
+        .card.sub h3 { color: var(--accent-purple); }
+
+        .stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .stat:last-child { border-bottom: none; }
+
+        .stat-label { color: var(--text-secondary); }
+        .stat-value { font-weight: 600; }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 16px 20px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .comparison-table th {
+            background: var(--bg-tertiary);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .comparison-table th:first-child { width: 25%; }
+        .comparison-table th:nth-child(2) { width: 37.5%; color: var(--accent-blue); }
+        .comparison-table th:nth-child(3) { width: 37.5%; color: var(--accent-purple); }
+
+        .comparison-table tr:hover { background: var(--bg-tertiary); }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .badge.green { background: rgba(63, 185, 80, 0.2); color: var(--accent-green); }
+        .badge.blue { background: rgba(88, 166, 255, 0.2); color: var(--accent-blue); }
+        .badge.yellow { background: rgba(210, 153, 34, 0.2); color: var(--accent-yellow); }
+        .badge.red { background: rgba(248, 81, 73, 0.2); color: var(--accent-red); }
+        .badge.purple { background: rgba(163, 113, 247, 0.2); color: var(--accent-purple); }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pros-cons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .pros-cons .card h4 {
+            margin-bottom: 12px;
+            font-size: 1rem;
+        }
+
+        .pros-cons ul {
+            list-style: none;
+        }
+
+        .pros-cons li {
+            padding: 8px 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .pros-cons li::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            margin-top: 8px;
+            flex-shrink: 0;
+        }
+
+        .pros li::before { background: var(--accent-green); }
+        .cons li::before { background: var(--accent-red); }
+
+        .recommendation {
+            background: linear-gradient(135deg, rgba(88, 166, 255, 0.1), rgba(163, 113, 247, 0.1));
+            border: 2px solid var(--accent-blue);
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 40px;
+        }
+
+        .recommendation h2 {
+            color: var(--accent-blue);
+            border: none;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+
+        .recommendation-option {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .recommendation-option:hover {
+            border-color: var(--accent-blue);
+            background: var(--bg-tertiary);
+        }
+
+        .recommendation-option.selected {
+            border-color: var(--accent-green);
+            background: rgba(63, 185, 80, 0.1);
+        }
+
+        .recommendation-option h4 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .recommendation-option p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .code-block {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            font-family: 'SF Mono', Consolas, monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            margin-top: 15px;
+        }
+
+        .toggle-btn {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+
+        .toggle-btn:hover {
+            background: var(--bg-secondary);
+            border-color: var(--accent-blue);
+        }
+
+        .toggle-btn.active {
+            background: var(--accent-blue);
+            border-color: var(--accent-blue);
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .file-tree {
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'SF Mono', Consolas, monospace;
+            font-size: 0.85rem;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .file-tree-item {
+            padding: 4px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .file-tree-item.dir { color: var(--accent-blue); }
+        .file-tree-item.file { color: var(--text-secondary); }
+
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border-color);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -26px;
+            top: 20px;
+            width: 12px;
+            height: 12px;
+            background: var(--accent-blue);
+            border-radius: 50%;
+            border: 2px solid var(--bg-primary);
+        }
+
+        .verdict {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--accent-green);
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 1.8rem; }
+            .comparison-table { display: block; overflow-x: auto; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Project Kickoff - Version Comparison</h1>
+            <p class="subtitle">Analysis of Main Project vs Automaker-Generated Subfolder</p>
+        </header>
+
+        <div class="summary-cards">
+            <div class="card main">
+                <h3><span>&#x1F4E6;</span> Main Project (Your Original)</h3>
+                <div class="stat">
+                    <span class="stat-label">Location</span>
+                    <span class="stat-value">/project-kickoff/</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Lines of Code</span>
+                    <span class="stat-value">~2,500</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Source Files</span>
+                    <span class="stat-value">4 main files</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Template Engine</span>
+                    <span class="stat-value">EJS</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Test Coverage</span>
+                    <span class="stat-value">1 test file</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Version</span>
+                    <span class="stat-value">2.0.0</span>
+                </div>
+            </div>
+
+            <div class="card sub">
+                <h3><span>&#x1F916;</span> Subfolder (Automaker Generated)</h3>
+                <div class="stat">
+                    <span class="stat-label">Location</span>
+                    <span class="stat-value">/project-kickoff/project-kickoff/</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Lines of Code</span>
+                    <span class="stat-value">~8,450</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Source Files</span>
+                    <span class="stat-value">17 modules</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Template Engine</span>
+                    <span class="stat-value">Handlebars</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Test Coverage</span>
+                    <span class="stat-value">8 test files (~5K LOC)</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Version</span>
+                    <span class="stat-value">1.0.0</span>
+                </div>
+            </div>
+        </div>
+
+        <section class="section">
+            <h2><span>&#x1F50D;</span> Detailed Feature Comparison</h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Main Project (Original)</th>
+                        <th>Subfolder (Automaker)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Architecture</strong></td>
+                        <td>
+                            <span class="badge yellow">Monolithic</span><br>
+                            Single index.ts with inline logic. Simple but harder to extend.
+                        </td>
+                        <td>
+                            <span class="badge green">Modular</span><br>
+                            Separate classes: CLI, Engine, Registry, Manager, Logger. Clean separation of concerns.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>2025 Tech Stacks</strong></td>
+                        <td>
+                            <span class="badge green">Comprehensive</span><br>
+                            Supabase, Neon, Turso, Convex, AI/ML frameworks, Vector DBs, Local AI (Ollama/MLX), multi-language support
+                        </td>
+                        <td>
+                            <span class="badge red">Missing</span><br>
+                            Traditional templates only. No AI/ML, no modern serverless DBs, no 2025 stacks
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Preset System</strong></td>
+                        <td>
+                            <span class="badge green">Rich Presets</span><br>
+                            14 presets: SaaS, Edge API, RAG App, AI Agent, FastAPI, Go, Rust, etc.
+                        </td>
+                        <td>
+                            <span class="badge yellow">Categories Only</span><br>
+                            Category-based organization but no quick-start presets
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Templates</strong></td>
+                        <td>
+                            <span class="badge yellow">Minimal</span><br>
+                            Templates embedded in code, EJS-based, limited number
+                        </td>
+                        <td>
+                            <span class="badge green">65 Templates</span><br>
+                            Extensive library with Handlebars, proper template.json metadata
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Template Engine</strong></td>
+                        <td>
+                            EJS with basic variable substitution
+                        </td>
+                        <td>
+                            <span class="badge green">Handlebars + 40+ Helpers</span><br>
+                            kebab, pascal, camel, snake, conditionals, loops, math, date helpers
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Testing</strong></td>
+                        <td>
+                            <span class="badge red">Minimal</span><br>
+                            1 test file (scaffolder.test.ts)
+                        </td>
+                        <td>
+                            <span class="badge green">Comprehensive</span><br>
+                            8 test files (~5K LOC), Jest configured, 80%+ coverage goal
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>CLI Commands</strong></td>
+                        <td>
+                            <code>init</code>, <code>list</code>, <code>stacks</code>
+                        </td>
+                        <td>
+                            <code>create</code>, <code>list-templates</code>, <code>list-categories</code>, <code>create-template</code>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Multi-Language</strong></td>
+                        <td>
+                            <span class="badge green">Python, Go, Rust, Deno</span><br>
+                            Full support with language-specific ORMs and package managers
+                        </td>
+                        <td>
+                            <span class="badge yellow">TypeScript Focus</span><br>
+                            Primarily TypeScript/JavaScript templates
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Configuration</strong></td>
+                        <td>
+                            Inline configuration in prompts
+                        </td>
+                        <td>
+                            <span class="badge blue">ConfigManager</span><br>
+                            Persistent config with .project-kickoff-config
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Dry Run</strong></td>
+                        <td>
+                            Basic --dry-run flag
+                        </td>
+                        <td>
+                            <span class="badge green">Detailed Preview</span><br>
+                            Shows files, dependencies, git init status
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Error Handling</strong></td>
+                        <td>
+                            Basic try/catch
+                        </td>
+                        <td>
+                            <span class="badge green">Comprehensive</span><br>
+                            ProcessSafe methods, cleanup on failure, step-by-step logging
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Logging</strong></td>
+                        <td>
+                            Console.log + chalk
+                        </td>
+                        <td>
+                            <span class="badge blue">Logger Class</span><br>
+                            Verbose mode, step indicators, success/warn/error levels
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2><span>&#x2696;&#xFE0F;</span> Strengths & Weaknesses</h2>
+            <div class="pros-cons">
+                <div class="card">
+                    <h4 style="color: var(--accent-blue);">&#x1F4E6; Main Project - Strengths</h4>
+                    <ul class="pros">
+                        <li>Modern 2025 tech stacks (AI, vectors, serverless DBs)</li>
+                        <li>Rich preset system for quick starts</li>
+                        <li>Multi-language support (Python, Go, Rust, Deno)</li>
+                        <li>Comprehensive stack documentation inline</li>
+                        <li>Complexity tracks (quick/standard/production)</li>
+                        <li>GitHub Actions CI/CD templates</li>
+                        <li>Docker + web server integration</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4 style="color: var(--accent-blue);">&#x1F4E6; Main Project - Weaknesses</h4>
+                    <ul class="cons">
+                        <li>Monolithic architecture - hard to extend</li>
+                        <li>Limited test coverage</li>
+                        <li>Templates embedded in code</li>
+                        <li>No persistent configuration</li>
+                        <li>Basic template engine (EJS)</li>
+                        <li>No category organization</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4 style="color: var(--accent-purple);">&#x1F916; Subfolder - Strengths</h4>
+                    <ul class="pros">
+                        <li>Clean modular architecture</li>
+                        <li>Comprehensive test suite (8 files)</li>
+                        <li>65 template directories</li>
+                        <li>Rich Handlebars helpers (40+)</li>
+                        <li>ConfigManager for persistence</li>
+                        <li>Category organization system</li>
+                        <li>Detailed dry-run output</li>
+                        <li>Step-by-step progress logging</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4 style="color: var(--accent-purple);">&#x1F916; Subfolder - Weaknesses</h4>
+                    <ul class="cons">
+                        <li>No modern 2025 stacks</li>
+                        <li>No AI/ML integration</li>
+                        <li>No preset system</li>
+                        <li>Limited multi-language support</li>
+                        <li>No Docker/deployment templates</li>
+                        <li>No complexity tracks</li>
+                        <li>Traditional templates only</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="section recommendation">
+            <h2><span>&#x1F3AF;</span> Recommended Course of Action</h2>
+
+            <div class="verdict">&#x2705; RECOMMENDATION: Merge - Keep Main as Base, Port Architecture from Subfolder</div>
+
+            <p style="margin-bottom: 20px;">The main project has the <strong>right features</strong> (2025 stacks, AI/ML, multi-language), while the subfolder has the <strong>right architecture</strong> (modular, tested, extensible). The optimal solution is a hybrid approach.</p>
+
+            <div class="recommendation-option" onclick="selectOption(this, 1)">
+                <h4><span class="badge green">BEST</span> Option 1: Refactor Main with Subfolder Architecture</h4>
+                <p>Keep main project's features and stacks. Port the modular architecture (TemplateEngine, Registry, ConfigManager, Logger) from subfolder. Add the test suite structure.</p>
+                <div class="code-block">
+# Steps:
+1. Create src/core/ directory in main project
+2. Port TemplateEngine.ts (with Handlebars) from subfolder
+3. Port Logger.ts and ConfigManager.ts from subfolder
+4. Refactor prompter.ts into QuestionnaireEngine class
+5. Refactor scaffolder.ts into ProjectScaffolder class
+6. Add test suite structure from subfolder
+7. Keep all 2025 stacks and presets from main
+8. Delete subfolder after migration
+                </div>
+            </div>
+
+            <div class="recommendation-option" onclick="selectOption(this, 2)">
+                <h4><span class="badge yellow">GOOD</span> Option 2: Port 2025 Stacks to Subfolder</h4>
+                <p>Take the subfolder's architecture and add main project's 2025 features. More work but cleaner starting point.</p>
+                <div class="code-block">
+# Steps:
+1. Copy subfolder to new location as base
+2. Add preset system from main
+3. Add 2025 database providers (Supabase, Neon, Turso)
+4. Add AI/ML integration (vector DBs, embeddings, local AI)
+5. Add multi-language support
+6. Create new templates for modern stacks
+7. Delete original main and rename subfolder
+                </div>
+            </div>
+
+            <div class="recommendation-option" onclick="selectOption(this, 3)">
+                <h4><span class="badge red">NOT RECOMMENDED</span> Option 3: Delete Subfolder</h4>
+                <p>Keep main project as-is and delete the automaker-generated subfolder. Loses the better architecture and test coverage.</p>
+                <div class="code-block">
+# Steps:
+rm -rf /Users/abediaz/Documents/GitHub/project-kickoff/project-kickoff
+
+# Why not recommended:
+- Loses modular architecture
+- Loses comprehensive test suite
+- Loses template engine improvements
+- Loses 65 template directories
+                </div>
+            </div>
+
+            <div class="recommendation-option" onclick="selectOption(this, 4)">
+                <h4><span class="badge red">NOT RECOMMENDED</span> Option 4: Keep Both</h4>
+                <p>Maintain both projects separately. Creates confusion and maintenance burden.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2><span>&#x1F4CB;</span> Detailed Migration Plan (Option 1)</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <h4>Phase 1: Setup Architecture</h4>
+                    <p>Create src/core/, src/cli/, src/utils/ directories. Set up Jest testing framework.</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>Phase 2: Port Core Modules</h4>
+                    <p>Copy and adapt: TemplateEngine.ts, Logger.ts, ConfigManager.ts from subfolder. Update imports for ESM.</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>Phase 3: Refactor Existing Code</h4>
+                    <p>Break prompter.ts into QuestionnaireEngine class. Break scaffolder.ts into ProjectScaffolder class. Keep all 2025 stack logic.</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>Phase 4: Add Tests</h4>
+                    <p>Port test structure from subfolder. Adapt tests for main project's features. Target 80% coverage.</p>
+                </div>
+                <div class="timeline-item">
+                    <h4>Phase 5: Clean Up</h4>
+                    <p>Remove subfolder. Update README. Bump version to 3.0.0. Commit and push.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2><span>&#x1F4C1;</span> File Structure Comparison</h2>
+            <div class="summary-cards">
+                <div class="card main">
+                    <h3>Main Project Structure</h3>
+                    <div class="file-tree">
+                        <div class="file-tree-item dir">&#x1F4C1; src/</div>
+                        <div class="file-tree-item file">&nbsp;&nbsp;&#x1F4C4; index.ts (469 lines)</div>
+                        <div class="file-tree-item dir">&nbsp;&nbsp;&#x1F4C1; lib/</div>
+                        <div class="file-tree-item file">&nbsp;&nbsp;&nbsp;&nbsp;&#x1F4C4; prompter.ts (935 lines)</div>
+                        <div class="file-tree-item file">&nbsp;&nbsp;&nbsp;&nbsp;&#x1F4C4; scaffolder.ts (190 lines)</div>
+                        <div class="file-tree-item file">&nbsp;&nbsp;&nbsp;&nbsp;&#x1F4C4; types.ts (285 lines)</div>
+                        <div class="file-tree-item file">&nbsp;&nbsp;&nbsp;&nbsp;&#x1F4C4; scaffolder.test.ts (634 lines)</div>
+                        <div class="file-tree-item dir">&#x1F4C1; docs/</div>
+                        <div class="file-tree-item file">&nbsp;&nbsp;&#x1F4C4; QUESTIONNAIRE.md</div>
+                        <div class="file-tree-item file">&nbsp;&nbsp;&#x1F4C4; stacks.html</div>
+                    </div>
+                </div>
+                <div class="card sub">
+                    <h3>Subfolder Project Structure</h3>
+                    <div class="file-tree">
+                        <div class="file-tree-item dir">&#x1F4C1; src/</div>
+                        <div class="file-tree-item file">&nbsp;&nbsp;&#x1F4C4; cli.ts (86 lines)</div>
+                        <div class="file-tree-item dir">&nbsp;&nbsp;&#x1F4C1; cli/</div>
+                        <div class="file-tree-item file">&nbsp;&nbsp;&nbsp;&nbsp;&#x1F4C4; ProjectKickoffCLI.ts (194 lines)</div>
+                        <div class="file-tree-item file">&nbsp;&nbsp;&nbsp;&nbsp;&#x1F4C4; QuestionnaireEngine.ts (253 lines)</div>
+                        <div class="file-tree-item dir">&nbsp;&nbsp;&#x1F4C1; core/</div>
+                        <div class="file-tree-item file">&nbsp;&nbsp;&nbsp;&nbsp;&#x1F4C4; CategoryManager.ts (257 lines)</div>
+                        <div class="file-tree-item file">&nbsp;&nbsp;&nbsp;&nbsp;&#x1F4C4; ConfigManager.ts (196 lines)</div>
+                        <div class="file-tree-item file">&nbsp;&nbsp;&nbsp;&nbsp;&#x1F4C4; ProjectScaffolder.ts (775 lines)</div>
+                        <div class="file-tree-item file">&nbsp;&nbsp;&nbsp;&nbsp;&#x1F4C4; TemplateEngine.ts (656 lines)</div>
+                        <div class="file-tree-item file">&nbsp;&nbsp;&nbsp;&nbsp;&#x1F4C4; TemplateRegistry.ts (848 lines)</div>
+                        <div class="file-tree-item dir">&nbsp;&nbsp;&#x1F4C1; utils/</div>
+                        <div class="file-tree-item file">&nbsp;&nbsp;&nbsp;&nbsp;&#x1F4C4; Logger.ts (104 lines)</div>
+                        <div class="file-tree-item dir">&nbsp;&nbsp;&#x1F4C1; __tests__/</div>
+                        <div class="file-tree-item file">&nbsp;&nbsp;&nbsp;&nbsp;&#x1F4C4; (8 test files, ~5K lines)</div>
+                        <div class="file-tree-item dir">&#x1F4C1; templates/ (65 directories)</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2><span>&#x1F4CA;</span> By The Numbers</h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Metric</th>
+                        <th>Main Project</th>
+                        <th>Subfolder</th>
+                        <th>Winner</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Total Lines of Code</td>
+                        <td>~2,500</td>
+                        <td>~8,450</td>
+                        <td><span class="badge purple">Subfolder (more thorough)</span></td>
+                    </tr>
+                    <tr>
+                        <td>Test Lines</td>
+                        <td>~634</td>
+                        <td>~5,000</td>
+                        <td><span class="badge purple">Subfolder (8x more)</span></td>
+                    </tr>
+                    <tr>
+                        <td>Template Count</td>
+                        <td>~10 inline</td>
+                        <td>65 directories</td>
+                        <td><span class="badge purple">Subfolder (6.5x more)</span></td>
+                    </tr>
+                    <tr>
+                        <td>Modern Stacks</td>
+                        <td>40+ options</td>
+                        <td>~10 options</td>
+                        <td><span class="badge blue">Main (4x more)</span></td>
+                    </tr>
+                    <tr>
+                        <td>Presets</td>
+                        <td>14</td>
+                        <td>0</td>
+                        <td><span class="badge blue">Main (has presets)</span></td>
+                    </tr>
+                    <tr>
+                        <td>Languages Supported</td>
+                        <td>6 (TS, Python, Go, Rust, Deno, Bun)</td>
+                        <td>1 (TypeScript)</td>
+                        <td><span class="badge blue">Main (6x more)</span></td>
+                    </tr>
+                    <tr>
+                        <td>Handlebars Helpers</td>
+                        <td>0</td>
+                        <td>40+</td>
+                        <td><span class="badge purple">Subfolder (rich helpers)</span></td>
+                    </tr>
+                    <tr>
+                        <td>Source Modules</td>
+                        <td>4</td>
+                        <td>17</td>
+                        <td><span class="badge purple">Subfolder (more modular)</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h2><span>&#x2139;&#xFE0F;</span> Key Insight</h2>
+            <div class="card" style="background: linear-gradient(135deg, rgba(88, 166, 255, 0.1), rgba(163, 113, 247, 0.05));">
+                <p style="font-size: 1.1rem; line-height: 1.8;">
+                    <strong>The main project represents your vision</strong> - modern 2025 stacks, AI/ML integration, multi-language support.
+                    <strong>The subfolder represents good engineering practices</strong> - modular architecture, comprehensive tests, clean separation of concerns.
+                    <br><br>
+                    The ideal project-kickoff tool should have <strong>both</strong>. Use Option 1 to combine the best of both worlds:
+                    your modern feature set with professional-grade architecture.
+                </p>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        function selectOption(element, optionNum) {
+            document.querySelectorAll('.recommendation-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            console.log('Selected option:', optionNum);
+        }
+
+        // Auto-select recommended option
+        document.addEventListener('DOMContentLoaded', () => {
+            const firstOption = document.querySelector('.recommendation-option');
+            if (firstOption) firstOption.classList.add('selected');
+        });
+    </script>
+</body>
+</html>

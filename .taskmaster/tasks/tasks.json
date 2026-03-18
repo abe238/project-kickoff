@@ -1,0 +1,415 @@
+{
+  "tasks": [
+    {
+      "id": "1",
+      "title": "Create backup of both projects",
+      "description": "Create a full backup of the main project and subfolder before making any changes. Store in a separate location for safety.",
+      "status": "in-progress",
+      "priority": "high",
+      "dependencies": [],
+      "phase": "Phase 1: Setup",
+      "details": "Commands:\n- cp -r /Users/abediaz/Documents/GitHub/project-kickoff /Users/abediaz/Documents/GitHub/project-kickoff-backup-$(date +%Y%m%d)\n\nVerification:\n- Confirm backup exists and has all files",
+      "updatedAt": "2025-12-18T05:52:29.677Z",
+      "subtasks": []
+    },
+    {
+      "id": "2",
+      "title": "Initialize new directory structure",
+      "description": "Create the new modular directory structure: src/core/, src/lib/, src/utils/, templates/, docs/, __tests__/",
+      "status": "pending",
+      "priority": "high",
+      "dependencies": [
+        "1"
+      ],
+      "phase": "Phase 1: Setup",
+      "details": "Create directories:\n- src/core/\n- src/lib/\n- src/utils/\n- docs/\n- __tests__/\n\nKeep existing: templates/, src/lib/types.ts",
+      "subtasks": []
+    },
+    {
+      "id": "3",
+      "title": "Set up package.json with merged dependencies",
+      "description": "Merge dependencies from both projects. Add ora, commander if missing. Update version to 3.0.0-alpha",
+      "status": "pending",
+      "priority": "high",
+      "dependencies": [
+        "2"
+      ],
+      "phase": "Phase 1: Setup",
+      "details": "Add dependencies:\n- commander (CLI framework)\n- ora (spinners)\n- handlebars (template engine)\n\nKeep from main:\n- inquirer, chalk, fs-extra, ejs\n\nAdd devDependencies:\n- jest, @types/jest, ts-jest",
+      "subtasks": []
+    },
+    {
+      "id": "4",
+      "title": "Port TemplateEngine.ts from subfolder",
+      "description": "Copy TemplateEngine.ts from subfolder/src/core/ to main src/core/. Adapt imports for ESM. Keep all 40+ Handlebars helpers.",
+      "status": "pending",
+      "priority": "high",
+      "dependencies": [
+        "3"
+      ],
+      "phase": "Phase 2: Port Architecture",
+      "details": "Source: project-kickoff/project-kickoff/src/core/TemplateEngine.ts\nDest: project-kickoff/src/core/TemplateEngine.ts\n\nChanges needed:\n- Update imports to use .js extensions for ESM\n- Verify Handlebars types work\n- Test helper functions work",
+      "subtasks": []
+    },
+    {
+      "id": "5",
+      "title": "Port Logger.ts from subfolder",
+      "description": "Copy Logger.ts and enhance with ora spinner support. Add step counter, progress bar capabilities.",
+      "status": "pending",
+      "priority": "medium",
+      "dependencies": [
+        "3"
+      ],
+      "phase": "Phase 2: Port Architecture",
+      "details": "Source: project-kickoff/project-kickoff/src/utils/Logger.ts\nDest: project-kickoff/src/utils/Logger.ts\n\nEnhancements:\n- Add ora spinner integration\n- Add progress bar method\n- Add step(current, total, message) method",
+      "subtasks": []
+    },
+    {
+      "id": "6",
+      "title": "Port ConfigManager.ts from subfolder",
+      "description": "Copy ConfigManager.ts for persistent user configuration. Adapt for main project's types.",
+      "status": "pending",
+      "priority": "medium",
+      "dependencies": [
+        "3"
+      ],
+      "phase": "Phase 2: Port Architecture",
+      "details": "Source: project-kickoff/project-kickoff/src/core/ConfigManager.ts\nDest: project-kickoff/src/core/ConfigManager.ts\n\nConfig file location: ~/.kickoff/config.json\nStores: default preset, github username, preferred runtime",
+      "subtasks": []
+    },
+    {
+      "id": "7",
+      "title": "Create new cli.ts with Commander pattern",
+      "description": "Create new entry point using Commander.js. Support commands: create, list, stacks, docs, config",
+      "status": "pending",
+      "priority": "high",
+      "dependencies": [
+        "4",
+        "5",
+        "6"
+      ],
+      "phase": "Phase 2: Port Architecture",
+      "details": "Commands:\n- kickoff create <name> [--preset]\n- kickoff list\n- kickoff stacks\n- kickoff docs\n- kickoff config\n\nReference: subfolder/src/cli.ts for pattern",
+      "subtasks": []
+    },
+    {
+      "id": "8",
+      "title": "Create ProjectScaffolder.ts (merge both)",
+      "description": "Merge subfolder's class structure with main's buildContext function. Use TemplateEngine for processing.",
+      "status": "pending",
+      "priority": "high",
+      "dependencies": [
+        "4"
+      ],
+      "phase": "Phase 2: Port Architecture",
+      "details": "Take from subfolder:\n- Class structure\n- Step-by-step progress logging\n- Dry run support\n- Error handling with cleanup\n\nTake from main:\n- buildContext() function\n- Template context calculations\n- 2025 stack logic",
+      "subtasks": []
+    },
+    {
+      "id": "9",
+      "title": "Integrate types.ts from main",
+      "description": "Keep main's types.ts with all 2025 type definitions. Verify all types work with new architecture.",
+      "status": "pending",
+      "priority": "high",
+      "dependencies": [
+        "8"
+      ],
+      "phase": "Phase 3: Keep Features",
+      "details": "Verify types:\n- ProjectType (28 types)\n- DatabaseProvider (20+ options)\n- AuthProvider (12 options)\n- VectorDBProvider, EmbeddingProvider, LocalAIProvider\n- ProjectConfig interface\n- TemplateContext interface",
+      "subtasks": []
+    },
+    {
+      "id": "10",
+      "title": "Refactor prompter.ts - extract presets",
+      "description": "Extract PRESETS object to separate presets.ts file. Keep question logic in prompter.ts.",
+      "status": "pending",
+      "priority": "medium",
+      "dependencies": [
+        "9"
+      ],
+      "phase": "Phase 3: Keep Features",
+      "details": "Create src/lib/presets.ts with:\n- PRESETS object (14 presets)\n- getPreset(name) function\n- listPresets() function\n\nKeep in prompter.ts:\n- promptProjectConfig() function\n- All inquirer questions",
+      "subtasks": []
+    },
+    {
+      "id": "11",
+      "title": "Create context.ts - template context builder",
+      "description": "Extract buildContext() from scaffolder.ts to dedicated context.ts file.",
+      "status": "pending",
+      "priority": "medium",
+      "dependencies": [
+        "9"
+      ],
+      "phase": "Phase 3: Keep Features",
+      "details": "Create src/lib/context.ts with:\n- buildContext(config: ProjectConfig): TemplateContext\n- All computed helpers (needsDatabase, hasAI, etc.)\n- Name transformations (kebab, pascal, camel, snake)",
+      "subtasks": []
+    },
+    {
+      "id": "12",
+      "title": "Add preset quick-start commands to CLI",
+      "description": "Add --preset flag to create command. Allow: kickoff create my-app --preset saas-starter",
+      "status": "pending",
+      "priority": "medium",
+      "dependencies": [
+        "7",
+        "10"
+      ],
+      "phase": "Phase 3: Keep Features",
+      "details": "Implementation:\n- Parse --preset flag in cli.ts\n- Load preset from presets.ts\n- Skip questions covered by preset\n- Still ask for name and custom options",
+      "subtasks": []
+    },
+    {
+      "id": "13",
+      "title": "Consolidate templates from 65 to 12",
+      "description": "Keep only essential templates. Delete redundant ones covered by type system.",
+      "status": "pending",
+      "priority": "high",
+      "dependencies": [
+        "8"
+      ],
+      "phase": "Phase 4: Consolidate",
+      "details": "KEEP (12):\n- shared/, nextjs/, hono-api/, vite-react/, cli/, mcp-server/, library/, fastapi/, gin-api/, axum-api/, worker/, static/\n\nDELETE (53):\n- All subfolder templates\n- angular-*, django, flask, express-javascript, etc.",
+      "subtasks": []
+    },
+    {
+      "id": "14",
+      "title": "Create template.json metadata for each template",
+      "description": "Add template.json to each of the 12 template directories with metadata.",
+      "status": "pending",
+      "priority": "medium",
+      "dependencies": [
+        "13"
+      ],
+      "phase": "Phase 4: Consolidate",
+      "details": "template.json format:\n{\n  \"name\": \"Next.js 15\",\n  \"description\": \"Full-stack React with App Router\",\n  \"language\": \"typescript\",\n  \"category\": \"fullstack\",\n  \"features\": [\"RSC\", \"App Router\", \"Server Actions\"]\n}",
+      "subtasks": []
+    },
+    {
+      "id": "15",
+      "title": "Delete subfolder project-kickoff/project-kickoff/",
+      "description": "After verifying all needed files are ported, delete the entire subfolder.",
+      "status": "pending",
+      "priority": "high",
+      "dependencies": [
+        "4",
+        "5",
+        "6",
+        "8",
+        "13"
+      ],
+      "phase": "Phase 4: Consolidate",
+      "details": "BEFORE DELETING:\n- Verify TemplateEngine works\n- Verify Logger works\n- Verify ConfigManager works\n- Verify tests pass\n\nCommand: rm -rf project-kickoff/project-kickoff/",
+      "subtasks": []
+    },
+    {
+      "id": "16",
+      "title": "Delete redundant files from main",
+      "description": "Remove old files that are replaced: docs/stacks.html, old test file",
+      "status": "pending",
+      "priority": "low",
+      "dependencies": [
+        "15"
+      ],
+      "phase": "Phase 4: Consolidate",
+      "details": "Delete:\n- docs/stacks.html (replaced by STACKS.html)\n- src/lib/scaffolder.test.ts (replaced by __tests__/)",
+      "subtasks": []
+    },
+    {
+      "id": "17",
+      "title": "Add ora spinners for all async operations",
+      "description": "Wrap all async operations (file writes, npm install, git init) with ora spinners.",
+      "status": "pending",
+      "priority": "medium",
+      "dependencies": [
+        "7",
+        "8"
+      ],
+      "phase": "Phase 5: Enhance UX",
+      "details": "Add spinners for:\n- Loading templates\n- Processing files\n- Installing dependencies\n- Initializing git\n\nUse ora().start().succeed() pattern",
+      "subtasks": []
+    },
+    {
+      "id": "18",
+      "title": "Create ASCII art banner for CLI",
+      "description": "Add a visually appealing ASCII art banner displayed on kickoff start.",
+      "status": "pending",
+      "priority": "low",
+      "dependencies": [
+        "7"
+      ],
+      "phase": "Phase 5: Enhance UX",
+      "details": "Design banner with:\n- 'KICKOFF' text\n- Version number\n- Tagline: 'Modern project scaffolding'\n\nUse chalk for colors (gradient blue to purple)",
+      "subtasks": []
+    },
+    {
+      "id": "19",
+      "title": "Add progress bar during file scaffolding",
+      "description": "Show progress bar while copying/processing template files.",
+      "status": "pending",
+      "priority": "medium",
+      "dependencies": [
+        "5",
+        "8"
+      ],
+      "phase": "Phase 5: Enhance UX",
+      "details": "Implementation:\n- Count total files to process\n- Update progress after each file\n- Show: [████████░░] 80% Creating project...\n\nCan use cli-progress or custom implementation",
+      "subtasks": []
+    },
+    {
+      "id": "20",
+      "title": "Add What's next suggestions after completion",
+      "description": "Show helpful next steps after project creation (cd, npm install, npm run dev).",
+      "status": "pending",
+      "priority": "medium",
+      "dependencies": [
+        "8"
+      ],
+      "phase": "Phase 5: Enhance UX",
+      "details": "Show after completion:\n- cd <project-name>\n- npm install (if not auto-installed)\n- npm run dev\n- Open in VS Code: code .\n\nCustomize based on project type",
+      "subtasks": []
+    },
+    {
+      "id": "21",
+      "title": "Create QUICK_START.html",
+      "description": "Interactive HTML guide for getting started. Form that generates CLI command.",
+      "status": "pending",
+      "priority": "high",
+      "dependencies": [
+        "7"
+      ],
+      "phase": "Phase 6: Documentation",
+      "details": "Sections:\n1. Installation (npm install -g project-kickoff)\n2. Interactive form to build command\n3. Common examples\n4. Video tutorial placeholder\n5. Troubleshooting links\n\nStyle: Dark theme matching PROJECT_COMPARISON.html",
+      "subtasks": []
+    },
+    {
+      "id": "22",
+      "title": "Create STACKS.html - interactive stack explorer",
+      "description": "Visual explorer for all database, auth, AI options with filters and comparisons.",
+      "status": "pending",
+      "priority": "high",
+      "dependencies": [
+        "9"
+      ],
+      "phase": "Phase 6: Documentation",
+      "details": "Features:\n- Filter by: category, pricing, self-hosted\n- Comparison tables\n- Pros/cons for each option\n- 'I want to build...' scenarios\n- Links to official docs\n\nData source: types.ts definitions",
+      "subtasks": []
+    },
+    {
+      "id": "23",
+      "title": "Create PRESETS.html - preset gallery",
+      "description": "Visual showcase of all 14 presets with what's included and when to use.",
+      "status": "pending",
+      "priority": "medium",
+      "dependencies": [
+        "10"
+      ],
+      "phase": "Phase 6: Documentation",
+      "details": "For each preset show:\n- Name and description\n- Included stack (DB, Auth, AI)\n- Use cases\n- Files generated\n- One-click command copy\n\nData source: presets.ts",
+      "subtasks": []
+    },
+    {
+      "id": "24",
+      "title": "Add kickoff docs and kickoff stacks commands",
+      "description": "Commands that open the HTML documentation in default browser.",
+      "status": "pending",
+      "priority": "medium",
+      "dependencies": [
+        "7",
+        "21",
+        "22"
+      ],
+      "phase": "Phase 6: Documentation",
+      "details": "Implementation:\n- kickoff docs → opens QUICK_START.html\n- kickoff stacks → opens STACKS.html\n\nUse 'open' command on macOS, 'xdg-open' on Linux",
+      "subtasks": []
+    },
+    {
+      "id": "25",
+      "title": "Create test structure in __tests__/",
+      "description": "Set up Jest testing framework with proper configuration.",
+      "status": "pending",
+      "priority": "medium",
+      "dependencies": [
+        "3"
+      ],
+      "phase": "Phase 7: Testing",
+      "details": "Create:\n- jest.config.js\n- __tests__/setup.ts\n- __tests__/TemplateEngine.test.ts\n- __tests__/ProjectScaffolder.test.ts\n- __tests__/prompter.test.ts\n- __tests__/cli.test.ts",
+      "subtasks": []
+    },
+    {
+      "id": "26",
+      "title": "Write tests for core modules",
+      "description": "Write comprehensive tests for TemplateEngine, ProjectScaffolder, prompter, context.",
+      "status": "pending",
+      "priority": "medium",
+      "dependencies": [
+        "25",
+        "8",
+        "11"
+      ],
+      "phase": "Phase 7: Testing",
+      "details": "Test coverage targets:\n- TemplateEngine: 90% (helpers, processing)\n- ProjectScaffolder: 80% (scaffolding, dry-run)\n- prompter: 70% (question flow)\n- context: 90% (computed helpers)",
+      "subtasks": []
+    },
+    {
+      "id": "27",
+      "title": "Achieve 80% test coverage",
+      "description": "Run coverage report and fill gaps until 80% overall coverage.",
+      "status": "pending",
+      "priority": "medium",
+      "dependencies": [
+        "26"
+      ],
+      "phase": "Phase 7: Testing",
+      "details": "Commands:\n- npm test -- --coverage\n- Review uncovered lines\n- Add tests for edge cases\n\nTarget: 80% statements, 75% branches",
+      "subtasks": []
+    },
+    {
+      "id": "28",
+      "title": "Update package.json to version 3.0.0",
+      "description": "Finalize package.json with correct version, scripts, and metadata.",
+      "status": "pending",
+      "priority": "high",
+      "dependencies": [
+        "27"
+      ],
+      "phase": "Phase 8: Finalize",
+      "details": "Updates:\n- version: \"3.0.0\"\n- bin: { \"kickoff\": \"./dist/cli.js\" }\n- scripts: build, dev, test, lint\n- keywords, description\n- engines: { node: \">=18\" }",
+      "subtasks": []
+    },
+    {
+      "id": "29",
+      "title": "Write comprehensive README.md",
+      "description": "Create new README with installation, usage, presets, and examples.",
+      "status": "pending",
+      "priority": "high",
+      "dependencies": [
+        "28"
+      ],
+      "phase": "Phase 8: Finalize",
+      "details": "Sections:\n1. Hero with ASCII art\n2. Quick start\n3. Installation\n4. Usage examples\n5. Presets table\n6. Supported stacks\n7. Contributing\n8. License",
+      "subtasks": []
+    },
+    {
+      "id": "30",
+      "title": "Final verification and cleanup",
+      "description": "Run full test suite, verify all commands work, commit and tag release.",
+      "status": "pending",
+      "priority": "high",
+      "dependencies": [
+        "29"
+      ],
+      "phase": "Phase 8: Finalize",
+      "details": "Checklist:\n- [ ] npm run build succeeds\n- [ ] npm test passes (80%+ coverage)\n- [ ] kickoff create test-app works\n- [ ] All 14 presets work\n- [ ] HTML docs open correctly\n- [ ] No TypeScript errors\n- [ ] git tag v3.0.0",
+      "subtasks": []
+    }
+  ],
+  "metadata": {
+    "version": "1.0.0",
+    "lastModified": "2025-12-18T05:52:29.678Z",
+    "taskCount": 30,
+    "completedCount": 0,
+    "tags": [
+      "master"
+    ]
+  }
+}
